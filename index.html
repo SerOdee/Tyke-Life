@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Tyke Life Festival 14:00–22:00. DJs: Floostix, are:age, Livio, more TBA." />
+  <meta name="description" content="Tyke Life Festival – Techno. 14:00–22:00. DJs: DJ Floostix, are:age, Livio, more TBA." />
   <title>Tyke Life Festival</title>
 
   <style>
@@ -11,89 +11,89 @@
       --bg:#070708;
       --text:#f2f2f2;
       --muted:rgba(242,242,242,.70);
-      --line:rgba(242,242,242,.16);
+      --line:rgba(242,242,242,.18);
+      --dot:rgba(242,242,242,.35);
+      --dotActive:#f2f2f2;
       --max: 980px;
+      --pad: 18px;
     }
 
     *{box-sizing:border-box}
+    html, body{height:100%}
     html{scroll-behavior:smooth}
+
     body{
       margin:0;
       color:var(--text);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       background:
-        radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,.08), transparent 55%),
-        linear-gradient(180deg, var(--bg), #0b0b0f);
+        radial-gradient(1200px 700px at 50% -10%, rgba(255,255,255,.08), transparent 55%),
+        radial-gradient(900px 500px at 20% 30%, rgba(255,255,255,.05), transparent 55%),
+        linear-gradient(180deg, var(--bg), #0b0b10);
+      overflow-x:hidden;
     }
 
     a{color:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
 
-    /* Minimal sticky nav */
-    header{
-      position:sticky; top:0; z-index:50;
-      background: rgba(7,7,8,.78);
-      backdrop-filter: blur(10px);
-      border-bottom:1px solid var(--line);
+    /* Fullscreen sections */
+    .section{
+      min-height: 100vh;
+      display:flex;
+      align-items:center;
+      padding: 72px 0; /* Platz für "Luft" oben/unten */
+      border-top: 1px solid var(--line);
     }
-    .top{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 0;
-      gap:12px;
-    }
-    .brand{
-      text-decoration:none;
-      font-weight:900;
-      letter-spacing:.2px;
-    }
-    nav{display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end}
-    nav a{
-      text-decoration:none;
-      color:var(--muted);
-      font-weight:800;
-      font-size:13px;
-      text-transform:uppercase;
-      letter-spacing:.35px;
-      padding:8px 0;
-      border-bottom: 1px solid transparent;
-      transition:.12s ease;
-    }
-    nav a:hover{
-      color:var(--text);
-      border-bottom-color: var(--line);
+    .section:first-of-type{border-top:none}
+
+    .wrap{
+      width: 100%;
+      max-width: var(--max);
+      margin:0 auto;
+      padding: 0 var(--pad);
     }
 
-    /* Hero */
-    .hero{padding:44px 0 22px}
-    .logo{
-      width:min(980px, 100%);
-      height:auto;
-      display:block;
-      margin: 0 0 14px;
-      /* falls Logo dunkel ist: kannst du mit filter spielen */
-      /* filter: brightness(1.1) contrast(1.1); */
+    /* Optional: “snap” fühlt sich sehr section-based an */
+    .snap{
+      scroll-snap-type: y mandatory;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .snap .section{
+      scroll-snap-align: start;
+    }
+
+    /* Typo wie clean Festival-sites */
+    h1{
+      margin:0 0 14px;
+      font-size: clamp(26px, 4vw, 44px);
+      letter-spacing: -0.4px;
+      line-height: 1.08;
+    }
+    h2{
+      margin:0 0 10px;
+      font-size: clamp(18px, 2.2vw, 26px);
+      letter-spacing:-0.2px;
     }
     .lead{
       margin:0;
       max-width: 72ch;
       color: var(--muted);
-      line-height:1.8;
+      line-height: 1.85;
       font-size: 16px;
     }
     .meta{
-      margin-top:16px;
-      display:flex; flex-wrap:wrap; gap:10px;
-      color:var(--muted);
-      font-size:13px;
+      margin-top:14px;
+      color: var(--muted);
+      font-size: 13px;
       text-transform:uppercase;
       letter-spacing:.35px;
-    }
-    .meta strong{color:var(--text)}
-    .cta{
-      margin-top:16px;
-      display:flex; gap:10px; flex-wrap:wrap;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
       align-items:center;
     }
+    .meta strong{color:var(--text)}
+    .btnrow{margin-top:18px; display:flex; gap:10px; flex-wrap:wrap}
     .btn{
       display:inline-flex;
       padding:12px 14px;
@@ -111,189 +111,243 @@
       border-color: rgba(255,255,255,.28);
     }
 
-    .hr{
-      border:0;
-      border-top:1px solid var(--line);
-      margin: 22px 0 0;
+    /* Hero logo */
+    .logo{
+      width:min(980px, 100%);
+      height:auto;
+      display:block;
+      margin: 0 0 14px;
+      filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
     }
 
-    /* Sections: simple stacked info blocks */
-    section{padding:34px 0}
-    .sectionHead{
-      display:flex; align-items:baseline; justify-content:space-between; gap:12px;
-      margin-bottom: 12px;
-    }
-    h2{
-      margin:0;
-      font-size: 22px;
-      letter-spacing:-.2px;
-    }
-    .kicker{
-      margin:0;
-      color:var(--muted);
-      font-size: 13px;
-      text-transform:uppercase;
-      letter-spacing:.35px;
-    }
-    .text{
-      color:var(--muted);
-      line-height:1.85;
-      font-size: 16px;
-      margin: 0;
-    }
-    .list{
+    /* Simple lists (ohne Kacheln) */
+    ul{
       margin: 10px 0 0;
       padding-left: 18px;
       color: var(--muted);
       line-height: 1.9;
+      font-size: 16px;
     }
-    .list li{margin:4px 0}
-    .divider{
-      border:0;
-      border-top:1px solid var(--line);
-      margin: 26px 0 0;
+    li{margin:6px 0}
+
+    /* Right dot nav */
+    .dotnav{
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 50;
+      padding: 10px 8px;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 999px;
+      background: rgba(7,7,8,.35);
+      backdrop-filter: blur(10px);
+    }
+    .dotnav a{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--dot);
+      display:block;
+      position: relative;
+      outline: none;
+      border: 1px solid rgba(255,255,255,.12);
+      transition: .12s ease;
+    }
+    .dotnav a:hover{background: rgba(242,242,242,.55)}
+    .dotnav a.active{
+      background: var(--dotActive);
+      transform: scale(1.15);
+      border-color: rgba(255,255,255,.35);
     }
 
-    footer{
-      border-top:1px solid var(--line);
-      padding: 22px 0 44px;
-      color:var(--muted);
+    /* Tooltip label on hover (optional, nice) */
+    .dotnav a[data-label]::before{
+      content: attr(data-label);
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      font-size: 12px;
+      letter-spacing:.35px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(7,7,8,.55);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 8px 10px;
+      border-radius: 999px;
+      opacity: 0;
+      pointer-events:none;
+      transition: .12s ease;
+    }
+    .dotnav a:hover::before{opacity:1}
+
+    /* Footer-ish small text */
+    .fine{
+      margin-top: 18px;
+      color: rgba(242,242,242,.55);
       font-size: 13px;
-      background: rgba(0,0,0,.14);
+      line-height: 1.7;
     }
-    .foot{
-      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      align-items:center;
-    }
-    .foot a{color:var(--muted); text-decoration:none}
-    .foot a:hover{color:var(--text)}
 
-    @media (max-width: 560px){
-      nav{display:none} /* ultra clean wie viele Festival-Seiten */
+    /* Mobile: dotnav kleiner, weiter innen */
+    @media (max-width: 680px){
+      .dotnav{right:10px; gap:8px; padding:8px 6px}
+      .dotnav a{width:9px; height:9px}
+      .dotnav a[data-label]::before{display:none} /* Tooltips aus auf mobile */
       .btn{width:100%; justify-content:center}
+      .section{padding: 64px 0}
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="wrap top">
-      <a class="brand" href="#top">Tyke-Life</a>
-      <nav aria-label="Navigation">
-        <a href="#lineup">Line-up</a>
-        <a href="#infos">Infos</a>
-        <a href="#tickets">Tickets</a>
-        <a href="#kontakt">Kontakt</a>
-      </nav>
-    </div>
-  </header>
+  <!-- Right dot navigation -->
+  <nav class="dotnav" aria-label="Sektionen">
+    <a href="#home"   data-label="Home"   class="active"></a>
+    <a href="#lineup" data-label="Line-up"></a>
+    <a href="#infos"  data-label="Infos"></a>
+    <a href="#tickets"data-label="Tickets"></a>
+    <a href="#kontakt"data-label="Kontakt"></a>
+  </nav>
 
-  <main id="top" class="hero">
-    <div class="wrap">
-      <!-- Passe den Dateinamen an, wenn dein Logo anders heißt -->
-      <img class="logo" src="logo2.png" alt="TYKE LIFE FESTIVAL" />
+  <!-- Scroll container with snap (feel free to remove class="snap" if you don’t want snap) -->
+  <div class="snap" id="scrollRoot">
 
-      <p class="lead">
-        <strong style="color:var(--text)">
-        hier ein text?
-      </p>
+    <!-- HOME -->
+    <section class="section" id="home" data-dot="0">
+      <div class="wrap">
+        <img class="logo" src="logo2.png" alt="TYKE LIFE FESTIVAL" />
 
-      <div class="meta">
-        <span><strong>Start</strong> 14:00 Uhr</span>
-        <span>·</span>
-        <span><strong>Ende</strong> 22:00 Uhr</span>
-        <span>·</span>
-        <span><strong>Ort</strong> TBA</span>
-        <span>·</span>
-        <span><strong>Datum</strong> TBA</span>
+        <p class="lead">
+          <strong style="color:var(--text)">
+          Textfeld
+        </p>
+
+        <div class="meta">
+          <span><strong>Start</strong> 14:00 Uhr</span>
+          <span>·</span>
+          <span><strong>Ende</strong> 22:00 Uhr</span>
+          <span>·</span>
+          <span><strong>Ort</strong> TBA</span>
+          <span>·</span>
+          <span><strong>Datum</strong> TBA</span>
+        </div>
+
+        <div class="btnrow">
+          <a class="btn primary" href="#tickets">Tickets</a>
+          <a class="btn" href="#lineup">Line-up</a>
+        </div>
+
+        <p class="fine">
+          ↓ Scroll (oder Punkte rechts) für weitere Infos.
+        </p>
       </div>
+    </section>
 
-      <div class="cta">
-        <a class="btn primary" href="#tickets">Tickets</a>
-        <a class="btn" href="#lineup">Line-up</a>
-      </div>
-
-      <hr class="hr" />
-    </div>
-  </main>
-
-  <section id="lineup">
-    <div class="wrap">
-      <div class="sectionHead">
+    <!-- LINE-UP -->
+    <section class="section" id="lineup" data-dot="1">
+      <div class="wrap">
         <h2>Line-up</h2>
+        <p class="lead">DJs:</p>
+        <ul>
+          <li>DJ Floostix</li>
+          <li>are:age</li>
+          <li>Livio</li>
+          <li>more TBA</li>
+        </ul>
       </div>
+    </section>
 
-      <p class="text">DJs:</p>
-      <ul class="list">
-        <li>DJ Floostix</li>
-        <li>are:age</li>
-        <li>Livio</li>
-        <li>more TBA</li>
-      </ul>
-
-      <hr class="divider" />
-    </div>
-  </section>
-
-  <section id="infos">
-    <div class="wrap">
-      <div class="sectionHead">
+    <!-- INFOS -->
+    <section class="section" id="infos" data-dot="2">
+      <div class="wrap">
         <h2>Infos</h2>
-        <p class="kicker">Anreise · Regeln · Details</p>
+        <p class="lead">
+          <strong style="color:var(--text)">Zeit:</strong> 14:00 – 22:00 Uhr<br/>
+          <strong style="color:var(--text)">Location:</strong> TBA<br/>
+          <strong style="color:var(--text)">Anreise:</strong> TBA (ÖV / Parken / Adresse)<br/>
+          <strong style="color:var(--text)">Alter:</strong> TBA
+        </p>
+
+        <p class="fine">
+          (Sobald du Ort/Datum hast, mache ich dir das hier super clean.)
+        </p>
       </div>
+    </section>
 
-      <p class="text">
-        <strong style="color:var(--text)">Zeit:</strong> 14:00 – 22:00 Uhr<br/>
-        <strong style="color:var(--text)">Location:</strong> TBA<br/>
-        <strong style="color:var(--text)">Anreise:</strong> TBA (ÖV / Parken / Adresse)<br/>
-        <strong style="color:var(--text)">Alter:</strong> über 18 Jahre oder in Begleitung von Erwachsenen.
-      </p>
-
-      <hr class="divider" />
-    </div>
-  </section>
-
-  <section id="tickets">
-    <div class="wrap">
-      <div class="sectionHead">
+    <!-- TICKETS -->
+    <section class="section" id="tickets" data-dot="3">
+      <div class="wrap">
         <h2>Tickets</h2>
-        <p class="kicker">Vorverkauf</p>
+        <p class="lead">
+          Sobald der Vorverkauf live ist, kommt hier der Link rein.
+        </p>
+
+        <div class="btnrow">
+          <a class="btn primary" href="https://example.com" target="_blank" rel="noopener">Jetzt Tickets holen</a>
+        </div>
+
+        <p class="fine">
+          (Link ersetzen: einfach `https://example.com` austauschen.)
+        </p>
       </div>
+    </section>
 
-      <p class="text">
-        Sobald der Vorverkauf live ist, kommt hier der Link rein.
-      </p>
-
-      <div class="cta" style="margin-top:14px">
-        <a class="btn primary" href="https://example.com" target="_blank" rel="noopener">Jetzt Tickets holen</a>
-      </div>
-
-      <hr class="divider" />
-    </div>
-  </section>
-
-  <section id="kontakt">
-    <div class="wrap">
-      <div class="sectionHead">
+    <!-- KONTAKT -->
+    <section class="section" id="kontakt" data-dot="4">
+      <div class="wrap">
         <h2>Kontakt</h2>
-        <p class="kicker">Mail only</p>
+        <p class="lead">
+          Mail only:<br/>
+          <a href="mailto:info@tyke-life.ch">info@tyke-life.ch</a>
+        </p>
+
+        <p class="fine">© <span id="y"></span> Tyke-Life</p>
       </div>
+    </section>
 
-      <p class="text">
-        <a href="mailto:info@tyke-life.ch">info@tyke-life.ch</a>
-      </p>
-    </div>
-  </section>
-
-  <footer>
-    <div class="wrap foot">
-      <div>© <span id="y"></span> Tyke-Life</div>
-      <div><a href="#top">Nach oben</a></div>
-    </div>
-  </footer>
+  </div>
 
   <script>
+    // Year
     document.getElementById("y").textContent = new Date().getFullYear();
+
+    // Active dot based on section in view (IntersectionObserver)
+    const dots = Array.from(document.querySelectorAll(".dotnav a"));
+    const sections = Array.from(document.querySelectorAll(".section"));
+
+    const setActive = (idx) => {
+      dots.forEach((d,i) => d.classList.toggle("active", i === idx));
+    };
+
+    const io = new IntersectionObserver((entries) => {
+      // pick the most visible section
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      const idx = Number(visible.target.dataset.dot || 0);
+      setActive(idx);
+    }, { threshold: [0.55, 0.7, 0.85] });
+
+    sections.forEach(s => io.observe(s));
+
+    // Make dot clicks scroll inside the snap container (important!)
+    const root = document.getElementById("scrollRoot");
+    dots.forEach((dot) => {
+      dot.addEventListener("click", (e) => {
+        e.preventDefault();
+        const id = dot.getAttribute("href");
+        const target = document.querySelector(id);
+        if (!target) return;
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
   </script>
 </body>
 </html>
