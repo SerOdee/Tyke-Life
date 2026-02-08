@@ -185,6 +185,22 @@ h2{margin:0 0 12px;font-size:26px}
   .lineupWrap{grid-template-columns:1fr}
   .gallery{height:420px}
 }
+
+  /* Background Watermark */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  background-image: url("watermark.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: min(70vw, 900px);
+  opacity: 0.035;            /* <<< Feinheit hier steuern */
+  pointer-events: none;      /* Wichtig: klickt nichts kaputt */
+  z-index: 0;
+}
+
+  
 </style>
 </head>
 
