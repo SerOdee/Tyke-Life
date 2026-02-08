@@ -293,18 +293,63 @@ body::before{
 </div>
 
 <script>
-/* PASSWORD */
-const PASSWORD="Yves";
-const gate=document.getElementById("gate");
-const content=document.getElementById("content");
-const err=document.getElementById("gateErr");
+/* PASSWORD (Cookie) */
+const PASSWORD = "Yves";   // <-- HIER Passwort setzen
+const COOKIE_NAME = "tyke_access";
+const COOKIE_DAYS = 14;        // <-- wie lange merken (z.B. 14 Tage)
 
-document.getElementById("enter").onclick=()=>{
-  if(document.getElementById("pw").value===PASSWORD){
-    gate.style.display="none";
-    content.style.display="block";
-  }else err.style.display="block";
-};
+const gate = document.getElementById("gate");
+const content = document.getElementById("content");
+const err = document.getElementById("gateErr");
+const pwInput = document.getElementById("pw");
+
+function setCookie(name, value, days){
+  const d = new Date();
+  d.setTime(d.getTime() + (days*24*60*60*1000));
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
+}
+
+function getCookie(name){
+  const needle = name + "=";
+  return document.cookie
+    .split(";")
+    .map(c => c.trim())
+    .find(c => c.startsWith(needle))
+    ?.slice(needle.length) || "";
+}
+
+function unlock(){
+  gate.style.display = "none";
+  content.style.display = "block";
+  err.style.display = "none";
+}
+
+function lock(){
+  gate.style.display = "flex";
+  content.style.display = "none";
+}
+
+const cookieVal = decodeURIComponent(getCookie(COOKIE_NAME));
+if (cookieVal === "ok") {
+  unlock();
+} else {
+  lock();
+}
+
+document.getElementById("enter").addEventListener("click", () => {
+  if (pwInput.value === PASSWORD) {
+    setCookie(COOKIE_NAME, "ok", COOKIE_DAYS);
+    unlock();
+  } else {
+    err.style.display = "block";
+    pwInput.select();
+  }
+});
+
+pwInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") document.getElementById("enter").click();
+});
+
 
 /* DOT ACTIVE */
 const dots=[...document.querySelectorAll(".dotnav a")];
