@@ -1,495 +1,315 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Tyke Life Festival  14:00–22:00. DJs: DJ Floostix, are:age, Livio, more TBA." />
-  <title>Tyke Life Festival</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tyke-Life</title>
 
-  <style>
-    :root{
-      --bg:#070708;
-      --text:#f2f2f2;
-      --muted:rgba(242,242,242,.70);
-      --line:rgba(242,242,242,.18);
-      --dot:rgba(242,242,242,.35);
-      --dotActive:#f2f2f2;
-      --max: 980px;
-      --pad: 18px;
-    }
-
-    *{box-sizing:border-box}
-    html, body{height:100%}
-    html{scroll-behavior:smooth}
-
-    body{
-      margin:0;
-      color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background:
-        radial-gradient(1200px 700px at 50% -10%, rgba(255,255,255,.08), transparent 55%),
-        radial-gradient(900px 500px at 20% 30%, rgba(255,255,255,.05), transparent 55%),
-        linear-gradient(180deg, var(--bg), #0b0b10);
-      overflow-x:hidden;
-    }
-
-    a{color:inherit}
-
-    /* Fullscreen sections */
-    .section{
-      min-height: 100vh;
-      display:flex;
-      align-items:center;
-      padding: 72px 0; /* Platz für "Luft" oben/unten */
-      border-top: 1px solid var(--line);
-    }
-    .section:first-of-type{border-top:none}
-
-    .wrap{
-      width: 100%;
-      max-width: var(--max);
-      margin:0 auto;
-      padding: 0 var(--pad);
-    }
-
-    /* Optional: “snap” fühlt sich sehr section-based an */
-    .snap{
-      scroll-snap-type: y mandatory;
-      height: 100vh;
-      overflow-y: auto;
-    }
-    .snap .section{
-      scroll-snap-align: start;
-    }
-
-    /* Typo wie clean Festival-sites */
-    h1{
-      margin:0 0 14px;
-      font-size: clamp(26px, 4vw, 44px);
-      letter-spacing: -0.4px;
-      line-height: 1.08;
-    }
-    h2{
-      margin:0 0 10px;
-      font-size: clamp(18px, 2.2vw, 26px);
-      letter-spacing:-0.2px;
-    }
-    .lead{
-      margin:0;
-      max-width: 72ch;
-      color: var(--muted);
-      line-height: 1.85;
-      font-size: 16px;
-    }
-    .meta{
-      margin-top:14px;
-      color: var(--muted);
-      font-size: 13px;
-      text-transform:uppercase;
-      letter-spacing:.35px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-    }
-    .meta strong{color:var(--text)}
-    .btnrow{margin-top:18px; display:flex; gap:10px; flex-wrap:wrap}
-    .btn{
-      display:inline-flex;
-      padding:12px 14px;
-      border:1px solid var(--line);
-      border-radius: 14px;
-      text-decoration:none;
-      font-weight:900;
-      letter-spacing:.2px;
-      background: rgba(255,255,255,.04);
-      transition:.12s ease;
-    }
-    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.06)}
-    .btn.primary{
-      background: rgba(255,255,255,.10);
-      border-color: rgba(255,255,255,.28);
-    }
-
-    /* Hero logo */
-    .logo{
-      width:min(980px, 100%);
-      height:auto;
-      display:block;
-      margin: 0 0 14px;
-      filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
-    }
-
-    /* Simple lists (ohne Kacheln) */
-    ul{
-      margin: 10px 0 0;
-      padding-left: 18px;
-      color: var(--muted);
-      line-height: 1.9;
-      font-size: 16px;
-    }
-    li{margin:6px 0}
-
-    /* Right dot nav */
-    .dotnav{
-      position: fixed;
-      right: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 50;
-      padding: 10px 8px;
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 999px;
-      background: rgba(7,7,8,.35);
-      backdrop-filter: blur(10px);
-    }
-    .dotnav a{
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: var(--dot);
-      display:block;
-      position: relative;
-      outline: none;
-      border: 1px solid rgba(255,255,255,.12);
-      transition: .12s ease;
-    }
-    .dotnav a:hover{background: rgba(242,242,242,.55)}
-    .dotnav a.active{
-      background: var(--dotActive);
-      transform: scale(1.15);
-      border-color: rgba(255,255,255,.35);
-    }
-
-    /* Tooltip label on hover (optional, nice) */
-    .dotnav a[data-label]::before{
-      content: attr(data-label);
-      position: absolute;
-      right: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      white-space: nowrap;
-      font-size: 12px;
-      letter-spacing:.35px;
-      text-transform: uppercase;
-      color: var(--muted);
-      background: rgba(7,7,8,.55);
-      border: 1px solid rgba(255,255,255,.10);
-      padding: 8px 10px;
-      border-radius: 999px;
-      opacity: 0;
-      pointer-events:none;
-      transition: .12s ease;
-    }
-    .dotnav a:hover::before{opacity:1}
-
-    /* Footer-ish small text */
-    .fine{
-      margin-top: 18px;
-      color: rgba(242,242,242,.55);
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    /* Mobile: dotnav kleiner, weiter innen */
-    @media (max-width: 680px){
-      .dotnav{right:10px; gap:8px; padding:8px 6px}
-      .dotnav a{width:9px; height:9px}
-      .dotnav a[data-label]::before{display:none} /* Tooltips aus auf mobile */
-      .btn{width:100%; justify-content:center}
-      .section{padding: 64px 0}
-    }
-/* Line-up Hover Gallery */
-.lineupWrap{
-  display:grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 28px;
-  align-items:center;
+<style>
+:root{
+  --bg:#070708;
+  --text:#f2f2f2;
+  --muted:rgba(242,242,242,.7);
+  --line:rgba(242,242,242,.18);
+  --dot:rgba(242,242,242,.35);
 }
 
-.djList{
-  margin:0;
-  padding:0;
-  list-style:none;
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;scroll-behavior:smooth}
+body{
+  background:linear-gradient(180deg,#070708,#0b0b10);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+}
+
+/* ================= PASSWORD GATE ================= */
+#gate{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#gateBox{
+  width:100%;
+  max-width:420px;
+  padding:22px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(255,255,255,.03);
+}
+#gate input,#gate button{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.25);
+  color:var(--text);
+  font:inherit;
+}
+#gate button{
+  margin-top:10px;
+  background:rgba(255,255,255,.12);
+  font-weight:800;
+  cursor:pointer;
+}
+#gateErr{display:none;color:#ff7a7a;font-size:13px;margin-top:8px}
+
+/* ================= CONTENT ================= */
+#content{display:none}
+
+/* Scroll container */
+.snap{
+  height:100vh;
+  overflow-y:auto;
+  scroll-snap-type:y mandatory;
+}
+
+/* Sections */
+.section{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  scroll-snap-align:start;
+  border-top:1px solid var(--line);
+}
+.section:first-child{border-top:none}
+.wrap{
+  width:100%;
+  max-width:980px;
+  margin:0 auto;
+  padding:0 18px;
+}
+
+/* ================= LOGO ================= */
+.logo{
+  max-width:90vw;
+  max-height:60vh;
+  width:auto;
+  height:auto;
+  opacity:0;
+  animation:logoFade .8s ease-out forwards;
+}
+@keyframes logoFade{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+
+/* ================= TEXT ================= */
+h2{margin:0 0 12px;font-size:26px}
+.lead{
+  max-width:70ch;
+  line-height:1.8;
+  color:var(--muted);
+  font-size:16px;
+}
+
+/* ================= DOT NAV ================= */
+.dotnav{
+  position:fixed;
+  right:16px;
+  top:50%;
+  transform:translateY(-50%);
   display:flex;
   flex-direction:column;
-  gap: 14px;
-}
-
-.djLink{
-  display:inline-flex;
-  align-items:baseline;
   gap:10px;
+  padding:10px 8px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(7,7,8,.4);
+  backdrop-filter:blur(10px);
+  z-index:50;
+}
+.dotnav a{
+  width:10px;height:10px;
+  border-radius:50%;
+  background:var(--dot);
+  border:1px solid var(--line);
+  transition:.15s;
+}
+.dotnav a.active{
+  background:var(--text);
+  transform:scale(1.15);
+}
+
+/* ================= LINEUP ================= */
+.lineupWrap{
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:28px;
+  align-items:center;
+}
+.djList{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.djList li{margin-bottom:14px}
+.djLink{
   text-decoration:none;
-  outline:none;
-  padding: 6px 0;
-  border-bottom: 1px solid transparent;
+  font-size:clamp(18px,2.2vw,26px);
+  font-weight:900;
+  text-transform:uppercase;
+  color:var(--text);
 }
-
-.djName{
-  font-weight: 950;
-  letter-spacing: .2px;
-  text-transform: uppercase;
-  font-size: clamp(18px, 2.2vw, 26px);
-  color: var(--text);
-}
-
-.djSub{
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing:.35px;
-  color: var(--muted);
-}
-
-.djLink:hover,
-.djLink:focus-visible{
-  border-bottom-color: var(--line);
-}
-
 .gallery{
   position:relative;
-  height: min(66vh, 520px);
-  min-height: 320px;
+  height:520px;
 }
-
 .pic{
   position:absolute;
-  width: 52%;
-  max-width: 360px;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: 16px;
-  border: 1px solid rgba(242,242,242,.18);
-  box-shadow: 0 18px 60px rgba(0,0,0,.65);
-  filter: grayscale(10%) contrast(1.05) brightness(.9);
-  opacity: .88;
-  transform: rotate(var(--rot)) translateZ(0);
-  transition: transform .18s ease, filter .18s ease, opacity .18s ease, z-index 0s;
-  z-index: 1;
-  background: rgba(255,255,255,.02);
+  width:52%;
+  max-width:360px;
+  aspect-ratio:4/5;
+  object-fit:cover;
+  border-radius:16px;
+  border:1px solid var(--line);
+  box-shadow:0 18px 60px rgba(0,0,0,.65);
+  opacity:.85;
+  filter:grayscale(20%);
+  transition:.2s;
+  z-index:1;
 }
-
-/* “Kreative” Platzierung (kannst du später fein-tunen) */
-.pic.p1{ left: 4%;  top: 12%;  --rot: -6deg; }
-.pic.p2{ left: 32%; top: 2%;   --rot: 4deg;  }
-.pic.p3{ left: 18%; top: 30%;  --rot: -2deg; }
-.pic.p4{ left: 46%; top: 26%;  --rot: 7deg;  }
-
+.pic.p1{left:5%;top:10%;transform:rotate(-6deg)}
+.pic.p2{left:32%;top:0%;transform:rotate(4deg)}
+.pic.p3{left:18%;top:32%;transform:rotate(-2deg)}
+.pic.p4{left:46%;top:26%;transform:rotate(7deg)}
 .pic.active{
-  z-index: 10;
-  opacity: 1;
-  filter: grayscale(0%) contrast(1.08) brightness(1.05);
-  transform: rotate(0deg) scale(1.04);
+  z-index:10;
+  opacity:1;
+  filter:none;
+  transform:scale(1.05);
 }
 
-/* Mobile: Bilder unter die Liste */
-@media (max-width: 820px){
-  .lineupWrap{ grid-template-columns: 1fr; }
-  .gallery{ height: 420px; }
-  .pic{ width: 58%; }
+/* ================= MOBILE ================= */
+@media(max-width:820px){
+  .lineupWrap{grid-template-columns:1fr}
+  .gallery{height:420px}
 }
-
-    /* Logo Fade-In */
-@keyframes logoFade {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.logo.fade-in {
-  animation: logoFade 0.8s ease-out forwards;
-}
-
-    
-  </style>
+</style>
 </head>
 
 <body>
-  <!-- Right dot navigation -->
-<nav class="dotnav" aria-label="Sektionen">
+
+<!-- PASSWORD -->
+<div id="gate">
+  <div id="gateBox">
+    <h2>Passwort</h2>
+    <input id="pw" type="password" placeholder="Passwort eingeben">
+    <button id="enter">Öffnen</button>
+    <div id="gateErr">Falsches Passwort</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div id="content">
+
+<nav class="dotnav">
   <a href="#home" class="active"></a>
-  <a href="#infos" data-label="Infos"></a>
-  <a href="#lineup" data-label="Line-up"></a>
-  <a href="#tickets" data-label="Tickets"></a>
-  <a href="#kontakt" data-label="Kontakt"></a>
+  <a href="#infos"></a>
+  <a href="#lineup"></a>
+  <a href="#tickets"></a>
+  <a href="#kontakt"></a>
 </nav>
 
+<div class="snap">
 
-  <!-- Scroll container with snap (feel free to remove class="snap" if you don’t want snap) -->
-  <div class="snap" id="scrollRoot">
-
-    <!-- HOME -->
-<section class="section" id="home" data-dot="0" style="padding:0;">
-  <div class="wrap"
-       style="
-         display:flex;
-         align-items:center;
-         justify-content:center;
-         height:100vh;
-       ">
-<img class="logo fade-in" src="logo2.png" alt="TYKE LIFE FESTIVAL" />
-
+<!-- HOME -->
+<section class="section" id="home" data-dot="0">
+  <div class="wrap" style="display:flex;justify-content:center">
+    <img src="logo2.png" class="logo" alt="Tyke Life">
   </div>
 </section>
 
+<!-- INFOS -->
+<section class="section" id="infos" data-dot="1">
+  <div class="wrap">
+    <h2>Infos</h2>
+    <p class="lead">
+      <strong>Start:</strong> 14:00 Uhr<br>
+      <strong>Ende:</strong> 22:00 Uhr<br>
+      <strong>Ort:</strong> TBA<br>
+      <strong>Musik:</strong> Techno
+    </p>
+  </div>
+</section>
 
-
-    <!-- INFOS -->
-    <section class="section" id="infos" data-dot="1">
-      <div class="wrap">
-        <h2>Infos</h2>
-        <p class="lead">
-          <strong style="color:var(--text)">Zeit:</strong> 14:00 – 22:00 Uhr<br/>
-          <strong style="color:var(--text)">Location:</strong> TBA<br/>
-          <strong style="color:var(--text)">Anreise:</strong> TBA (ÖV / Parken / Adresse)<br/>
-          <strong style="color:var(--text)">Alter:</strong> TBA
-        </p>
-
-
-      </div>
-    </section>
-    
-    <!-- LINE-UP -->
+<!-- LINEUP -->
 <section class="section" id="lineup" data-dot="2">
   <div class="wrap">
     <h2>Line-up</h2>
-
     <div class="lineupWrap">
       <ul class="djList">
-        <li>
-          <a class="djLink" href="#lineup" data-img="Floostix.jpg">
-            <span class="djName">DJ Floostix</span>
-          </a>
-        </li>
-        <li>
-          <a class="djLink" href="#lineup" data-img="arearge.jpg">
-            <span class="djName">are:age</span>
-          </a>
-        </li>
-        <li>
-          <a class="djLink" href="#lineup" data-img="Livio.jpg">
-            <span class="djName">Livio</span>
-          </a>
-        </li>
-        <li>
-          <a class="djLink" href="#lineup" data-img="DJ4.jpg">
-            <span class="djName">more TBA</span>
-          </a>
-        </li>
+        <li><a class="djLink" data-img="Floostix.jpg">DJ Floostix</a></li>
+        <li><a class="djLink" data-img="arearge.jpg">are:age</a></li>
+        <li><a class="djLink" data-img="Livio.jpg">Livio</a></li>
+        <li><a class="djLink" data-img="DJ4.jpg">more TBA</a></li>
       </ul>
 
-      <div class="gallery" aria-label="DJ Bilder">
-        <img class="pic p1 active" src="Floostix.jpg" alt="DJ Floostix" data-file="Floostix.jpg" />
-        <img class="pic p2" src="arearge.jpg" alt="are:age" data-file="arearge.jpg" />
-        <img class="pic p3" src="Livio.jpg" alt="Livio" data-file="Livio.jpg" />
-        <img class="pic p4" src="DJ4.jpg" alt="DJ" data-file="DJ4.jpg" />
+      <div class="gallery">
+        <img class="pic p1 active" src="Floostix.jpg" data-file="Floostix.jpg">
+        <img class="pic p2" src="arearge.jpg" data-file="arearge.jpg">
+        <img class="pic p3" src="Livio.jpg" data-file="Livio.jpg">
+        <img class="pic p4" src="DJ4.jpg" data-file="DJ4.jpg">
       </div>
     </div>
   </div>
 </section>
 
-    <!-- TICKETS -->
-    <section class="section" id="tickets" data-dot="3">
-      <div class="wrap">
-        <h2>Tickets</h2>
-        <p class="lead">
-          Sobald der Vorverkauf live ist, kommt hier der Link rein.
-        </p>
-
-        <div class="btnrow">
-          <a class="btn primary" href="https://example.com" target="_blank" rel="noopener">Jetzt Tickets holen</a>
-        </div>
-
-        <p class="fine">
-          (Link ersetzen: einfach `https://example.com` austauschen.)
-        </p>
-      </div>
-    </section>
-
-    <!-- KONTAKT -->
-    <section class="section" id="kontakt" data-dot="4">
-      <div class="wrap">
-        <h2>Kontakt</h2>
-        <p class="lead">
-          Mail only:<br/>
-          <a href="mailto:info@tyke-life.ch">info@tyke-life.ch</a>
-        </p>
-
-        <p class="fine">© <span id="y"></span> Tyke-Life</p>
-      </div>
-    </section>
-
+<!-- TICKETS -->
+<section class="section" id="tickets" data-dot="3">
+  <div class="wrap">
+    <h2>Tickets</h2>
+    <p class="lead">Vorverkauf folgt.</p>
   </div>
+</section>
 
-  <script>
-    // Year
-    document.getElementById("y").textContent = new Date().getFullYear();
+<!-- KONTAKT -->
+<section class="section" id="kontakt" data-dot="4">
+  <div class="wrap">
+    <h2>Kontakt</h2>
+    <p class="lead">
+      <a href="mailto:info@tyke-life.ch">info@tyke-life.ch</a>
+    </p>
+  </div>
+</section>
 
-    // Active dot based on section in view (IntersectionObserver)
-    const dots = Array.from(document.querySelectorAll(".dotnav a"));
-    const sections = Array.from(document.querySelectorAll(".section"));
+</div>
+</div>
 
-    const setActive = (idx) => {
-      dots.forEach((d,i) => d.classList.toggle("active", i === idx));
-    };
+<script>
+/* PASSWORD */
+const PASSWORD="Yves";
+const gate=document.getElementById("gate");
+const content=document.getElementById("content");
+const err=document.getElementById("gateErr");
 
-    const io = new IntersectionObserver((entries) => {
-      // pick the most visible section
-      const visible = entries
-        .filter(e => e.isIntersecting)
-        .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (!visible) return;
-      const idx = Number(visible.target.dataset.dot || 0);
-      setActive(idx);
-    }, { threshold: [0.55, 0.7, 0.85] });
+document.getElementById("enter").onclick=()=>{
+  if(document.getElementById("pw").value===PASSWORD){
+    gate.style.display="none";
+    content.style.display="block";
+  }else err.style.display="block";
+};
 
-    sections.forEach(s => io.observe(s));
+/* DOT ACTIVE */
+const dots=[...document.querySelectorAll(".dotnav a")];
+const sections=[...document.querySelectorAll(".section")];
+const io=new IntersectionObserver(e=>{
+  const v=e.filter(x=>x.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+  if(!v)return;
+  dots.forEach((d,i)=>d.classList.toggle("active",i==v.target.dataset.dot));
+},{threshold:.6});
+sections.forEach(s=>io.observe(s));
 
-    // Make dot clicks scroll inside the snap container (important!)
-    const root = document.getElementById("scrollRoot");
-    dots.forEach((dot) => {
-      dot.addEventListener("click", (e) => {
-        e.preventDefault();
-        const id = dot.getAttribute("href");
-        const target = document.querySelector(id);
-        if (!target) return;
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    });
+/* LINEUP HOVER */
+const links=[...document.querySelectorAll(".djLink")];
+const pics=[...document.querySelectorAll(".pic")];
+const activate=f=>pics.forEach(p=>p.classList.toggle("active",p.dataset.file===f));
+links.forEach(l=>{
+  const f=l.dataset.img;
+  l.addEventListener("mouseenter",()=>activate(f));
+  l.addEventListener("click",()=>activate(f));
+});
+</script>
 
-  // Hover -> corresponding image to front
-  const djLinks = Array.from(document.querySelectorAll(".djLink"));
-  const pics = Array.from(document.querySelectorAll(".gallery .pic"));
-
-  function activate(file){
-    pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
-  }
-
-  // Default: erstes Bild aktiv
-  activate("Floostix.jpg");
-
-  djLinks.forEach(link => {
-    const file = link.dataset.img;
-
-    link.addEventListener("mouseenter", () => activate(file));
-    link.addEventListener("focus", () => activate(file)); // keyboard/tab
-
-    // Mobile: tap
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      activate(file);
-    });
-  });
-
-    
-  </script>
 </body>
 </html>
