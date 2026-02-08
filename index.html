@@ -4,520 +4,531 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="Tyke-Life – kleines Festival. Große Vibes." />
-  <title>Tyke-Life Festival</title>
+  <title>Tyke-Life</title>
 
   <style>
     :root{
-      --bg:#0b0c10;
-      --bg2:#10121a;
-      --card:rgba(255,255,255,.06);
-      --stroke:rgba(255,255,255,.12);
-      --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.68);
-      --accent:#b7ff3c; /* ändern: z.B. #ff4fd8 oder #ff8a00 */
-      --accent2:#7c5cff;
-      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --bg:#070708;
+      --bg2:#0b0b0f;
+      --text:#f2f2f2;
+      --muted:rgba(242,242,242,.72);
+      --stroke:rgba(242,242,242,.14);
+      --card:rgba(255,255,255,.04);
+      --shadow: 0 16px 60px rgba(0,0,0,.55);
       --radius: 18px;
-      --max: 1080px;
+      --max: 1100px;
+
+      /* Accent wie bei vielen Festival-Sites: eher subtil */
+      --accent:#ffffff;
+      --accentSoft:rgba(255,255,255,.14);
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:
-        radial-gradient(1200px 700px at 20% 10%, rgba(124,92,255,.20), transparent 60%),
-        radial-gradient(1000px 600px at 80% 20%, rgba(183,255,60,.14), transparent 55%),
-        radial-gradient(900px 600px at 50% 90%, rgba(255,79,216,.10), transparent 55%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(1200px 700px at 50% -10%, rgba(255,255,255,.08), transparent 55%),
+                  linear-gradient(180deg, var(--bg), var(--bg2));
       color:var(--text);
     }
-
     a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
 
-    /* Header */
-    .topbar{
+    /* Topbar */
+    header{
       position:sticky; top:0; z-index:50;
+      background: rgba(7,7,8,.75);
       backdrop-filter: blur(10px);
-      background: rgba(11,12,16,.62);
-      border-bottom: 1px solid var(--stroke);
+      border-bottom:1px solid var(--stroke);
     }
-    .topbar-inner{
+    .top{
       display:flex; align-items:center; justify-content:space-between;
-      gap:12px; padding:12px 0;
+      gap:14px;
+      padding:14px 0;
     }
     .brand{
-      display:flex; align-items:center; gap:10px; text-decoration:none;
-      font-weight:800; letter-spacing:.2px;
+      display:flex; align-items:baseline; gap:10px;
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:.2px;
     }
-    .dot{
-      width:12px; height:12px; border-radius:999px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 0 0 6px rgba(183,255,60,.08);
+    .brand small{
+      font-weight:700;
+      color:var(--muted);
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      font-size:12px;
+      border:1px solid var(--stroke);
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
     }
-    nav{display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end}
+    nav{display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end}
     nav a{
       text-decoration:none;
       color:var(--muted);
-      padding:8px 10px;
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.3px;
+      text-transform:uppercase;
+      padding:10px 10px;
       border-radius:999px;
-      border: 1px solid transparent;
-      transition: .15s ease;
-      font-weight:600;
-      font-size:14px;
+      border:1px solid transparent;
+      transition:.14s ease;
     }
     nav a:hover{
       color:var(--text);
-      border-color: var(--stroke);
-      background: rgba(255,255,255,.04);
+      border-color:var(--stroke);
+      background: rgba(255,255,255,.03);
     }
 
     /* Hero */
     .hero{
-      padding:56px 0 22px;
-    }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:18px;
-      align-items:stretch;
-    }
-    .panel{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .hero-main{
-      padding:26px;
-      position:relative;
-      min-height: 360px;
-    }
-    .kicker{
-      display:inline-flex; align-items:center; gap:10px;
-      color:var(--muted);
-      font-weight:700;
-      letter-spacing:.3px;
-      font-size:14px;
-    }
-    .pill{
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-      font-size:12px;
-      color:var(--muted);
+      padding:46px 0 18px;
     }
     h1{
-      margin:14px 0 10px;
-      font-size: clamp(38px, 4.4vw, 64px);
-      line-height: 1.02;
-      letter-spacing: -0.6px;
+      margin:0;
+      font-size: clamp(34px, 5vw, 68px);
+      line-height:1.02;
+      letter-spacing:-.8px;
     }
-    .gradient{
-      background: linear-gradient(135deg, var(--text), rgba(255,255,255,.55));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-    }
-    .sub{
-      max-width: 62ch;
+    .lead{
+      margin:14px 0 0;
+      max-width: 70ch;
       color: var(--muted);
+      line-height:1.7;
       font-size: 16px;
-      line-height:1.6;
-      margin: 0 0 18px;
     }
-    .cta-row{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:10px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      text-decoration:none;
-      font-weight:800;
-      transition: .15s ease;
-    }
-    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.06)}
-    .btn-primary{
-      border-color: rgba(183,255,60,.35);
-      background: linear-gradient(135deg, rgba(183,255,60,.18), rgba(124,92,255,.12));
-    }
-    .btn-primary span{color: var(--text)}
-    .mini{
-      font-size: 13px;
-      color: var(--muted);
-      margin-left: 2px;
+    .rule{
+      margin:26px 0 0;
+      border:0;
+      border-top:1px solid var(--stroke);
     }
 
-    .hero-side{
-      display:grid; gap:12px;
-      grid-template-rows: 1fr 1fr;
-    }
-    .card{
-      padding:16px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .card h3{margin:0 0 8px; font-size:16px}
-    .meta{
-      display:grid; gap:10px;
-      color: var(--muted);
-      font-size:14px;
-    }
-    .meta strong{color: var(--text); font-weight:800}
-    .divider{
-      height:1px; background: var(--stroke); margin:14px 0;
-    }
-    .tagrow{display:flex; flex-wrap:wrap; gap:8px}
-    .tag{
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-    }
-
-    /* Sections */
-    section{padding: 42px 0}
+    /* Big section headings */
+    section{padding:42px 0}
     .section-title{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
-      margin-bottom: 14px;
+      display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+      margin-bottom:14px;
     }
     .section-title h2{
       margin:0;
-      font-size: 22px;
-      letter-spacing: -.2px;
+      font-size: 26px;
+      letter-spacing:-.2px;
     }
-    .section-title p{margin:0; color:var(--muted); font-size:14px}
+    .section-title p{
+      margin:0;
+      color:var(--muted);
+      font-size: 13px;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+    }
+
+    /* Layout primitives */
     .grid{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
       gap:12px;
     }
+    .col-12{grid-column: span 12}
+    .col-8{grid-column: span 8}
     .col-6{grid-column: span 6}
     .col-4{grid-column: span 4}
-    .col-8{grid-column: span 8}
-    .col-12{grid-column: span 12}
 
-    .box{
+    .card{
       border:1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
+      background: var(--card);
       border-radius: var(--radius);
-      padding:16px;
       box-shadow: var(--shadow);
+      overflow:hidden;
     }
-    .box p{margin:0; color:var(--muted); line-height:1.65}
-    .list{margin:0; padding-left: 18px; color: var(--muted); line-height:1.75}
-    .list li{margin:6px 0}
-    .hl{
-      color: var(--text);
-      font-weight:800;
+    .pad{padding:16px}
+    .muted{color:var(--muted)}
+    .btnrow{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:14px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:.2px;
+      transition:.14s ease;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.05)}
+    .btn.primary{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.28);
+    }
+
+    /* Video blocks */
+    .video{
+      aspect-ratio: 16/9;
+      width:100%;
+      background:
+        radial-gradient(700px 350px at 50% 30%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      display:flex; align-items:center; justify-content:center;
+    }
+    .video .play{
+      width:64px; height:64px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      display:grid; place-items:center;
+      background: rgba(0,0,0,.25);
+    }
+    .video .play:before{
+      content:"";
+      display:block;
+      width:0; height:0;
+      border-left:16px solid var(--text);
+      border-top:10px solid transparent;
+      border-bottom:10px solid transparent;
+      margin-left:4px;
+      opacity:.9;
     }
 
     /* Line-up cards */
     .artist{
+      padding:16px;
+      min-height: 120px;
       display:flex; flex-direction:column; gap:10px;
-      min-height: 140px;
-      position:relative;
-      overflow:hidden;
     }
-    .artist .name{font-weight:900; font-size:16px}
+    .artist .name{font-weight:900}
     .artist .slot{color:var(--muted); font-size:13px}
-    .artist::after{
-      content:"";
-      position:absolute; inset:-40px -40px auto auto;
-      width:120px; height:120px;
-      background: radial-gradient(circle at 30% 30%, rgba(183,255,60,.25), transparent 60%);
-      transform: rotate(18deg);
-      pointer-events:none;
+    .tag{
+      display:inline-flex;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      color:var(--muted);
+      width: fit-content;
     }
 
-    /* Footer */
+    /* Accordion (A–Z / FAQ) */
+    details{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+    details + details{margin-top:10px}
+    summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      font-weight:900;
+    }
+    summary::-webkit-details-marker{display:none}
+    summary .q{color:var(--text)}
+    summary .plus{
+      width:28px; height:28px;
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      display:grid; place-items:center;
+      color:var(--muted);
+      font-weight:900;
+    }
+    details[open] summary .plus{color:var(--text)}
+    details .a{
+      margin-top:10px;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    /* Contact form */
+    form{display:grid; gap:10px}
+    input, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 12px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      font: inherit;
+      outline:none;
+    }
+    textarea{min-height:120px; resize:vertical}
+    input::placeholder, textarea::placeholder{color: rgba(242,242,242,.45)}
+    .submit{
+      cursor:pointer;
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+
     footer{
-      padding: 28px 0 44px;
-      color: var(--muted);
-      border-top: 1px solid var(--stroke);
-      background: rgba(0,0,0,.12);
+      border-top:1px solid var(--stroke);
+      padding:26px 0 46px;
+      color:var(--muted);
+      background: rgba(0,0,0,.18);
     }
     .foot{
-      display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      display:flex; justify-content:space-between; align-items:center;
+      gap:12px; flex-wrap:wrap;
       font-size: 13px;
     }
+    .foot a{color:var(--muted); text-decoration:none}
+    .foot a:hover{color:var(--text)}
 
     /* Mobile */
-    @media (max-width: 900px){
-      .hero-grid{grid-template-columns:1fr}
-      nav{gap:6px}
-      nav a{padding:8px 9px}
-    }
-    @media (max-width: 520px){
-      .hero-main{padding:18px}
-      .card{padding:14px}
-      .col-6,.col-4,.col-8{grid-column: span 12}
-      .cta-row{align-items:stretch}
-      .btn{width:100%}
+    @media (max-width: 920px){
+      .col-8,.col-6,.col-4{grid-column: span 12}
+      nav{display:none} /* optional: minimalistisch wie manche Festival-Sites */
     }
   </style>
 </head>
 
 <body>
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="#home" aria-label="Tyke-Life">
-        <span class="dot"></span>
+  <header>
+    <div class="wrap top">
+      <a class="brand" href="#top">
         <span>Tyke-Life</span>
-        <span class="pill">Festival</span>
+        <small>Festival</small>
       </a>
 
       <nav aria-label="Navigation">
-        <a href="#festival">Festival</a>
         <a href="#lineup">Line-up</a>
-        <a href="#infos">Infos</a>
-        <a href="#tickets">Tickets</a>
+        <a href="#travel">Anreise</a>
+        <a href="#az">A–Z</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
     </div>
   </header>
 
-  <main id="home" class="hero">
-    <div class="wrap hero-grid">
-      <div class="panel hero-main">
-        <div class="kicker">
-          <span class="pill">klein & fein</span>
-          <span class="pill">musik • kultur • vibes</span>
-        </div>
-
-        <h1><span class="gradient">Tyke-Life</span><br/>Kleines Festival. Große Vibes.</h1>
-        <p class="sub">
-          Ein unabhängiges Festival in der Schweiz – mit Musik, Menschen und Momenten.
-          Hier kommt alles rein: Datum, Ort, Line-up und Tickets.
-        </p>
-
-        <div class="cta-row">
-          <a class="btn btn-primary" href="#tickets"><span>Tickets</span></a>
-          <a class="btn" href="#infos">Infos</a>
-          <span class="mini">⬇️ Scroll für Line-up & Details</span>
-        </div>
+  <main id="top" class="hero">
+    <div class="wrap">
+      <h1>Tyke-Life<br/>Kleines Festival. Große Vibes.</h1>
+      <p class="lead">
+        Minimal, direkt, alles auf einer Seite: Trailer, Line-up, Anreise, FAQ und Kontakt.
+        (Texte/Infos kannst du gleich ersetzen.)
+      </p>
+      <div class="btnrow">
+        <a class="btn primary" href="#tickets">Tickets</a>
+        <a class="btn" href="#lineup">Line-up</a>
+        <span class="muted" style="font-size:13px;text-transform:uppercase;letter-spacing:.4px">
+          Datum: TBA · Ort: TBA
+        </span>
       </div>
-
-      <div class="hero-side">
-        <div class="card">
-          <h3>Auf einen Blick</h3>
-          <div class="meta">
-            <div>📅 <strong>Datum:</strong> <span class="hl">TBA</span></div>
-            <div>📍 <strong>Ort:</strong> <span class="hl">TBA</span></div>
-            <div>🕒 <strong>Einlass:</strong> <span class="hl">TBA</span></div>
-          </div>
-          <div class="divider"></div>
-          <div class="tagrow">
-            <span class="tag">Outdoor / Indoor</span>
-            <span class="tag">Bar & Food</span>
-            <span class="tag">Cashless?</span>
-            <span class="tag">18+</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>Updates</h3>
-          <p style="margin:0;color:var(--muted);line-height:1.65">
-            Folge uns für Updates & Announcements:
-          </p>
-          <div class="divider"></div>
-          <div class="cta-row">
-            <a class="btn" href="#" target="_blank" rel="noopener">Instagram</a>
-            <a class="btn" href="#kontakt">Kontakt</a>
-          </div>
-          <p style="margin:12px 0 0;color:var(--muted);font-size:13px">
-            (Links später ersetzen)
-          </p>
-        </div>
-      </div>
+      <hr class="rule" />
     </div>
   </main>
 
-  <section id="festival">
+  <!-- Trailer -->
+  <section id="trailer">
     <div class="wrap">
       <div class="section-title">
-        <h2>Festival</h2>
-        <p>Worum geht’s bei Tyke-Life?</p>
+        <h2>Trailer</h2>
+        <p>Aftermovie / Teaser</p>
       </div>
 
       <div class="grid">
-        <div class="box col-8">
-          <p>
-            <span class="hl">Tyke-Life</span> ist ein kleines Festival mit Fokus auf gute Musik,
-            entspannte Atmosphäre und eine Community, die Bock auf echte Vibes hat.
-            Schreib hier kurz rein, was euer „Warum“ ist – und was euch besonders macht.
-          </p>
-        </div>
-        <div class="box col-4">
-          <p>
-            <span class="hl">Slogan-Idee:</span><br/>
-            „Klein genug, um echt zu sein. Groß genug, um unvergesslich zu werden.“
-          </p>
+        <div class="card col-8">
+          <div class="video" aria-label="Video Platzhalter">
+            <div class="play" aria-hidden="true"></div>
+          </div>
+          <div class="pad muted">
+            <strong style="color:var(--text)">Aftermovie (TBA)</strong><br/>
+            Hier kannst du später ein YouTube/Vimeo Embed einfügen.
+          </div>
         </div>
 
-        <div class="box col-12">
-          <ul class="list">
-            <li><span class="hl">Sound:</span> (z. B. Hip-Hop / Techno / Indie / Mixed)</li>
-            <li><span class="hl">Vibe:</span> (z. B. urban, kreativ, DIY, familiär)</li>
-            <li><span class="hl">Was es gibt:</span> Bühne(n), Bar, Food, Chill-Area, Specials</li>
-          </ul>
+        <div class="card col-4">
+          <div class="video" style="aspect-ratio: 1/1;">
+            <div class="play" aria-hidden="true"></div>
+          </div>
+          <div class="pad muted">
+            <strong style="color:var(--text)">Best Of</strong><br/>
+            Zweiter Clip / Trailer.
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Line-up -->
   <section id="lineup">
     <div class="wrap">
       <div class="section-title">
         <h2>Line-up</h2>
-        <p>Platzhalter – später einfach Namen ersetzen</p>
+        <p>Artists & Running Order</p>
       </div>
 
       <div class="grid">
-        <div class="box artist col-4">
+        <div class="card col-4"><div class="artist">
+          <div class="tag">Main</div>
           <div class="name">Artist / DJ 01</div>
-          <div class="slot">Main Stage • 21:30</div>
-          <p>Kurzer Teaser (Genre / Herkunft / „Known for…“).</p>
-        </div>
-        <div class="box artist col-4">
-          <div class="name">Artist / DJ 02</div>
-          <div class="slot">Main Stage • 23:00</div>
-          <p>Kurzer Teaser (Genre / Herkunft / „Known for…“).</p>
-        </div>
-        <div class="box artist col-4">
-          <div class="name">Artist / DJ 03</div>
-          <div class="slot">Second Stage • 00:30</div>
-          <p>Kurzer Teaser (Genre / Herkunft / „Known for…“).</p>
-        </div>
+          <div class="slot">22:30 · Stage A</div>
+          <div class="muted">Kurzbeschreibung / Genre.</div>
+        </div></div>
 
-        <div class="box col-12">
-          <p style="margin:0;color:var(--muted);line-height:1.65">
-            Tipp: Wenn du später viele Artists hast, können wir daraus eine schicke Liste/Timeline machen.
-          </p>
+        <div class="card col-4"><div class="artist">
+          <div class="tag">Club</div>
+          <div class="name">Artist / DJ 02</div>
+          <div class="slot">00:30 · Stage B</div>
+          <div class="muted">Kurzbeschreibung / Genre.</div>
+        </div></div>
+
+        <div class="card col-4"><div class="artist">
+          <div class="tag">Live</div>
+          <div class="name">Act 03</div>
+          <div class="slot">19:30 · Stage A</div>
+          <div class="muted">Kurzbeschreibung / Genre.</div>
+        </div></div>
+
+        <div class="card col-12">
+          <div class="pad muted">
+            Tipp: Wenn du mir die Acts gibst (Namen + Zeit + Bühne), formatiere ich dir das als
+            sauberes Grid oder als Running-Order-Liste.
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="infos">
+  <!-- Infos / Anreise -->
+  <section id="travel">
     <div class="wrap">
       <div class="section-title">
-        <h2>Infos</h2>
+        <h2>An- und Rückreise</h2>
+        <p>So kommst du hin</p>
+      </div>
+
+      <div class="grid">
+        <div class="card col-6"><div class="pad">
+          <strong>ÖV</strong>
+          <p class="muted">Empfohlen. Haltestelle / Shuttle / Extrazüge: TBA.</p>
+        </div></div>
+
+        <div class="card col-6"><div class="pad">
+          <strong>Auto / Parken</strong>
+          <p class="muted">Parkplätze: TBA (oder “keine Parkplätze”).</p>
+        </div></div>
+
+        <div class="card col-12"><div class="pad">
+          <strong>Adresse</strong>
+          <p class="muted">Festivalgelände / Location · Straße · PLZ Ort (Google-Maps Link später einsetzen).</p>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A–Z / FAQ -->
+  <section id="az">
+    <div class="wrap">
+      <div class="section-title">
+        <h2>A–Z</h2>
         <p>Alles, was man wissen muss</p>
       </div>
 
       <div class="grid">
-        <div class="box col-6">
-          <p><span class="hl">Datum & Ort</span><br/>Datum: TBA<br/>Ort: TBA<br/>Doors: TBA</p>
-        </div>
-        <div class="box col-6">
-          <p><span class="hl">Anreise</span><br/>ÖV: TBA<br/>Auto/Parkplätze: TBA<br/>Adresse: TBA</p>
-        </div>
-        <div class="box col-12">
-          <p><span class="hl">FAQ</span></p>
-          <ul class="list">
-            <li>Alterslimit: TBA</li>
-            <li>Cash / Cashless: TBA</li>
-            <li>Mitbringen: (z. B. Ausweis)</li>
-            <li>Schlechtwetter: TBA</li>
-          </ul>
+        <div class="col-12">
+          <details>
+            <summary><span class="q">Alter</span><span class="plus">+</span></summary>
+            <div class="a">Mindestalter: TBA (z. B. 18+).</div>
+          </details>
+
+          <details>
+            <summary><span class="q">Bezahlen</span><span class="plus">+</span></summary>
+            <div class="a">Cash / Cashless / Twint: TBA.</div>
+          </details>
+
+          <details>
+            <summary><span class="q">Wetter</span><span class="plus">+</span></summary>
+            <div class="a">Findet bei jeder Witterung statt / Schlechtwetter-Plan: TBA.</div>
+          </details>
+
+          <details>
+            <summary><span class="q">Camping</span><span class="plus">+</span></summary>
+            <div class="a">Camping möglich? TBA.</div>
+          </details>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Tickets -->
   <section id="tickets">
     <div class="wrap">
       <div class="section-title">
         <h2>Tickets</h2>
-        <p>Button-Link später eintragen</p>
+        <p>Vorverkauf</p>
       </div>
 
       <div class="grid">
-        <div class="box col-8">
-          <p>
-            Tickets bekommst du über unseren Ticket-Partner.
-            Sobald der Link steht, ersetzen wir den Button unten.
-          </p>
-          <div style="height:12px"></div>
-          <a class="btn btn-primary" href="https://example.com" target="_blank" rel="noopener">
-            <span>Jetzt Tickets holen</span>
-          </a>
-          <span class="mini">← Link ersetzen</span>
-        </div>
+        <div class="card col-8"><div class="pad">
+          <strong>Tickets</strong>
+          <p class="muted">Hier kommt dein offizieller Ticket-Link rein.</p>
+          <div class="btnrow">
+            <a class="btn primary" href="https://example.com" target="_blank" rel="noopener">Jetzt Tickets holen</a>
+            <span class="muted" style="font-size:13px">Link ersetzen</span>
+          </div>
+        </div></div>
 
-        <div class="box col-4">
-          <p>
-            <span class="hl">Preise</span><br/>
-            Early Bird: TBA<br/>
-            Regular: TBA<br/>
-            Abendkasse: TBA
-          </p>
-        </div>
+        <div class="card col-4"><div class="pad">
+          <strong>Preise</strong>
+          <p class="muted">Early Bird: TBA<br/>Regular: TBA<br/>Abendkasse: TBA</p>
+        </div></div>
       </div>
     </div>
   </section>
 
+  <!-- Kontakt -->
   <section id="kontakt">
     <div class="wrap">
       <div class="section-title">
         <h2>Kontakt</h2>
-        <p>Booking, Fragen, Partnerschaften</p>
+        <p>Schreib uns</p>
       </div>
 
       <div class="grid">
-        <div class="box col-6">
-          <p>
-            <span class="hl">E-Mail</span><br/>
-            <a href="mailto:hello@tyke-life.ch">hello@tyke-life.ch</a>
+        <div class="card col-6"><div class="pad">
+          <strong>Kontakt</strong>
+          <p class="muted">
+            E-Mail: <a href="mailto:info@tyke-life.ch">info@tyke-life.ch</a><br/>
+            Medien: <a href="mailto:medien@tyke-life.ch">medien@tyke-life.ch</a><br/>
+            Instagram: <a href="#" target="_blank" rel="noopener">@tyke-life</a>
           </p>
-          <div style="height:10px"></div>
-          <p>
-            <span class="hl">Instagram</span><br/>
-            <a href="#" target="_blank" rel="noopener">@tyke-life</a>
-          </p>
-        </div>
+        </div></div>
 
-        <div class="box col-6">
-          <p>
-            <span class="hl">Presse / Media Kit</span><br/>
-            Link (optional): TBA
-          </p>
-          <div style="height:10px"></div>
-          <p>
-            <span class="hl">Location</span><br/>
-            Google Maps Link: TBA
-          </p>
-        </div>
+        <div class="card col-6"><div class="pad">
+          <strong>Nachricht</strong>
+          <!-- Hinweis: GitHub Pages hat kein Backend. Für echtes Formular: Formspree/Netlify Forms etc. -->
+          <form onsubmit="return fakeSend(event)">
+            <input name="name" placeholder="Name" required />
+            <input name="email" type="email" placeholder="E-Mail" required />
+            <input name="website" placeholder="Website (optional)" />
+            <textarea name="msg" placeholder="Nachricht" required></textarea>
+            <input class="btn submit primary" type="submit" value="Senden" />
+            <div id="formNote" class="muted" style="font-size:13px; display:none;"></div>
+          </form>
+        </div></div>
       </div>
     </div>
   </section>
 
   <footer>
     <div class="wrap foot">
-      <div>© <span id="year"></span> Tyke-Life</div>
+      <div>© <span id="y"></span> Tyke-Life</div>
       <div>
-        <a href="#home" style="text-decoration:none">↑ nach oben</a>
+        <a href="#">AGB</a> · <a href="#">Impressum</a> · <a href="#top">Nach oben</a>
       </div>
     </div>
   </footer>
 
   <script>
-    // Jahr im Footer
-    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById("y").textContent = new Date().getFullYear();
 
-    // Optional: Offset bei Sticky Header (falls du exakter springen willst)
-    // (Wir lassen es simpel – smooth-scroll reicht meistens.)
+    function fakeSend(e){
+      e.preventDefault();
+      const el = document.getElementById("formNote");
+      el.style.display = "block";
+      el.textContent = "Formular ist ein Platzhalter (GitHub Pages hat kein Backend). Wenn du willst, verknüpfen wir es gratis mit Formspree.";
+      return false;
+    }
   </script>
 </body>
 </html>
