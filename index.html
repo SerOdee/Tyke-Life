@@ -1,534 +1,539 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Tyke Life Festival 14:00–22:00.">
-<title>Tyke Life</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Tyke-Life Festival – Infos, Line-up, Tickets, Impressionen, Kontakt." />
+  <title>Tyke-Life</title>
 
-<style>
-:root{
-  --bg:#070708;
-  --bg2:#0b0b10;
-  --text:#f2f2f2;
-  --muted:rgba(242,242,242,.70);
-  --line:rgba(242,242,242,.18);
-  --dot:rgba(242,242,242,.35);
-  --max:980px;
-  --pad:18px;
-}
+  <style>
+    :root{
+      /* Farbschema */
+      --bg: #fcf8cd;
+      --text: #4a494a;
+      --accent: #eec01f;     /* “fett” Wörter / Highlight */
+      --stroke: #6cc4c7;     /* Rahmen */
 
-*{box-sizing:border-box}
-html,body{height:100%;margin:0}
-html{scroll-behavior:smooth}
+      --dot: rgba(74,73,74,.35);
+      --dotActive: #4a494a;
 
-body{
-  color:var(--text);
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-  background:
-    radial-gradient(1200px 700px at 50% -10%, rgba(255,255,255,.08), transparent 55%),
-    linear-gradient(180deg, var(--bg), var(--bg2));
-  overflow:hidden; /* wichtig: nur der Content-Scroller scrollt */
-}
+      --max: 980px;
+      --pad: 18px;
+    }
 
-/* =========================
-   WATERMARK: bleibt fix
-   ========================= */
-.watermark{
-  position:fixed;
-  inset:0;
-  background-image:url("watermark.png");
-  background-repeat:no-repeat;
-  background-position:center center; /* immer gleicher Ort */
-  background-size:min(72vw, 980px);
-  opacity:0.035;          /* Feinheit: 0.02–0.06 */
-  pointer-events:none;
-  z-index:0;
-}
+    /* Optional: Abtos lokal (wenn du Abtos.woff2 ins Repo legst) */
+    @font-face{
+      font-family: "Abtos";
+      src: url("Abtos.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
 
-/* =========================
-   PASSWORD GATE
-   ========================= */
-#gate{
-  position:relative;
-  z-index:2;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-}
-#gateBox{
-  width:100%;
-  max-width:420px;
-  padding:22px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:rgba(255,255,255,.03);
-  backdrop-filter: blur(10px);
-}
-#gateBox h2{margin:0 0 10px;font-size:22px;letter-spacing:-.2px}
-#gateBox p{margin:0 0 14px;color:var(--muted);line-height:1.7}
-#gateBox input,#gateBox button{
-  width:100%;
-  padding:12px 12px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  background:rgba(0,0,0,.22);
-  color:var(--text);
-  font:inherit;
-  outline:none;
-}
-#gateBox button{
-  margin-top:10px;
-  background:rgba(255,255,255,.10);
-  border-color: rgba(255,255,255,.24);
-  font-weight:900;
-  cursor:pointer;
-}
-#gateErr{display:none;color:#ff7a7a;font-size:13px;margin-top:10px}
+    *{box-sizing:border-box}
+    html, body{height:100%}
+    html{scroll-behavior:smooth}
 
-/* =========================
-   CONTENT WRAPPER
-   ========================= */
-#content{
-  display:none;
-  position:relative;
-  z-index:1; /* über watermark */
-}
+    body{
+      margin:0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Abtos", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      overflow:hidden; /* wichtig: nur der Scroller scrollt */
+    }
 
-/* =========================
-   DOT NAV
-   ========================= */
-.dotnav{
-  position:fixed;
-  right:16px;
-  top:50%;
-  transform:translateY(-50%);
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  padding:10px 8px;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:999px;
-  background:rgba(7,7,8,.35);
-  backdrop-filter: blur(10px);
-  z-index:3; /* über allem */
-}
-.dotnav a{
-  width:10px;height:10px;
-  border-radius:50%;
-  background:var(--dot);
-  border:1px solid rgba(255,255,255,.12);
-  transition:.15s ease;
-}
-.dotnav a.active{
-  background:var(--text);
-  transform:scale(1.15);
-  border-color: rgba(255,255,255,.35);
-}
+    a{color:inherit}
+    .wrap{max-width: var(--max); margin:0 auto; padding:0 var(--pad); width:100%}
 
-/* =========================
-   SCROLL CONTAINER (content scrollt)
-   ========================= */
-.scroller{
-  height:100vh;
-  overflow-y:auto;
-  scroll-snap-type:y mandatory;
-}
+    /* Scroll container + full-screen sections */
+    .scroller{
+      height:100vh;
+      overflow-y:auto;
+      scroll-snap-type:y mandatory;
+    }
+    .section{
+      min-height:100vh;
+      scroll-snap-align:start;
+      display:flex;
+      align-items:center;
+      padding: 72px 0;
+      border-top: 1px solid rgba(108,196,199,.35);
+    }
+    .section:first-child{border-top:none}
+    @media (max-width: 560px){
+      .section{padding: 64px 0;}
+    }
 
-/* Sektionen: 1 Screen */
-.section{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  scroll-snap-align:start;
-  border-top:1px solid var(--line);
-  padding: 72px 0; /* Luft wie hiveair */
-}
-.section:first-child{border-top:none}
+    /* Titles */
+    h2{
+      margin:0 0 12px;
+      font-size: 26px;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+    }
+    .lead{
+      margin:0;
+      max-width: 72ch;
+      line-height: 1.85;
+      font-size: 16px;
+      color: rgba(74,73,74,.92);
+    }
+    .hl{ color: var(--accent); font-weight: 900; }
 
-.wrap{
-  width:100%;
-  max-width:var(--max);
-  margin:0 auto;
-  padding:0 var(--pad);
-}
+    /* Right dot nav */
+    .dotnav{
+      position:fixed;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px 8px;
+      border: 1px solid rgba(108,196,199,.65);
+      border-radius: 999px;
+      background: rgba(252,248,205,.65);
+      backdrop-filter: blur(8px);
+      z-index: 50;
+    }
+    .dotnav a{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--dot);
+      border: 1px solid rgba(108,196,199,.55);
+      transition: .12s ease;
+      position:relative;
+      outline:none;
+    }
+    .dotnav a.active{
+      background: var(--dotActive);
+      transform: scale(1.15);
+      border-color: rgba(108,196,199,.9);
+    }
+    .dotnav a[data-label]::before{
+      content: attr(data-label);
+      position:absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      font-size: 12px;
+      letter-spacing:.4px;
+      text-transform: uppercase;
+      color: rgba(74,73,74,.9);
+      background: rgba(252,248,205,.85);
+      border: 1px solid rgba(108,196,199,.7);
+      padding: 8px 10px;
+      border-radius: 999px;
+      opacity: 0;
+      pointer-events:none;
+      transition:.12s ease;
+    }
+    .dotnav a:hover::before{opacity:1}
+    @media (max-width: 680px){
+      .dotnav{right:10px}
+      .dotnav a[data-label]::before{display:none}
+    }
 
-/* Typo minimal */
-h2{
-  margin:0 0 12px;
-  font-size:26px;
-  letter-spacing:-.2px;
-}
-.lead{
-  margin:0;
-  max-width:72ch;
-  line-height:1.85;
-  color:var(--muted);
-  font-size:16px;
-}
+    /* HOME: only logo centered */
+    .homeCenter{
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:0;
+    }
+    .logo{
+      width:auto;
+      height:auto;
+      max-width: 90vw;
+      max-height: 60vh;
+      opacity: 0;
+      animation: logoFade .8s ease-out forwards;
+    }
+    @keyframes logoFade{
+      from{opacity:0; transform: translateY(10px)}
+      to{opacity:1; transform:none}
+    }
 
-/* Home Logo */
-.homeCenter{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:100%;
-  height:100vh;
-  padding:0;
-}
-.logo{
-  max-width:90vw;
-  max-height:60vh;
-  width:auto;
-  height:auto;
-  opacity:0;
-  filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
-  animation:logoFade .8s ease-out forwards;
-}
-@keyframes logoFade{
-  from{opacity:0; transform:translateY(12px)}
-  to{opacity:1; transform:translateY(0)}
-}
+    /* Minimal “frame” class only where needed */
+    .frame{
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 14px;
+      background: rgba(252,248,205,.55);
+    }
 
-/* Lineup hover gallery (keine Kacheln) */
-.lineupWrap{
-  display:grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 28px;
-  align-items:center;
-}
+    /* INFOS layout: text + map */
+    .infosGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items:center;
+      margin-top: 8px;
+    }
+    .map{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius: 14px;
+      border: 1px solid var(--stroke); /* Rahmen nur hier */
+    }
+    @media (max-width: 860px){
+      .infosGrid{grid-template-columns:1fr}
+    }
 
-.djList{
-  list-style:none;
-  padding:0;
-  margin:0;
-  display:flex;
-  flex-direction:column;
-  gap: 14px;
-}
+    /* LINEUP with hover + auto slideshow */
+    .lineupGrid{
+      display:grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 24px;
+      align-items:center;
+      margin-top: 10px;
+    }
+    .djList{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+    .djLink{
+      display:inline-block;
+      text-decoration:none;
+      padding: 6px 0;
+      border-bottom: 1px solid transparent;
+      outline:none;
+      cursor:pointer;
+    }
+    .djLink:hover,
+    .djLink:focus-visible{
+      border-bottom-color: rgba(108,196,199,.9);
+    }
+    .djName{
+      font-weight: 950;
+      font-size: clamp(18px, 2.2vw, 26px);
+      letter-spacing: .6px;
+      text-transform: uppercase;
+    }
 
-.djLink{
-  display:inline-block;
-  text-decoration:none;
-  padding: 6px 0;
-  border-bottom: 1px solid transparent;
-  cursor:pointer;
-  outline:none;
-}
-.djLink:hover,
-.djLink:focus-visible{
-  border-bottom-color: var(--line);
-}
-.djName{
-  font-weight:950;
-  text-transform:uppercase;
-  letter-spacing:.2px;
-  font-size:clamp(18px, 2.2vw, 26px);
-  color:var(--text);
-}
+    .gallery{
+      position:relative;
+      height: min(66vh, 520px);
+      min-height: 320px;
+    }
 
-.gallery{
-  position:relative;
-  height: min(66vh, 520px);
-  min-height: 320px;
-}
-.pic{
-  position:absolute;
-  width: 52%;
-  max-width: 360px;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: 16px;
-  border: 1px solid rgba(242,242,242,.18);
-  box-shadow: 0 18px 60px rgba(0,0,0,.65);
-  filter: grayscale(10%) contrast(1.05) brightness(.9);
-  opacity: .88;
-  transition: transform .18s ease, filter .18s ease, opacity .18s ease;
-  z-index: 1;
-}
+    .pic{
+      position:absolute;
+      width: 54%;
+      max-width: 380px;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);   /* dünner Rahmen immer */
+      box-shadow: 0 18px 50px rgba(74,73,74,.18);
+      opacity: 0;
+      transform: translateY(6px) scale(0.98);
+      transition: opacity .45s ease, transform .45s ease;
+      z-index: 1;
+      background: rgba(252,248,205,.5);
+    }
 
-/* kreative Platzierung */
-.pic.p1{ left: 4%;  top: 12%; transform: rotate(-6deg); }
-.pic.p2{ left: 32%; top: 2%;  transform: rotate(4deg);  }
-.pic.p3{ left: 18%; top: 30%; transform: rotate(-2deg); }
-.pic.p4{ left: 46%; top: 26%; transform: rotate(7deg);  }
+    /* “kreative” Platzierung – kannst du später feinjustieren */
+    .pic.p1{ left: 3%;  top: 12%; transform: rotate(-6deg) translateY(6px) scale(.98); }
+    .pic.p2{ left: 32%; top: 2%;  transform: rotate(4deg)  translateY(6px) scale(.98); }
+    .pic.p3{ left: 18%; top: 30%; transform: rotate(-2deg) translateY(6px) scale(.98); }
+    .pic.p4{ left: 46%; top: 26%; transform: rotate(7deg)  translateY(6px) scale(.98); }
 
-.pic.active{
-  z-index:10;
-  opacity:1;
-  filter: grayscale(0%) contrast(1.08) brightness(1.05);
-  transform: rotate(0deg) scale(1.04);
-}
+    .pic.active{
+      opacity: 1;
+      z-index: 10;
+      transform: rotate(0deg) translateY(0) scale(1.02);
+    }
 
-/* Buttons minimal */
-.btnrow{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap}
-.btn{
-  display:inline-flex;
-  padding:12px 14px;
-  border:1px solid var(--line);
-  border-radius: 14px;
-  text-decoration:none;
-  font-weight:900;
-  letter-spacing:.2px;
-  background: rgba(255,255,255,.04);
-  transition:.12s ease;
-}
-.btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.06)}
-.btn.primary{
-  background: rgba(255,255,255,.10);
-  border-color: rgba(255,255,255,.28);
-}
+    @media (max-width: 820px){
+      .lineupGrid{grid-template-columns:1fr}
+      .gallery{height:420px}
+      .pic{width:58%}
+    }
 
-.fine{
-  margin-top:16px;
-  color: rgba(242,242,242,.55);
-  font-size: 13px;
-  line-height: 1.7;
-}
+    /* TICKETS button (no extra frames unless you add .frame) */
+    .btnrow{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap}
+    .btn{
+      display:inline-flex;
+      padding:12px 14px;
+      border: 1px solid var(--stroke);
+      border-radius: 14px;
+      text-decoration:none;
+      font-weight: 950;
+      letter-spacing:.6px;
+      text-transform: uppercase;
+      background: rgba(252,248,205,.55);
+      transition:.12s ease;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn.primary{
+      background: rgba(238,192,31,.18);
+      border-color: var(--stroke);
+    }
 
-@media (max-width: 820px){
-  .lineupWrap{grid-template-columns:1fr}
-  .gallery{height:420px}
-}
-@media (max-width: 560px){
-  .section{padding:64px 0}
-  .btn{width:100%; justify-content:center}
-  .dotnav{right:10px}
-}
-</style>
+    /* IMPRESSIONEN placeholders */
+    .imprGrid{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 10px;
+    }
+    .ph{
+      grid-column: span 4;
+      aspect-ratio: 4 / 3;
+      border-radius: 14px;
+      border: 1px dashed rgba(108,196,199,.9);
+      background: rgba(252,248,205,.45);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: rgba(74,73,74,.65);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing:.6px;
+      font-size: 12px;
+    }
+    @media (max-width: 860px){
+      .ph{grid-column: span 6;}
+    }
+    @media (max-width: 560px){
+      .ph{grid-column: span 12;}
+    }
+
+    /* Footer-ish small */
+    .fine{
+      margin-top: 14px;
+      color: rgba(74,73,74,.70);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+  </style>
 </head>
 
 <body>
-
-<!-- FIXED WATERMARK behind everything -->
-<div class="watermark" aria-hidden="true"></div>
-
-<!-- PASSWORD GATE -->
-<div id="gate">
-  <div id="gateBox">
-    <h2>Passwort</h2>
-    <p>Diese Seite ist derzeit privat.</p>
-    <input id="pw" type="password" placeholder="Passwort eingeben" autocomplete="current-password">
-    <button id="enter">Öffnen</button>
-    <div id="gateErr">Falsches Passwort.</div>
-  </div>
-</div>
-
-<!-- CONTENT -->
-<div id="content">
-
-  <!-- Dot nav -->
+  <!-- Right dot navigation -->
   <nav class="dotnav" aria-label="Sektionen">
-    <a href="#home" class="active"></a>
-    <a href="#infos"></a>
-    <a href="#lineup"></a>
-    <a href="#tickets"></a>
-    <a href="#kontakt"></a>
+    <a href="#home" class="active" data-label="Home"></a>
+    <a href="#infos" data-label="Infos"></a>
+    <a href="#lineup" data-label="Lineup"></a>
+    <a href="#tickets" data-label="Tickets"></a>
+    <a href="#impressionen" data-label="Impressionen"></a>
+    <a href="#kontakt" data-label="Kontakt"></a>
   </nav>
 
-  <!-- Scroll container (Content scrollt über Watermark) -->
   <div class="scroller" id="scroller">
-
-    <!-- HOME (nur Logo, mittig) -->
+    <!-- HOME -->
     <section class="section" id="home" data-dot="0" style="padding:0;border-top:none;">
       <div class="wrap homeCenter">
-        <img class="logo" src="logo2.png" alt="TYKE LIFE FESTIVAL">
+        <img class="logo" src="logo3.png" alt="TYKE LIFE FESTIVAL" />
       </div>
     </section>
 
     <!-- INFOS -->
     <section class="section" id="infos" data-dot="1">
       <div class="wrap">
-        <h2>Infos</h2>
-        <p class="lead">
-          <strong style="color:var(--text)">Start:</strong> 14:00 Uhr<br>
-          <strong style="color:var(--text)">Ende:</strong> 22:00 Uhr<br>
-          <strong style="color:var(--text)">Ort:</strong> TBA<br>
-          <strong style="color:var(--text)">Datum:</strong> TBA<br>
-          <strong style="color:var(--text)">Musik:</strong> Techno
-        </p>
-        <p class="fine">↓ Scroll für Line-up</p>
+        <h2>INFOS</h2>
+
+        <div class="infosGrid">
+          <div>
+            <p class="lead">
+              <span class="hl">MUSIK:</span> Techno<br/>
+              <span class="hl">START:</span> 14:00 Uhr<br/>
+              <span class="hl">ENDE:</span> 22:00 Uhr<br/>
+              <span class="hl">DATUM:</span> TBA<br/>
+              <span class="hl">ORT:</span> TBA
+            </p>
+            <p class="fine">
+              ↓ Scroll für Line-up (oder Punkte rechts).
+            </p>
+          </div>
+
+          <div>
+            <img class="map" src="Karte.png" alt="Kartenausschnitt" />
+            <p class="fine">Karte (Karte.png) – später ggf. mit Marker/Adresse ergänzen.</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- LINE-UP (Hover Bilder rechts) -->
+    <!-- LINEUP -->
     <section class="section" id="lineup" data-dot="2">
       <div class="wrap">
-        <h2>Line-up</h2>
-        <p class="lead">Hover über einen Namen → Bild kommt nach vorne.</p>
+        <h2>LINEUP</h2>
+        <p class="lead"><span class="hl">Hover</span> über einen Namen → das passende Foto kommt nach vorne.</p>
 
-        <div class="lineupWrap" style="margin-top:14px;">
-          <ul class="djList">
-            <li>
-              <a class="djLink" href="#lineup" data-img="Floostix.jpg">
-                <span class="djName">DJ Floostix</span>
-              </a>
-            </li>
-            <li>
-              <a class="djLink" href="#lineup" data-img="arearge.jpg">
-                <span class="djName">are:age</span>
-              </a>
-            </li>
-            <li>
-              <a class="djLink" href="#lineup" data-img="Livio.jpg">
-                <span class="djName">Livio</span>
-              </a>
-            </li>
-            <li>
-              <a class="djLink" href="#lineup" data-img="DJ4.jpg">
-                <span class="djName">more TBA</span>
-              </a>
-            </li>
+        <div class="lineupGrid">
+          <ul class="djList" aria-label="DJs">
+            <li><a class="djLink" href="#lineup" data-img="Floostix.jpg"><span class="djName">DJ FLOOSTIX</span></a></li>
+            <li><a class="djLink" href="#lineup" data-img="arearge.jpg"><span class="djName">ARE:AGE</span></a></li>
+            <li><a class="djLink" href="#lineup" data-img="Livio.jpg"><span class="djName">LIVIO</span></a></li>
+            <li><a class="djLink" href="#lineup" data-img="DJ4.jpg"><span class="djName">MORE TBA</span></a></li>
           </ul>
 
           <div class="gallery" aria-label="DJ Bilder">
-            <img class="pic p1 active" src="Floostix.jpg" alt="DJ Floostix" data-file="Floostix.jpg">
-            <img class="pic p2" src="arearge.jpg" alt="are:age" data-file="arearge.jpg">
-            <img class="pic p3" src="Livio.jpg" alt="Livio" data-file="Livio.jpg">
-            <img class="pic p4" src="DJ4.jpg" alt="DJ" data-file="DJ4.jpg">
+            <img class="pic p1 active" src="Floostix.jpg" alt="DJ Floostix" data-file="Floostix.jpg" />
+            <img class="pic p2" src="arearge.jpg" alt="are:age" data-file="arearge.jpg" />
+            <img class="pic p3" src="Livio.jpg" alt="Livio" data-file="Livio.jpg" />
+            <img class="pic p4" src="DJ4.jpg" alt="DJ" data-file="DJ4.jpg" />
           </div>
         </div>
 
-        <p class="fine">Tipp: Auf Mobile kannst du tippen statt hovern.</p>
+        <p class="fine">Wenn du nicht hovert, wechseln die Bilder automatisch langsam.</p>
       </div>
     </section>
 
     <!-- TICKETS -->
     <section class="section" id="tickets" data-dot="3">
       <div class="wrap">
-        <h2>Tickets</h2>
-        <p class="lead">Vorverkauf folgt.</p>
+        <h2>TICKETS</h2>
+        <p class="lead">
+          <span class="hl">Vorverkauf</span> folgt.
+        </p>
         <div class="btnrow">
-          <a class="btn primary" href="https://example.com" target="_blank" rel="noopener">Jetzt Tickets holen</a>
+          <a class="btn primary" href="https://example.com" target="_blank" rel="noopener">TICKET LINK</a>
         </div>
         <p class="fine">Link ersetzen: `https://example.com` austauschen.</p>
       </div>
     </section>
 
-    <!-- KONTAKT -->
-    <section class="section" id="kontakt" data-dot="4">
+    <!-- IMPRESSIONEN -->
+    <section class="section" id="impressionen" data-dot="4">
       <div class="wrap">
-        <h2>Kontakt</h2>
+        <h2>IMPRESSIONEN</h2>
         <p class="lead">
-          Mail only:<br>
-          <a href="mailto:info@tyke-life.ch">info@tyke-life.ch</a>
+          Hier posten wir Fotos vom Event.
         </p>
-        <p class="fine">© <span id="y"></span> Tyke Life</p>
-        <p class="fine"><a href="#" id="logout" style="color:rgba(242,242,242,.65);text-decoration:none;">Logout</a></p>
+
+        <div class="imprGrid">
+          <div class="ph">Foto 1</div>
+          <div class="ph">Foto 2</div>
+          <div class="ph">Foto 3</div>
+          <div class="ph">Foto 4</div>
+          <div class="ph">Foto 5</div>
+          <div class="ph">Foto 6</div>
+        </div>
+
+        <p class="fine">Sobald du echte Fotos hast, ersetze die Platzhalter durch `<img>`-Tags (sag mir dann kurz die Dateinamen).</p>
       </div>
     </section>
 
+    <!-- KONTAKT -->
+    <section class="section" id="kontakt" data-dot="5">
+      <div class="wrap">
+        <h2>KONTAKT</h2>
+        <p class="lead">
+          Mail:<br/>
+          <a href="mailto:info@tyke-life.ch"><span class="hl">info@tyke-life.ch</span></a>
+        </p>
+        <p class="fine">© <span id="y"></span> Tyke-Life</p>
+      </div>
+    </section>
   </div>
-</div>
 
-<script>
-/* =========================
-   YEAR
-   ========================= */
-document.getElementById("y").textContent = new Date().getFullYear();
+  <script>
+    // Year
+    document.getElementById("y").textContent = new Date().getFullYear();
 
-/* =========================
-   PASSWORD (Cookie)
-   ========================= */
-const PASSWORD = "Yves";     // <<< HIER Passwort setzen
-const COOKIE_NAME = "tyke_access";
-const COOKIE_DAYS = 14;
+    // Dot active (IntersectionObserver)
+    const dots = Array.from(document.querySelectorAll(".dotnav a"));
+    const sections = Array.from(document.querySelectorAll(".section"));
 
-const gate = document.getElementById("gate");
-const content = document.getElementById("content");
-const err = document.getElementById("gateErr");
-const pwInput = document.getElementById("pw");
+    function setActive(idx){
+      dots.forEach((d,i)=>d.classList.toggle("active", i===idx));
+    }
 
-function setCookie(name, value, days){
-  const d = new Date();
-  d.setTime(d.getTime() + (days*24*60*60*1000));
-  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
-}
-function getCookie(name){
-  const needle = name + "=";
-  return document.cookie.split(";").map(c=>c.trim()).find(c=>c.startsWith(needle))?.slice(needle.length) || "";
-}
-function unlock(){
-  gate.style.display = "none";
-  content.style.display = "block";
-  err.style.display = "none";
-}
-function lock(){
-  gate.style.display = "flex";
-  content.style.display = "none";
-}
+    const io = new IntersectionObserver((entries)=>{
+      const visible = entries
+        .filter(e=>e.isIntersecting)
+        .sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
+      if(!visible) return;
+      const idx = Number(visible.target.dataset.dot || 0);
+      setActive(idx);
+    }, {threshold:[0.6,0.75,0.9]});
 
-if (decodeURIComponent(getCookie(COOKIE_NAME)) === "ok") unlock(); else lock();
+    sections.forEach(s=>io.observe(s));
 
-document.getElementById("enter").addEventListener("click", () => {
-  if (pwInput.value === PASSWORD) {
-    setCookie(COOKIE_NAME, "ok", COOKIE_DAYS);
-    unlock();
-  } else {
-    err.style.display = "block";
-    pwInput.select();
-  }
-});
-pwInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") document.getElementById("enter").click();
-});
+    // Dot click: scroll inside container
+    dots.forEach(dot=>{
+      dot.addEventListener("click",(e)=>{
+        e.preventDefault();
+        const id = dot.getAttribute("href");
+        const target = document.querySelector(id);
+        if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+      });
+    });
 
-/* Logout */
-document.getElementById("logout").addEventListener("click", (e) => {
-  e.preventDefault();
-  setCookie(COOKIE_NAME, "", -1);
-  location.reload();
-});
+    // Lineup: hover brings corresponding image forward
+    const djLinks = Array.from(document.querySelectorAll(".djLink"));
+    const pics = Array.from(document.querySelectorAll(".gallery .pic"));
 
-/* =========================
-   DOT ACTIVE (IntersectionObserver)
-   ========================= */
-const dots = Array.from(document.querySelectorAll(".dotnav a"));
-const sections = Array.from(document.querySelectorAll(".section"));
+    let hoverLock = false;
+    let autoIdx = 0;
+    const order = ["Floostix.jpg","arearge.jpg","Livio.jpg","DJ4.jpg"];
 
-const setActive = (idx) => dots.forEach((d,i) => d.classList.toggle("active", i === idx));
+    function activate(file){
+      pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
+    }
 
-const io = new IntersectionObserver((entries) => {
-  const visible = entries
-    .filter(e => e.isIntersecting)
-    .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-  if (!visible) return;
-  setActive(Number(visible.target.dataset.dot || 0));
-}, { threshold: [0.6, 0.75, 0.9] });
+    // Default
+    activate(order[0]);
 
-sections.forEach(s => io.observe(s));
+    // Auto-rotate slowly when NOT hovering any name
+    function startAuto(){
+      return setInterval(()=>{
+        if(hoverLock) return;
+        autoIdx = (autoIdx + 1) % order.length;
+        activate(order[autoIdx]);
+      }, 4500); // “langsam”
+    }
+    let timer = startAuto();
 
-/* Dot click: scroll inside the scroller container */
-dots.forEach(dot => {
-  dot.addEventListener("click", (e) => {
-    e.preventDefault();
-    const id = dot.getAttribute("href");
-    const target = document.querySelector(id);
-    if (target) target.scrollIntoView({behavior:"smooth", block:"start"});
-  });
-});
+    function pauseAuto(){
+      hoverLock = true;
+      // kurze “Grace” Phase, damit es nicht direkt wieder auto spielt
+      clearInterval(timer);
+    }
+    function resumeAuto(){
+      hoverLock = false;
+      clearInterval(timer);
+      timer = startAuto();
+    }
 
-/* =========================
-   LINEUP HOVER -> IMAGE FRONT
-   ========================= */
-const djLinks = Array.from(document.querySelectorAll(".djLink"));
-const pics = Array.from(document.querySelectorAll(".gallery .pic"));
+    djLinks.forEach(link=>{
+      const file = link.dataset.img;
 
-function activate(file){
-  pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
-}
-activate("Floostix.jpg");
+      link.addEventListener("mouseenter", ()=>{
+        pauseAuto();
+        activate(file);
+      });
 
-djLinks.forEach(link => {
-  const file = link.dataset.img;
-  link.addEventListener("mouseenter", () => activate(file));
-  link.addEventListener("mouseover", () => activate(file)); // robust
-  link.addEventListener("focus", () => activate(file));     // keyboard
-  link.addEventListener("click", (e) => { e.preventDefault(); activate(file); }); // mobile tap
-});
-</script>
+      link.addEventListener("mouseleave", ()=>{
+        // nach Hover wieder auto weiterlaufen lassen
+        resumeAuto();
+      });
 
+      // Keyboard + Mobile tap
+      link.addEventListener("focus", ()=>{
+        pauseAuto();
+        activate(file);
+      });
+      link.addEventListener("blur", ()=>{
+        resumeAuto();
+      });
+      link.addEventListener("click", (e)=>{
+        e.preventDefault();
+        pauseAuto();
+        activate(file);
+      });
+    });
+  </script>
 </body>
 </html>
