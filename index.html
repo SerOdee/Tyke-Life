@@ -292,6 +292,22 @@
   .pic{ width: 58%; }
 }
 
+    /* Logo Fade-In */
+@keyframes logoFade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo.fade-in {
+  animation: logoFade 0.8s ease-out forwards;
+}
+
     
   </style>
 </head>
@@ -319,17 +335,8 @@
          justify-content:center;
          height:100vh;
        ">
-    <img
-      class="logo"
-      src="logo.png"
-      alt="TYKE LIFE FESTIVAL"
-      style="
-        max-width: 90vw;
-        max-height: 60vh;
-        width: auto;
-        height: auto;
-      "
-    />
+<img class="logo fade-in" src="logo2.png" alt="TYKE LIFE FESTIVAL" />
+
   </div>
 </section>
 
