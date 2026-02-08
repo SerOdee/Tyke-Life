@@ -202,6 +202,97 @@
       .btn{width:100%; justify-content:center}
       .section{padding: 64px 0}
     }
+/* Line-up Hover Gallery */
+.lineupWrap{
+  display:grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 28px;
+  align-items:center;
+}
+
+.djList{
+  margin:0;
+  padding:0;
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap: 14px;
+}
+
+.djLink{
+  display:inline-flex;
+  align-items:baseline;
+  gap:10px;
+  text-decoration:none;
+  outline:none;
+  padding: 6px 0;
+  border-bottom: 1px solid transparent;
+}
+
+.djName{
+  font-weight: 950;
+  letter-spacing: .2px;
+  text-transform: uppercase;
+  font-size: clamp(18px, 2.2vw, 26px);
+  color: var(--text);
+}
+
+.djSub{
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing:.35px;
+  color: var(--muted);
+}
+
+.djLink:hover,
+.djLink:focus-visible{
+  border-bottom-color: var(--line);
+}
+
+.gallery{
+  position:relative;
+  height: min(66vh, 520px);
+  min-height: 320px;
+}
+
+.pic{
+  position:absolute;
+  width: 52%;
+  max-width: 360px;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(242,242,242,.18);
+  box-shadow: 0 18px 60px rgba(0,0,0,.65);
+  filter: grayscale(10%) contrast(1.05) brightness(.9);
+  opacity: .88;
+  transform: rotate(var(--rot)) translateZ(0);
+  transition: transform .18s ease, filter .18s ease, opacity .18s ease, z-index 0s;
+  z-index: 1;
+  background: rgba(255,255,255,.02);
+}
+
+/* “Kreative” Platzierung (kannst du später fein-tunen) */
+.pic.p1{ left: 4%;  top: 12%;  --rot: -6deg; }
+.pic.p2{ left: 32%; top: 2%;   --rot: 4deg;  }
+.pic.p3{ left: 18%; top: 30%;  --rot: -2deg; }
+.pic.p4{ left: 46%; top: 26%;  --rot: 7deg;  }
+
+.pic.active{
+  z-index: 10;
+  opacity: 1;
+  filter: grayscale(0%) contrast(1.08) brightness(1.05);
+  transform: rotate(0deg) scale(1.04);
+}
+
+/* Mobile: Bilder unter die Liste */
+@media (max-width: 820px){
+  .lineupWrap{ grid-template-columns: 1fr; }
+  .gallery{ height: 420px; }
+  .pic{ width: 58%; }
+}
+
+    
   </style>
 </head>
 
@@ -250,18 +341,49 @@
     </section>
 
     <!-- LINE-UP -->
-    <section class="section" id="lineup" data-dot="1">
-      <div class="wrap">
-        <h2>Line-up</h2>
-        <p class="lead">DJs:</p>
-        <ul>
-          <li>DJ Floostix</li>
-          <li>are:age</li>
-          <li>Livio</li>
-          <li>more TBA</li>
-        </ul>
+<section class="section" id="lineup" data-dot="1">
+  <div class="wrap">
+    <h2>Line-up</h2>
+    <p class="lead">Hover über einen Namen → Bild kommt nach vorne.</p>
+
+    <div class="lineupWrap">
+      <ul class="djList">
+        <li>
+          <a class="djLink" href="#lineup" data-img="Floostix.jpg">
+            <span class="djName">DJ Floostix</span>
+            <span class="djSub">Techno</span>
+          </a>
+        </li>
+        <li>
+          <a class="djLink" href="#lineup" data-img="arearge.jpg">
+            <span class="djName">are:age</span>
+            <span class="djSub">Techno</span>
+          </a>
+        </li>
+        <li>
+          <a class="djLink" href="#lineup" data-img="Livio.jpg">
+            <span class="djName">Livio</span>
+            <span class="djSub">Techno</span>
+          </a>
+        </li>
+        <li>
+          <a class="djLink" href="#lineup" data-img="DJ4.jpg">
+            <span class="djName">more TBA</span>
+            <span class="djSub">soon</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="gallery" aria-label="DJ Bilder">
+        <img class="pic p1 active" src="Floostix.jpg" alt="DJ Floostix" data-file="Floostix.jpg" />
+        <img class="pic p2" src="arearge.jpg" alt="are:age" data-file="arearge.jpg" />
+        <img class="pic p3" src="Livio.jpg" alt="Livio" data-file="Livio.jpg" />
+        <img class="pic p4" src="DJ4.jpg" alt="DJ" data-file="DJ4.jpg" />
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
 
     <!-- INFOS -->
     <section class="section" id="infos" data-dot="2">
@@ -348,6 +470,33 @@
         target.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     });
+<script>
+  // Hover -> corresponding image to front
+  const djLinks = Array.from(document.querySelectorAll(".djLink"));
+  const pics = Array.from(document.querySelectorAll(".gallery .pic"));
+
+  function activate(file){
+    pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
+  }
+
+  // Default: erstes Bild aktiv
+  activate("Floostix.jpg");
+
+  djLinks.forEach(link => {
+    const file = link.dataset.img;
+
+    link.addEventListener("mouseenter", () => activate(file));
+    link.addEventListener("focus", () => activate(file)); // keyboard/tab
+
+    // Mobile: tap
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      activate(file);
+    });
+  });
+</script>
+
+    
   </script>
 </body>
 </html>
