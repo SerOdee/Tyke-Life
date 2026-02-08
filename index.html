@@ -8,7 +8,6 @@
 
   <style>
     :root{
-      /* Farbschema */
       --bg: #fcf8cd;
       --text: #4a494a;
       --accent: #eec01f;
@@ -21,7 +20,6 @@
       --pad: 18px;
     }
 
-    /* Optional: Abtos lokal (wenn du Abtos.woff2 ins Repo legst) */
     @font-face{
       font-family: "Abtos";
       src: url("Abtos.woff2") format("woff2");
@@ -69,6 +67,8 @@
       letter-spacing:.6px;
       text-transform: uppercase;
       text-align:center;
+      color: var(--stroke);
+      font-weight: 950;
     }
     #gateBox p{
       margin:0 0 14px;
@@ -117,7 +117,7 @@
       .section{padding: 64px 0;}
     }
 
-    /* ===== Sektionstitel: mittig + gleiche Typo wie DJ Namen ===== */
+    /* ===== Sektionstitel: mittig + DJ-Style + Farbe stroke ===== */
     .sectionHeader{
       text-align:center;
       margin-bottom: 14px;
@@ -128,6 +128,7 @@
       letter-spacing: .6px;
       text-transform: uppercase;
       font-size: 26px;
+      color: var(--stroke); /* <<< Punkt B */
     }
     .lead{
       margin:0;
@@ -276,8 +277,7 @@
       height: min(66vh, 520px);
       min-height: 320px;
     }
-    /* WICHTIG: Alle Bilder sind sichtbar (überlagert).
-       Active kommt nach vorne + heller + minimal größer. */
+    /* Alle DJ Bilder sichtbar übereinander */
     .pic{
       position:absolute;
       width: 54%;
@@ -285,7 +285,7 @@
       aspect-ratio: 4 / 5;
       object-fit: cover;
       border-radius: 16px;
-      border: 1px solid var(--stroke);   /* dünner Rahmen immer */
+      border: 1px solid var(--stroke);
       box-shadow: 0 18px 50px rgba(74,73,74,.18);
       opacity: .88;
       filter: saturate(.98) contrast(1.02) brightness(.98);
@@ -331,59 +331,165 @@
       background: rgba(238,192,31,.18);
     }
 
-    /* ===== Impressionen: horizontales Scroll + Pfeile ===== */
-    .imprWrap{
+    /* ==========================
+       IMPRESSIONEN – Desktop: 2x3 Paging
+       ========================== */
+    .impFrame{
       margin-top: 14px;
       position: relative;
-      border: 1px solid rgba(108,196,199,.35);
+      border: 1px solid rgba(108,196,199,.6);
       border-radius: 16px;
-      padding: 12px;
+      padding: 14px;
       background: rgba(252,248,205,.35);
     }
-    .imprRail{
-      display:flex;
-      gap: 12px;
-      overflow-x:auto;
-      scroll-behavior:smooth;
-      padding: 4px 44px; /* Platz für Pfeile */
-    }
-    .imprRail::-webkit-scrollbar{height:10px}
-    .imprRail::-webkit-scrollbar-thumb{background: rgba(108,196,199,.45); border-radius:999px}
-    .imprRail::-webkit-scrollbar-track{background: rgba(74,73,74,.08); border-radius:999px}
 
-    .imprImg{
-      flex: 0 0 auto;
-      height: 56vh;
-      max-height: 520px;
-      width: auto;
+    /* Desktop Grid (6 pro Seite) */
+    .impGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 1fr;
+      gap: 12px;
+    }
+    .impThumb{
+      width:100%;
+      height: 22vh;
+      max-height: 210px;
+      min-height: 140px;
       border-radius: 14px;
       border: 1px solid var(--stroke);
-      background: rgba(252,248,205,.55);
       object-fit: cover;
-    }
-    @media (max-width: 680px){
-      .imprImg{height: 44vh}
+      background: rgba(252,248,205,.55);
+      cursor:pointer;
     }
 
-    .arrow{
+    /* Pfeile (klein, aussen mittig neben Grid) */
+    .impArrow{
       position:absolute;
-      top: 50%;
+      top:50%;
       transform: translateY(-50%);
-      width: 36px;
-      height: 36px;
+      width: 30px;
+      height: 30px;
       border-radius: 999px;
       border: 1px solid var(--stroke);
-      background: rgba(252,248,205,.85);
+      background: rgba(252,248,205,.90);
       color: var(--text);
       font-weight: 950;
       cursor:pointer;
       display:grid;
       place-items:center;
       user-select:none;
+      z-index: 2;
     }
-    .arrow:hover{background: rgba(238,192,31,.18)}
-    .arrow.left{left: 10px}
-    .arrow.right{right: 10px}
+    .impArrow:hover{background: rgba(238,192,31,.18)}
+    .impArrow.left{left: -14px;}
+    .impArrow.right{right: -14px;}
+
+    .impMeta{
+      margin-top: 10px;
+      font-size: 13px;
+      color: rgba(74,73,74,.70);
+      text-align:center;
+    }
+
+    /* ==========================
+       IMPRESSIONEN – Mobile: 1 Bild, Swipe
+       ========================== */
+    .impSwipe{
+      display:none;
+      overflow-x:auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 0;
+    }
+    .impSlide{
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      padding: 4px 2px;
+      display:flex;
+      justify-content:center;
+    }
+    .impSwipeImg{
+      width: 92%;
+      height: 52vh;
+      max-height: 520px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      object-fit: cover;
+      background: rgba(252,248,205,.55);
+      cursor:pointer;
+    }
+
+    @media (max-width: 680px){
+      .impGrid, .impArrow{ display:none; }
+      .impSwipe{ display:flex; }
+      .impFrame{ padding: 10px; }
+    }
+
+    /* ==========================
+       LIGHTBOX (grosses Bild + Pfeile)
+       ========================== */
+    #lightbox{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background: rgba(252,248,205,.92);
+      z-index: 999;
+      padding: 18px;
+    }
+    #lightbox.open{display:flex;}
+    .lbBox{
+      position:relative;
+      width: min(1100px, 96vw);
+      height: min(78vh, 720px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .lbImg{
+      max-width: 100%;
+      max-height: 100%;
+      width:auto;
+      height:auto;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      object-fit: contain;
+      background: rgba(252,248,205,.55);
+      box-shadow: 0 18px 60px rgba(74,73,74,.22);
+    }
+    .lbClose{
+      position:absolute;
+      top: -8px;
+      right: -8px;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(252,248,205,.95);
+      font-weight: 950;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+    }
+    .lbNav{
+      position:absolute;
+      top:50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(252,248,205,.95);
+      font-weight: 950;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      user-select:none;
+    }
+    .lbNav:hover, .lbClose:hover{background: rgba(238,192,31,.18)}
+    .lbPrev{left: -10px;}
+    .lbNext{right: -10px;}
 
     .fine{
       margin-top: 14px;
@@ -432,19 +538,16 @@
         <div class="wrap">
           <div class="sectionHeader">
             <h2 class="sectionTitle">INFOS</h2>
-            <p class="lead center">
-              <span class="hl">MUSIK:</span> Techno ·
-              <span class="hl">START:</span> 14:00 ·
-              <span class="hl">ENDE:</span> 22:00
-            </p>
           </div>
 
           <div class="infosGrid">
             <div>
               <p class="lead">
+                <span class="hl">START:</span> 14:00&nbsp;&nbsp;
+                <span class="hl">ENDE:</span> 22:00<br/>
                 <span class="hl">DATUM:</span> TBA<br/>
                 <span class="hl">ORT:</span> TBA<br/>
-                <span class="hl">ANREISE:</span> TBA
+                <span class="hl">MUSIK:</span> Techno
               </p>
             </div>
 
@@ -463,7 +566,7 @@
             <h2 class="sectionTitle">LINEUP</h2>
             <p class="lead center">
               Hover über einen Namen → <span class="hl">Foto kommt nach vorne</span>.
-              Ohne Hover wechseln wir langsam automatisch.
+              Ohne Hover wechseln wir automatisch.
             </p>
           </div>
 
@@ -507,17 +610,22 @@
           <div class="sectionHeader">
             <h2 class="sectionTitle">IMPRESSIONEN</h2>
             <p class="lead center">
-              Fotos aus <span class="hl">/impressionen/</span> (geladen über manifest.json) – mit Pfeilen links/rechts.
+              Fotos aus <span class="hl">/impressionen/</span> (manifest.json).
             </p>
           </div>
 
-          <div class="imprWrap">
-            <div class="arrow left" id="impLeft" aria-label="Links">‹</div>
-            <div class="arrow right" id="impRight" aria-label="Rechts">›</div>
+          <div class="impFrame">
+            <!-- Desktop arrows -->
+            <div class="impArrow left" id="impPrev" aria-label="Vorherige">‹</div>
+            <div class="impArrow right" id="impNext" aria-label="Nächste">›</div>
 
-            <div class="imprRail" id="imprRail" aria-label="Impressionen Galerie">
-              <!-- Bilder werden per JS aus impressionen/manifest.json geladen -->
-            </div>
+            <!-- Desktop grid (6 pro Seite) -->
+            <div class="impGrid" id="impGrid" aria-label="Impressionen Grid"></div>
+
+            <!-- Mobile swipe (1 pro View) -->
+            <div class="impSwipe" id="impSwipe" aria-label="Impressionen Swipe"></div>
+
+            <div class="impMeta" id="impMeta"></div>
           </div>
 
           <p class="fine" id="impHint"></p>
@@ -540,6 +648,16 @@
           </p>
         </div>
       </section>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" aria-hidden="true">
+    <div class="lbBox">
+      <button class="lbClose" id="lbClose" aria-label="Schliessen">×</button>
+      <button class="lbNav lbPrev" id="lbPrev" aria-label="Zurück">‹</button>
+      <img class="lbImg" id="lbImg" alt="Impression gross" />
+      <button class="lbNav lbNext" id="lbNext" aria-label="Weiter">›</button>
     </div>
   </div>
 
@@ -630,8 +748,7 @@
 
     /* =========================
        LINEUP: Hover -> Bild nach vorne
-       + Auto-Wechsel langsam, wenn kein Hover
-       (WICHTIG: alle Bilder bleiben sichtbar)
+       + Auto-Wechsel schneller (Punkt A)
        ========================= */
     const djLinks = Array.from(document.querySelectorAll(".djLink"));
     const pics = Array.from(document.querySelectorAll(".gallery .pic"));
@@ -643,7 +760,6 @@
     function activate(file){
       pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
     }
-
     activate(order[0]);
 
     function startAuto(){
@@ -651,7 +767,7 @@
         if(hoverLock) return;
         autoIdx = (autoIdx + 1) % order.length;
         activate(order[autoIdx]);
-      }, 4500);
+      }, 3200); // <<< schneller
     }
     let timer = startAuto();
 
@@ -692,59 +808,166 @@
     });
 
     /* =========================
-       IMPRESSIONEN:
-       Lädt automatisch aus impressionen/manifest.json
-       + Pfeile links/rechts scrollen die Rail
+       IMPRESSIONEN: 2x3 Paging + Lightbox + Mobile Swipe
        ========================= */
-    const rail = document.getElementById("imprRail");
-    const hint = document.getElementById("impHint");
-    const btnL = document.getElementById("impLeft");
-    const btnR = document.getElementById("impRight");
+    const impGrid = document.getElementById("impGrid");
+    const impSwipe = document.getElementById("impSwipe");
+    const impHint = document.getElementById("impHint");
+    const impMeta = document.getElementById("impMeta");
+    const btnPrev = document.getElementById("impPrev");
+    const btnNext = document.getElementById("impNext");
+
+    const lb = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lbImg");
+    const lbClose = document.getElementById("lbClose");
+    const lbPrev = document.getElementById("lbPrev");
+    const lbNext = document.getElementById("lbNext");
+
+    let impFiles = [];
+    let page = 0;
+    const pageSize = 6;
+    let lbIndex = 0;
+
+    const isMobile = () => window.matchMedia("(max-width: 680px)").matches;
+
+    function openLightbox(idx){
+      if(!impFiles.length) return;
+      lbIndex = (idx + impFiles.length) % impFiles.length;
+      lbImg.src = "impressionen/" + impFiles[lbIndex];
+      lb.classList.add("open");
+      lb.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+    function closeLightbox(){
+      lb.classList.remove("open");
+      lb.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+    function lbGo(dir){
+      if(!impFiles.length) return;
+      lbIndex = (lbIndex + dir + impFiles.length) % impFiles.length;
+      lbImg.src = "impressionen/" + impFiles[lbIndex];
+    }
+
+    lbClose.addEventListener("click", closeLightbox);
+    lbPrev.addEventListener("click", ()=>lbGo(-1));
+    lbNext.addEventListener("click", ()=>lbGo(1));
+    lb.addEventListener("click", (e)=>{ if(e.target === lb) closeLightbox(); });
+
+    document.addEventListener("keydown", (e)=>{
+      if(!lb.classList.contains("open")) return;
+      if(e.key === "Escape") closeLightbox();
+      if(e.key === "ArrowLeft") lbGo(-1);
+      if(e.key === "ArrowRight") lbGo(1);
+    });
+
+    // Swipe in lightbox (mobile)
+    let touchX = null;
+    lb.addEventListener("touchstart", (e)=>{
+      touchX = e.touches[0].clientX;
+    }, {passive:true});
+    lb.addEventListener("touchend", (e)=>{
+      if(touchX === null) return;
+      const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : touchX;
+      const dx = endX - touchX;
+      touchX = null;
+      if(Math.abs(dx) > 50){
+        lbGo(dx < 0 ? 1 : -1);
+      }
+    }, {passive:true});
+
+    function renderDesktop(){
+      const totalPages = Math.max(1, Math.ceil(impFiles.length / pageSize));
+      page = Math.min(page, totalPages - 1);
+
+      const start = page * pageSize;
+      const slice = impFiles.slice(start, start + pageSize);
+
+      impGrid.innerHTML = "";
+      slice.forEach((fn, i)=>{
+        const img = document.createElement("img");
+        img.className = "impThumb";
+        img.src = "impressionen/" + fn;
+        img.alt = "Impression";
+        img.addEventListener("click", ()=>openLightbox(start + i));
+        impGrid.appendChild(img);
+      });
+
+      impMeta.textContent = `Seite ${page + 1} / ${totalPages} · ${impFiles.length} Fotos`;
+      btnPrev.style.display = totalPages > 1 ? "grid" : "none";
+      btnNext.style.display = totalPages > 1 ? "grid" : "none";
+    }
+
+    function renderMobile(){
+      // One-image-per-view swipe
+      impSwipe.innerHTML = "";
+      impFiles.forEach((fn, i)=>{
+        const slide = document.createElement("div");
+        slide.className = "impSlide";
+
+        const img = document.createElement("img");
+        img.className = "impSwipeImg";
+        img.src = "impressionen/" + fn;
+        img.alt = "Impression";
+        img.addEventListener("click", ()=>openLightbox(i));
+
+        slide.appendChild(img);
+        impSwipe.appendChild(slide);
+      });
+
+      impMeta.textContent = `${impFiles.length} Fotos · Swipe links/rechts`;
+    }
+
+    function renderImpressionen(){
+      if(!impFiles.length) return;
+      if(isMobile()){
+        renderMobile();
+      }else{
+        renderDesktop();
+      }
+    }
+
+    btnPrev.addEventListener("click", ()=>{
+      page = Math.max(0, page - 1);
+      renderDesktop();
+    });
+    btnNext.addEventListener("click", ()=>{
+      const totalPages = Math.max(1, Math.ceil(impFiles.length / pageSize));
+      page = Math.min(totalPages - 1, page + 1);
+      renderDesktop();
+    });
+
+    window.addEventListener("resize", ()=>{
+      // Re-render on breakpoint change
+      if(!impFiles.length) return;
+      renderImpressionen();
+    });
 
     async function loadImpressionen(){
       try{
         const res = await fetch("impressionen/manifest.json", { cache: "no-cache" });
         if(!res.ok) throw new Error("manifest not found");
-        const files = await res.json(); // erwartet Array von Dateinamen
+        const files = await res.json();
         if(!Array.isArray(files) || files.length === 0) throw new Error("empty manifest");
 
-        rail.innerHTML = "";
-        files.forEach(fn=>{
-          const img = document.createElement("img");
-          img.className = "imprImg";
-          img.src = "impressionen/" + fn;
-          img.alt = "Impression";
-          rail.appendChild(img);
-        });
+        // Filter only image-like names (optional safety)
+        impFiles = files.filter(fn => /\.(png|jpg|jpeg|webp|gif)$/i.test(fn));
 
-        hint.textContent = `Geladen: ${files.length} Foto(s) aus /impressionen/.`;
+        if(!impFiles.length) throw new Error("no image files in manifest");
+
+        impHint.textContent = "";
+        page = 0;
+        renderImpressionen();
       }catch(e){
-        hint.textContent =
-          "Keine Impressionen geladen. Lege /impressionen/manifest.json an (siehe Hinweis unten).";
-        // fallback: ein kleiner Platzhalter, damit man sieht wo es wäre
-        rail.innerHTML = "";
-        for(let i=1;i<=3;i++){
-          const ph = document.createElement("div");
-          ph.className = "imprImg";
-          ph.style.display = "grid";
-          ph.style.placeItems = "center";
-          ph.style.fontWeight = "950";
-          ph.style.textTransform = "uppercase";
-          ph.style.letterSpacing = ".6px";
-          ph.style.color = "rgba(74,73,74,.65)";
-          ph.textContent = "Foto " + i;
-          rail.appendChild(ph);
-        }
+        impFiles = [];
+        impGrid.innerHTML = "";
+        impSwipe.innerHTML = "";
+        impMeta.textContent = "";
+        impHint.textContent = "Keine Impressionen geladen. Bitte /impressionen/manifest.json anlegen.";
+        btnPrev.style.display = "none";
+        btnNext.style.display = "none";
       }
     }
-
-    function scrollByAmount(dir){
-      const amount = Math.max(260, rail.clientWidth * 0.8);
-      rail.scrollBy({ left: dir * amount, behavior: "smooth" });
-    }
-
-    btnL.addEventListener("click", ()=>scrollByAmount(-1));
-    btnR.addEventListener("click", ()=>scrollByAmount(1));
 
     loadImpressionen();
   </script>
