@@ -4,6 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="Tyke Life Festival – About, Infos, Lineup, Tickets, Impressionen, Kontakt." />
+  <meta name="robots" content="noindex, nofollow, noarchive">
+
   <title>Tyke Life</title>
 
   <style>
@@ -778,6 +780,9 @@
     }, {threshold:[0.6,0.75,0.9]});
 
     sections.forEach(s=>io.observe(s));
+    
+    window.addEventListener("mousemove", () => showDotsBriefly(), {passive:true});
+    window.addEventListener("touchstart", () => showDotsBriefly(), {passive:true});
 
     dots.forEach(dot=>{
       dot.addEventListener("click",(e)=>{
