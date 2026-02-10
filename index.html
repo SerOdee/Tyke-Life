@@ -988,7 +988,7 @@
 
     async function loadImpressionen(){
       try{
-        const res = await fetch("impressionen/manifest.json", { cache: "no-cache" });
+        const res = await fetch("./impressionen/manifest.json", { cache: "no-cache" });
         if(!res.ok) throw new Error("manifest not found");
         const files = await res.json();
         if(!Array.isArray(files) || files.length === 0) throw new Error("empty manifest");
