@@ -967,8 +967,8 @@
 
     function renderImpressionen(){
       if(!impFiles.length) return;
-      if(isMobile()) renderMobile();
-      else renderDesktop();
+      renderMobile();   // baut impSwipe
+      renderDesktop();  // baut impGrid
     }
 
     btnPrev.addEventListener("click", ()=>{
@@ -985,6 +985,7 @@
       if(!impFiles.length) return;
       renderImpressionen();
     });
+
 
     async function loadImpressionen(){
       try{
