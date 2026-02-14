@@ -162,13 +162,15 @@
       padding:0;
     }
     .logo{
-      width:auto;
-      height:auto;
-      max-width: 90vw;
-      max-height: 60vh;
+      width: auto;
+      height: auto;
+    
+      max-width: min(80vw, 900px);   /* <<< MAX 900px breit */
+      max-height: min(75vh, 650px);  /* <<< MAX 650px hoch */
+    
       opacity: 0;
       animation: logoFade .85s ease-out forwards;
-      transform: translateY(var(--homeLogoOffsetY)); /* <<< LOGO POSITION (ÄNDERN) */
+      transform: translateY(var(--homeLogoOffsetY));
     }
     @keyframes logoFade{
       from{opacity:0; transform: translateY(calc(var(--homeLogoOffsetY) + 10px))}
