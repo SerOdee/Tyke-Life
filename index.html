@@ -16,10 +16,14 @@
       --max: 980px;
       --pad: 18px;
 
-      /* ======= HIER KANNST DU SPÄTER DIE LOGO-HÖHE EINSTELLEN =======
-         Negative Werte = Logo höher.
+      /* ======= LOGO-HÖHE (Seite 1) ======= */
+      --homeLogoOffsetY: -120px; /* <<< LOGO VERSCHIEBUNG (ÄNDERN) */
+
+      /* ======= LAYOUT: Titel-Band Höhe (Seite 2+) =======
+         Erhöhen = Titel sitzt tiefer / mehr Luft.
+         Verringern = Titel sitzt höher / näher am Menü.
       */
-      --homeLogoOffsetY: -200px; /* <<< LOGO VERSCHIEBUNG (ÄNDERN) */
+      --titleBandHeight: 140px; /* <<< TITELBAND HÖHE (ÄNDERN) */
     }
 
     @font-face{
@@ -112,16 +116,13 @@
       min-height:100vh;
       scroll-snap-align:start;
       display:flex;
-      align-items:center;
-      padding: 72px 0;
+      align-items:stretch; /* wichtig: wir bauen innen "TitleBand + Content" */
+      padding: 0;          /* wir übernehmen spacing innen */
       border-top: 1px solid rgba(108,196,199,.35);
       position:relative;
       isolation:isolate;
     }
     .section:first-child{border-top:none}
-    @media (max-width: 560px){
-      .section{padding: 64px 0;}
-    }
 
     /* ===== Background / Watermarks ===== */
     .bgLayer{
@@ -138,36 +139,21 @@
       background-size: min(95vw, 1100px);
       opacity: .12;
     }
-    .bgOther{
-      background-image:url("Tattoo.png");
-      background-size: min(80vw, 980px);
-      opacity: .06;
+
+    /* Tattoo watermark (Seite 2+) */
+.bgOther{ display:none; }
     }
 
-    .layer{ position:relative; z-index:1; }
+    /* Zusatz watermark2 (Seite 2+) */
+    .bgOther2{
+      background-image:url("watermark2.png");
+      background-size: min(92vw, 1150px);
+      background-position: center;
+      opacity: .05;
+      mix-blend-mode: multiply; /* wirkt oft harmonischer auf #fcf8cd */
+    }
 
-    /* ===== Header as image ===== */
-    .sectionHeader{
-      text-align:center;
-      margin-bottom: 14px;
-    }
-    .titleImg{
-      display:block;
-      margin: 0 auto 10px;
-      max-width: min(560px, 90vw);
-      max-height: 90px;
-      width:auto;
-      height:auto;
-    }
-    .lead{
-      margin:0;
-      max-width: 72ch;
-      line-height: 1.85;
-      font-size: 16px;
-      color: rgba(74,73,74,.92);
-    }
-    .lead.center{margin-left:auto; margin-right:auto; text-align:center;}
-    .hl{ color: var(--accent); font-weight: 950; }
+    .layer{ position:relative; z-index:1; width:100%; }
 
     /* ===== HOME ===== */
     .homeCenter{
@@ -191,9 +177,7 @@
       to{opacity:1; transform: translateY(var(--homeLogoOffsetY))}
     }
 
-    /* ===== Top Nav (ab Seite 2 sichtbar) =====
-       Rahmen/Form wie "Ticket Link" -> wir übernehmen exakt die Button-Optik
-    */
+    /* ===== Top Nav (ab Seite 2 sichtbar) ===== */
     .topnav{
       position:fixed;
       left: 50%;
@@ -207,11 +191,8 @@
       background: rgba(252,248,205,.78);
       backdrop-filter: blur(4px);
 
-      /* Button-like frame */
       border: 1px solid var(--stroke);
-      border-radius: 14px; /* <<< wie .btn */
-      box-shadow: none;
-
+      border-radius: 14px;
       opacity: 0;
       pointer-events:none;
       transition: opacity .18s ease;
@@ -226,8 +207,6 @@
       letter-spacing:.4px;
       text-transform: uppercase;
       font-size: 12px;
-
-      /* make links feel like "small buttons" but still compact */
       padding: 8px 10px;
       border-radius: 12px;
       border: 1px solid transparent;
@@ -243,7 +222,6 @@
       background: rgba(238,192,31,.18);
       color: var(--text);
     }
-
     @media (max-width: 720px){
       .topnav{
         top: 10px;
@@ -255,7 +233,7 @@
       .topnav::-webkit-scrollbar-thumb{background: rgba(108,196,199,.45); border-radius:999px}
     }
 
-    /* ===== NEXT-SECTION Pfeil / Top Button ===== */
+    /* ===== NEXT button (last section = Top) ===== */
     .nextBtn{
       position:fixed;
       left: 50%;
@@ -287,13 +265,65 @@
     }
     .nextBtn svg{width:18px;height:18px}
 
+    /* ===== Section layout: TitleBand (zwischen Menü und Inhalt) ===== */
+    .secInner{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      padding: 0;
+    }
+
+    .titleBand{
+      height: var(--titleBandHeight);
+      display:flex;
+      align-items:center;     /* vertikal mittig im Band */
+      justify-content:center; /* horizontal mittig */
+      padding-top: 58px;      /* Platz für topnav (damit Titel nicht kollidiert) */
+      padding-left: var(--pad);
+      padding-right: var(--pad);
+    }
+
+    /* Content-Block darunter */
+    .contentBand{
+      flex: 1;
+      display:flex;
+      align-items:center;
+      padding: 18px 0 72px; /* bottom luft */
+    }
+
+    @media (max-width: 560px){
+      .titleBand{ padding-top: 54px; height: 130px; }
+      .contentBand{ padding: 14px 0 64px; }
+    }
+
+    /* ===== Titelbilder ===== */
+    .titleImg{
+      display:block;
+      max-width: min(560px, 90vw);
+      max-height: 90px;
+      width:auto;
+      height:auto;
+    }
+
+    /* ===== Text helpers ===== */
+    .lead{
+      margin:0;
+      max-width: 72ch;
+      line-height: 1.85;
+      font-size: 16px;
+      color: rgba(74,73,74,.92);
+    }
+    .lead.center{margin-left:auto; margin-right:auto; text-align:center;}
+    .hl{ color: var(--accent); font-weight: 950; }
+
     /* ===== INFOS ===== */
     .infosGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 18px;
       align-items:center;
-      margin-top: 10px;
+      margin-top: 0;
     }
     .map{
       width:100%;
@@ -313,7 +343,6 @@
       grid-template-columns: 1fr 1.15fr;
       gap: 24px;
       align-items:center;
-      margin-top: 10px;
     }
     .djList{
       list-style:none;
@@ -344,10 +373,9 @@
       letter-spacing: .6px;
       text-transform: uppercase;
     }
-
     .gallery{
       position:relative;
-      height: min(66vh, 520px);
+      height: min(60vh, 500px);
       min-height: 320px;
       z-index: 2;
     }
@@ -371,14 +399,12 @@
     .pic.p2{ left: 32%; top: 2%;  transform: rotate(4deg);  }
     .pic.p3{ left: 18%; top: 30%; transform: rotate(-2deg); }
     .pic.p4{ left: 46%; top: 26%; transform: rotate(7deg);  }
-
     .pic.active{
       z-index: 10;
       opacity: 1;
       filter: saturate(1.06) contrast(1.08) brightness(1.04);
       transform: rotate(0deg) scale(1.03);
     }
-
     @media (max-width: 820px){
       .lineupGrid{grid-template-columns:1fr}
       .gallery{height:420px}
@@ -386,7 +412,7 @@
     }
 
     /* ===== Buttons ===== */
-    .btnrow{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+    .btnrow{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
     .btn{
       display:inline-flex;
       padding:12px 14px;
@@ -426,23 +452,23 @@
 
   <div id="content">
     <nav class="topnav" id="topnav" aria-label="Navigation">
-      <a href="#about" data-sec="about">About</a>
-      <a href="#infos" data-sec="infos">Infos</a>
-      <a href="#lineup" data-sec="lineup">Lineup</a>
-      <a href="#tickets" data-sec="tickets">Tickets</a>
-      <a href="#impressionen" data-sec="impressionen">Impressionen</a>
-      <a href="#kontakt" data-sec="kontakt">Kontakt</a>
+      <a href="#about">About</a>
+      <a href="#infos">Infos</a>
+      <a href="#lineup">Lineup</a>
+      <a href="#tickets">Tickets</a>
+      <a href="#impressionen">Impressionen</a>
+      <a href="#kontakt">Kontakt</a>
     </nav>
 
     <button class="nextBtn" id="nextBtn" aria-label="Next section / Top">
-      <svg id="nextIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path id="nextPath" d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
 
     <div class="scroller" id="scroller">
       <!-- HOME -->
-      <section class="section" id="home" data-sec="home" style="padding:0;border-top:none;">
+      <section class="section" id="home" style="padding:0;border-top:none;">
         <div class="bgLayer bgHome"></div>
         <div class="wrap homeCenter layer">
           <img class="logo" src="logo3.png" alt="TYKE LIFE FESTIVAL" />
@@ -450,124 +476,150 @@
       </section>
 
       <!-- ABOUT -->
-      <section class="section" id="about" data-sec="about">
-        <div class="bgLayer bgOther"></div>
-        <div class="wrap layer">
-          <div class="sectionHeader">
+      <section class="section" id="about">
+        <div class="bgLayer bgOther2"></div>
+
+        <div class="secInner layer">
+          <div class="titleBand">
             <img class="titleImg" src="About.png" alt="About" />
-            <p class="lead center">
-              <span class="hl">Tyke-Life</span> ist ein kleines Festival – direkt, sauber, ohne unnötigen Kram.
-              Hier kommt euer finaler About-Text rein.
-            </p>
+          </div>
+          <div class="contentBand">
+            <div class="wrap">
+              <p class="lead center">
+                <span class="hl">Tyke-Life</span> ist ein kleines Festival – direkt, sauber, ohne unnötigen Kram.
+                Hier kommt euer finaler About-Text rein.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- INFOS -->
-      <section class="section" id="infos" data-sec="infos">
-        <div class="bgLayer bgOther"></div>
-        <div class="wrap layer">
-          <div class="sectionHeader">
+      <section class="section" id="infos">
+        <div class="bgLayer bgOther2"></div>
+
+        <div class="secInner layer">
+          <div class="titleBand">
             <img class="titleImg" src="Infos.png" alt="Infos" />
           </div>
+          <div class="contentBand">
+            <div class="wrap">
+              <div class="infosGrid">
+                <div>
+                  <p class="lead">
+                    <span class="hl">START:</span> 14:00&nbsp;&nbsp;
+                    <span class="hl">ENDE:</span> 22:00<br/>
+                    <span class="hl">DATUM:</span> TBA<br/>
+                    <span class="hl">ORT:</span> TBA<br/>
+                    <span class="hl">MUSIK:</span> Techno
+                  </p>
+                </div>
 
-          <div class="infosGrid">
-            <div>
-              <p class="lead">
-                <span class="hl">START:</span> 14:00&nbsp;&nbsp;
-                <span class="hl">ENDE:</span> 22:00<br/>
-                <span class="hl">DATUM:</span> TBA<br/>
-                <span class="hl">ORT:</span> TBA<br/>
-                <span class="hl">MUSIK:</span> Techno
-              </p>
-            </div>
-
-            <div>
-              <img class="map" src="Karte.png" alt="Kartenausschnitt" />
-              <div class="fine" style="text-align:left;margin-top:8px">Karte.png</div>
+                <div>
+                  <img class="map" src="Karte.png" alt="Kartenausschnitt" />
+                  <div class="fine" style="text-align:left;margin-top:8px">Karte.png</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       <!-- LINEUP -->
-      <section class="section" id="lineup" data-sec="lineup">
-        <div class="bgLayer bgOther"></div>
-        <div class="wrap layer">
-          <div class="sectionHeader">
+      <section class="section" id="lineup">
+        <div class="bgLayer bgOther2"></div>
+
+        <div class="secInner layer">
+          <div class="titleBand">
             <img class="titleImg" src="Lineup.png" alt="Lineup" />
-            <p class="lead center">
-              Hover über einen Namen → <span class="hl">Foto kommt nach vorne</span>. Ohne Hover wechseln wir automatisch.
-            </p>
           </div>
+          <div class="contentBand">
+            <div class="wrap">
+              <p class="lead center" style="margin-bottom:18px;">
+                Hover über einen Namen → <span class="hl">Foto kommt nach vorne</span>. Ohne Hover wechseln wir automatisch.
+              </p>
 
-          <div class="lineupGrid">
-            <ul class="djList" aria-label="DJs">
-              <li><a class="djLink" href="#lineup" data-img="Floostix.jpg"><span class="djName">DJ FLOOSTIX</span></a></li>
-              <li><a class="djLink" href="#lineup" data-img="arearge.jpg"><span class="djName">ARE:AGE</span></a></li>
-              <li><a class="djLink" href="#lineup" data-img="Livio.jpg"><span class="djName">LIVIO</span></a></li>
-              <li><a class="djLink" href="#lineup" data-img="DJ4.jpg"><span class="djName">MORE TBA</span></a></li>
-            </ul>
+              <div class="lineupGrid">
+                <ul class="djList" aria-label="DJs">
+                  <li><a class="djLink" href="#lineup" data-img="Floostix.jpg"><span class="djName">DJ FLOOSTIX</span></a></li>
+                  <li><a class="djLink" href="#lineup" data-img="arearge.jpg"><span class="djName">ARE:AGE</span></a></li>
+                  <li><a class="djLink" href="#lineup" data-img="Livio.jpg"><span class="djName">LIVIO</span></a></li>
+                  <li><a class="djLink" href="#lineup" data-img="DJ4.jpg"><span class="djName">MORE TBA</span></a></li>
+                </ul>
 
-            <div class="gallery" aria-label="DJ Bilder">
-              <img class="pic p1 active" src="Floostix.jpg" alt="DJ Floostix" data-file="Floostix.jpg" />
-              <img class="pic p2" src="arearge.jpg" alt="are:age" data-file="arearge.jpg" />
-              <img class="pic p3" src="Livio.jpg" alt="Livio" data-file="Livio.jpg" />
-              <img class="pic p4" src="DJ4.jpg" alt="DJ" data-file="DJ4.jpg" />
+                <div class="gallery" aria-label="DJ Bilder">
+                  <img class="pic p1 active" src="Floostix.jpg" alt="DJ Floostix" data-file="Floostix.jpg" />
+                  <img class="pic p2" src="arearge.jpg" alt="are:age" data-file="arearge.jpg" />
+                  <img class="pic p3" src="Livio.jpg" alt="Livio" data-file="Livio.jpg" />
+                  <img class="pic p4" src="DJ4.jpg" alt="DJ" data-file="DJ4.jpg" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       <!-- TICKETS -->
-      <section class="section" id="tickets" data-sec="tickets">
-        <div class="bgLayer bgOther"></div>
-        <div class="wrap layer">
-          <div class="sectionHeader">
+      <section class="section" id="tickets">
+        <div class="bgLayer bgOther2"></div>
+
+        <div class="secInner layer">
+          <div class="titleBand">
             <img class="titleImg" src="Tickets.png" alt="Tickets" />
-            <p class="lead center"><span class="hl">Vorverkauf</span> folgt.</p>
           </div>
-
-          <div class="btnrow">
-            <a class="btn primary" href="https://example.com" target="_blank" rel="noopener">TICKET LINK</a>
+          <div class="contentBand">
+            <div class="wrap">
+              <p class="lead center"><span class="hl">Vorverkauf</span> folgt.</p>
+              <div class="btnrow" style="margin-top:16px;">
+                <a class="btn primary" href="https://example.com" target="_blank" rel="noopener">TICKET LINK</a>
+              </div>
+              <p class="fine">Link später ersetzen.</p>
+            </div>
           </div>
-
-          <p class="fine">Link später ersetzen.</p>
         </div>
       </section>
 
-      <!-- IMPRESSIONEN (Insta-Link) -->
-      <section class="section" id="impressionen" data-sec="impressionen">
-        <div class="bgLayer bgOther"></div>
-        <div class="wrap layer">
-          <div class="sectionHeader">
-            <img class="titleImg" src="Impressionen.png" alt="Impressionen" />
-            <p class="lead center">Alle Impressionen gibt’s auf Instagram.</p>
-          </div>
+      <!-- IMPRESSIONEN -->
+      <section class="section" id="impressionen">
+        <div class="bgLayer bgOther2"></div>
 
-          <div class="btnrow">
-            <a class="btn primary" href="https://instagram.com/" target="_blank" rel="noopener">INSTAGRAM</a>
+        <div class="secInner layer">
+          <div class="titleBand">
+            <img class="titleImg" src="Impressionen.png" alt="Impressionen" />
+          </div>
+          <div class="contentBand">
+            <div class="wrap">
+              <p class="lead center">Alle Impressionen gibt’s auf Instagram.</p>
+              <div class="btnrow" style="margin-top:16px;">
+                <a class="btn primary" href="https://instagram.com/" target="_blank" rel="noopener">INSTAGRAM</a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- KONTAKT -->
-      <section class="section" id="kontakt" data-sec="kontakt">
-        <div class="bgLayer bgOther"></div>
-        <div class="wrap layer">
-          <div class="sectionHeader">
-            <img class="titleImg" src="Kontakt.png" alt="Kontakt" />
-            <p class="lead center">
-              Mail: <a href="mailto:info@tyke-life.ch"><span class="hl">info@tyke-life.ch</span></a>
-            </p>
-          </div>
+      <section class="section" id="kontakt">
+        <div class="bgLayer bgOther2"></div>
 
-          <p class="fine">
-            © <span id="y"></span> Tyke Life ·
-            <a href="#" id="logout" style="text-decoration:none;">Logout</a>
-          </p>
+        <div class="secInner layer">
+          <div class="titleBand">
+            <img class="titleImg" src="Kontakt.png" alt="Kontakt" />
+          </div>
+          <div class="contentBand">
+            <div class="wrap">
+              <p class="lead center">
+                Mail: <a href="mailto:info@tyke-life.ch"><span class="hl">info@tyke-life.ch</span></a>
+              </p>
+              <p class="fine" style="margin-top:18px;">
+                © <span id="y"></span> Tyke Life ·
+                <a href="#" id="logout" style="text-decoration:none;">Logout</a>
+              </p>
+            </div>
+          </div>
         </div>
       </section>
+
     </div>
   </div>
 
@@ -623,11 +675,10 @@
       location.reload();
     });
 
-    /* Footer year */
     document.getElementById("y").textContent = new Date().getFullYear();
 
     /* =========================
-       Topnav (nur ab Seite 2) + active state
+       Topnav (nur ab Seite 2) + active
        ========================= */
     const scroller = document.getElementById("scroller");
     const topnav = document.getElementById("topnav");
@@ -652,13 +703,12 @@
        ========================= */
     const nextBtn = document.getElementById("nextBtn");
     const nextPath = document.getElementById("nextPath");
-    let modeTop = false; // false: down, true: up/top
+    let modeTop = false;
 
     function getMostRelevantSection(){
       const scrollTop = scroller.scrollTop;
       let best = sections[0];
       let bestDist = Infinity;
-
       for(const s of sections){
         const dist = Math.abs(s.offsetTop - scrollTop);
         if(dist < bestDist){
@@ -672,40 +722,21 @@
     function setNextMode(isTop){
       modeTop = isTop;
       if(isTop){
-        // arrow up
         nextPath.setAttribute("d", "M6 15l6-6 6 6");
         nextBtn.setAttribute("aria-label", "Top");
       }else{
-        // arrow down
         nextPath.setAttribute("d", "M6 9l6 6 6-6");
         nextBtn.setAttribute("aria-label", "Next section");
       }
-    }
-
-    function updateNavAndNext(){
-      const current = getMostRelevantSection();
-      const secId = current.id;
-
-      // show topnav only after home
-      if(secId === "home") topnav.classList.remove("show");
-      else topnav.classList.add("show");
-
-      setActiveNav(secId);
-
-      const idx = sections.findIndex(s => s.id === secId);
-      const isLast = idx === sections.length - 1;
-      setNextMode(isLast);
-
-      // always show button
       nextBtn.classList.add("show");
     }
 
-    // use IntersectionObserver to update active nav reliably
     const io = new IntersectionObserver((entries)=>{
       const visible = entries
         .filter(e=>e.isIntersecting)
         .sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
       if(!visible) return;
+
       const secId = visible.target.id;
 
       if(secId === "home") topnav.classList.remove("show");
@@ -716,7 +747,6 @@
       const idx = sections.findIndex(s => s.id === secId);
       setNextMode(idx === sections.length - 1);
 
-      nextBtn.classList.add("show");
     }, {threshold:[0.6,0.75,0.9]});
 
     sections.forEach(s=>io.observe(s));
@@ -729,16 +759,14 @@
         document.getElementById("home").scrollIntoView({behavior:"smooth", block:"start"});
         return;
       }
-
       const next = sections[Math.min(idx + 1, sections.length - 1)];
       if(next) next.scrollIntoView({behavior:"smooth", block:"start"});
     });
 
-    // initial
-    setTimeout(updateNavAndNext, 60);
+    setTimeout(()=>nextBtn.classList.add("show"), 60);
 
     /* =========================
-       LINEUP hover (robust)
+       LINEUP hover
        ========================= */
     const djLinks = Array.from(document.querySelectorAll(".djLink"));
     const pics = Array.from(document.querySelectorAll(".gallery .pic"));
