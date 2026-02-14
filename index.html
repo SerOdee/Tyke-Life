@@ -271,7 +271,7 @@
       display:flex;
       flex-direction:column;
       min-height:100vh;
-      padding: 10px 0 72px;
+      padding: 0;
     }
 
     .titleBand{
@@ -288,9 +288,10 @@
     .contentBand{
       flex: 1;
       display:flex;
-      align-items:center;
-      padding: 18px 0 72px; /* bottom luft */
+      align-items:flex-start;   /* <<< näher am Titel */
+      padding: 10px 0 72px;     /* <<< etwas weniger Abstand oben */
     }
+
 
     @media (max-width: 560px){
       .titleBand{ padding-top: 54px; height: 130px; }
