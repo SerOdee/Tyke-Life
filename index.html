@@ -13,11 +13,14 @@
       --accent: #eec01f;
       --stroke: #6cc4c7;
 
-      --dot: rgba(74,73,74,.35);
-      --dotActive: #4a494a;
-
       --max: 980px;
       --pad: 18px;
+
+      /* ======= HIER KANNST DU SPÄTER DIE LOGO-HÖHE EINSTELLEN =======
+         Negative Werte = Logo höher.
+         Aktuell: ungefähr "halbe Logo-Höhe" nach oben (visuell).
+      */
+      --homeLogoOffsetY: -120px; /* <<< LOGO VERSCHIEBUNG (ÄNDERN) */
     }
 
     @font-face{
@@ -114,7 +117,7 @@
       padding: 72px 0;
       border-top: 1px solid rgba(108,196,199,.35);
       position:relative;
-      isolation:isolate; /* wichtig: saubere z-index Layer pro Sektion */
+      isolation:isolate;
     }
     .section:first-child{border-top:none}
     @media (max-width: 560px){
@@ -131,20 +134,17 @@
       background-position:center;
       opacity:.08;
     }
-    /* Home: TykeSun als echter Hintergrund */
     .bgHome{
       background-image:url("TykeSun.png");
       background-size: min(95vw, 1100px);
-      opacity: .12; /* etwas sichtbarer */
+      opacity: .12;
     }
-    /* Andere Seiten: Tattoo Wasserzeichen */
     .bgOther{
       background-image:url("Tattoo.png");
       background-size: min(80vw, 980px);
       opacity: .06;
     }
 
-    /* Content Layer über Background */
     .layer{ position:relative; z-index:1; }
 
     /* ===== Header as image ===== */
@@ -170,70 +170,6 @@
     .lead.center{margin-left:auto; margin-right:auto; text-align:center;}
     .hl{ color: var(--accent); font-weight: 950; }
 
-    /* ===== Dotnav (auto-hide, aber klickbar) ===== */
-    .dotnav{
-      position:fixed;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 10px 8px;
-      border: 1px solid var(--stroke);
-      border-radius: 999px;
-      background: rgba(252,248,205,.75);
-      z-index: 5000;
-
-      opacity: 0;
-      pointer-events:none;
-      transition: opacity .25s ease;
-    }
-    .dotnav.show{
-      opacity: 1;
-      pointer-events:auto;
-    }
-    .dotnav a{
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: var(--dot);
-      border: 1px solid rgba(108,196,199,.55);
-      transition: .12s ease;
-      position:relative;
-      outline:none;
-      display:block;
-    }
-    .dotnav a.active{
-      background: var(--dotActive);
-      transform: scale(1.15);
-      border-color: var(--stroke);
-    }
-    .dotnav a[data-label]::before{
-      content: attr(data-label);
-      position:absolute;
-      right: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      white-space: nowrap;
-      font-size: 12px;
-      letter-spacing:.4px;
-      text-transform: uppercase;
-      color: rgba(74,73,74,.9);
-      background: rgba(252,248,205,.92);
-      border: 1px solid var(--stroke);
-      padding: 8px 10px;
-      border-radius: 999px;
-      opacity: 0;
-      pointer-events:none;
-      transition:.12s ease;
-    }
-    .dotnav a:hover::before{opacity:1}
-    @media (max-width: 680px){
-      .dotnav{right:10px}
-      .dotnav a[data-label]::before{display:none}
-    }
-
     /* ===== HOME ===== */
     .homeCenter{
       height:100vh;
@@ -249,11 +185,93 @@
       max-height: 60vh;
       opacity: 0;
       animation: logoFade .85s ease-out forwards;
+      transform: translateY(var(--homeLogoOffsetY)); /* <<< LOGO POSITION (ÄNDERN) */
     }
     @keyframes logoFade{
-      from{opacity:0; transform: translateY(10px)}
-      to{opacity:1; transform:none}
+      from{opacity:0; transform: translateY(calc(var(--homeLogoOffsetY) + 10px))}
+      to{opacity:1; transform: translateY(var(--homeLogoOffsetY))}
     }
+
+    /* ===== Top Nav (ab Seite 2 sichtbar) ===== */
+    .topnav{
+      position:fixed;
+      left: 50%;
+      top: 14px;
+      transform: translateX(-50%);
+      z-index: 6000;
+      display:flex;
+      gap: 14px;
+      align-items:center;
+      padding: 10px 14px;
+      border: 1px solid var(--stroke);
+      border-radius: 999px;
+      background: rgba(252,248,205,.78);
+      backdrop-filter: blur(4px);
+
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .18s ease;
+    }
+    .topnav.show{
+      opacity: 1;
+      pointer-events:auto;
+    }
+    .topnav a{
+      text-decoration:none;
+      font-weight: 950;
+      letter-spacing:.4px;
+      text-transform: uppercase;
+      font-size: 12px;
+      padding: 6px 6px;
+      border-bottom: 1px solid transparent;
+    }
+    .topnav a:hover{border-bottom-color: var(--stroke);}
+    .topnav a.active{color: var(--stroke); border-bottom-color: var(--stroke);}
+
+    @media (max-width: 720px){
+      .topnav{
+        gap: 10px;
+        padding: 8px 10px;
+        top: 10px;
+        max-width: calc(100vw - 20px);
+        overflow-x:auto;
+        white-space:nowrap;
+      }
+      .topnav::-webkit-scrollbar{height:8px}
+      .topnav::-webkit-scrollbar-thumb{background: rgba(108,196,199,.45); border-radius:999px}
+    }
+
+    /* ===== NEXT-SECTION Pfeil (Nr.3) ===== */
+    .nextBtn{
+      position:fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      z-index: 6000;
+
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(252,248,205,.82);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      user-select:none;
+
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .nextBtn.show{
+      opacity: 1;
+      pointer-events:auto;
+    }
+    .nextBtn:hover{
+      transform: translateX(-50%) translateY(-1px);
+      background: rgba(238,192,31,.18);
+    }
+    .nextBtn svg{width:18px;height:18px}
 
     /* ===== INFOS ===== */
     .infosGrid{
@@ -275,7 +293,7 @@
       .infosGrid{grid-template-columns:1fr}
     }
 
-    /* ===== LINEUP (fix hover & pointer) ===== */
+    /* ===== LINEUP ===== */
     .lineupGrid{
       display:grid;
       grid-template-columns: 1fr 1.15fr;
@@ -292,7 +310,7 @@
       gap: 12px;
       align-items: flex-start;
       position:relative;
-      z-index: 3; /* wichtig: über gallery-layer */
+      z-index: 3;
     }
     .djLink{
       display:inline-block;
@@ -333,7 +351,7 @@
       transition: transform .25s ease, filter .25s ease, opacity .25s ease;
       z-index: 1;
       background: rgba(252,248,205,.5);
-      pointer-events:none; /* wichtig: Bilder blockieren keinen Hover auf Text */
+      pointer-events:none; /* blockiert nie Hover auf Namen */
     }
     .pic.p1{ left: 3%;  top: 12%; transform: rotate(-6deg); }
     .pic.p2{ left: 32%; top: 2%;  transform: rotate(4deg);  }
@@ -393,21 +411,27 @@
     </div>
   </div>
 
-  <!-- Content -->
   <div id="content">
-    <nav class="dotnav" id="dotnav" aria-label="Sektionen">
-      <a href="#home" class="active" data-label="Home"></a>
-      <a href="#about" data-label="About"></a>
-      <a href="#infos" data-label="Infos"></a>
-      <a href="#lineup" data-label="Lineup"></a>
-      <a href="#tickets" data-label="Tickets"></a>
-      <a href="#impressionen" data-label="Impressionen"></a>
-      <a href="#kontakt" data-label="Kontakt"></a>
+    <!-- Top navigation (sichtbar erst ab Seite 2) -->
+    <nav class="topnav" id="topnav" aria-label="Navigation">
+      <a href="#about" data-sec="about">About</a>
+      <a href="#infos" data-sec="infos">Infos</a>
+      <a href="#lineup" data-sec="lineup">Lineup</a>
+      <a href="#tickets" data-sec="tickets">Tickets</a>
+      <a href="#impressionen" data-sec="impressionen">Impressionen</a>
+      <a href="#kontakt" data-sec="kontakt">Kontakt</a>
     </nav>
+
+    <!-- Next-section button -->
+    <button class="nextBtn" id="nextBtn" aria-label="Next section">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
     <div class="scroller" id="scroller">
       <!-- HOME -->
-      <section class="section" id="home" data-dot="0" style="padding:0;border-top:none;">
+      <section class="section" id="home" data-sec="home" style="padding:0;border-top:none;">
         <div class="bgLayer bgHome"></div>
         <div class="wrap homeCenter layer">
           <img class="logo" src="logo3.png" alt="TYKE LIFE FESTIVAL" />
@@ -415,7 +439,7 @@
       </section>
 
       <!-- ABOUT -->
-      <section class="section" id="about" data-dot="1">
+      <section class="section" id="about" data-sec="about">
         <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
@@ -429,7 +453,7 @@
       </section>
 
       <!-- INFOS -->
-      <section class="section" id="infos" data-dot="2">
+      <section class="section" id="infos" data-sec="infos">
         <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
@@ -456,7 +480,7 @@
       </section>
 
       <!-- LINEUP -->
-      <section class="section" id="lineup" data-dot="3">
+      <section class="section" id="lineup" data-sec="lineup">
         <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
@@ -485,7 +509,7 @@
       </section>
 
       <!-- TICKETS -->
-      <section class="section" id="tickets" data-dot="4">
+      <section class="section" id="tickets" data-sec="tickets">
         <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
@@ -501,26 +525,23 @@
         </div>
       </section>
 
-      <!-- IMPRESSIONEN (nur Insta-Link) -->
-      <section class="section" id="impressionen" data-dot="5">
+      <!-- IMPRESSIONEN (Insta-Link) -->
+      <section class="section" id="impressionen" data-sec="impressionen">
         <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
             <img class="titleImg" src="Impressionen.png" alt="Impressionen" />
-            <p class="lead center">
-              Bruchts da en Text?
-            </p>
+            <p class="lead center">Alle Impressionen gibt’s auf Instagram.</p>
           </div>
 
           <div class="btnrow">
-            <!-- HIER deinen echten Insta-Link einsetzen -->
-            <a class="btn primary" href="https://instagram.com/TykeLife_Festival" target="_blank" rel="noopener">INSTAGRAM</a>
+            <a class="btn primary" href="https://instagram.com/" target="_blank" rel="noopener">INSTAGRAM</a>
           </div>
         </div>
       </section>
 
       <!-- KONTAKT -->
-      <section class="section" id="kontakt" data-dot="6">
+      <section class="section" id="kontakt" data-sec="kontakt">
         <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
@@ -564,8 +585,6 @@
     function unlock(){
       gate.style.display = "none";
       content.style.display = "block";
-      err.style.display = "none";
-      showDotsFor(2000);
     }
     function lock(){
       gate.style.display = "flex";
@@ -593,56 +612,110 @@
       location.reload();
     });
 
-    /* =========================
-       Dotnav show/hide + click
-       ========================= */
-    const dotnav = document.getElementById("dotnav");
-    const scroller = document.getElementById("scroller");
+    /* Footer year */
+    document.getElementById("y").textContent = new Date().getFullYear();
 
-    let hideTimer = null;
-    function showDotsFor(ms=1200){
-      dotnav.classList.add("show");
-      clearTimeout(hideTimer);
-      hideTimer = setTimeout(()=>dotnav.classList.remove("show"), ms);
+    /* =========================
+       Topnav (nur ab Seite 2) + active state
+       ========================= */
+    const scroller = document.getElementById("scroller");
+    const topnav = document.getElementById("topnav");
+    const navLinks = Array.from(topnav.querySelectorAll("a"));
+    const sections = Array.from(document.querySelectorAll(".section"));
+
+    function setActiveNav(secId){
+      navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + secId));
     }
 
-    // Show dots on interaction (scroll + mouse + touch)
-    scroller.addEventListener("scroll", ()=>showDotsFor(1200), {passive:true});
-    window.addEventListener("mousemove", ()=>showDotsFor(900), {passive:true});
-    window.addEventListener("touchstart", ()=>showDotsFor(1200), {passive:true});
-    window.addEventListener("wheel", ()=>showDotsFor(1200), {passive:true});
-
-    // Dots scroll inside container
-    const dots = Array.from(document.querySelectorAll(".dotnav a"));
-    dots.forEach(dot=>{
-      dot.addEventListener("click",(e)=>{
+    // Smooth scroll for nav links (inside scroller)
+    navLinks.forEach(a=>{
+      a.addEventListener("click", (e)=>{
         e.preventDefault();
-        showDotsFor(1400);
-        const id = dot.getAttribute("href");
+        const id = a.getAttribute("href");
         const target = document.querySelector(id);
         if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
       });
     });
 
-    // Active dot (IntersectionObserver)
-    const sections = Array.from(document.querySelectorAll(".section"));
-    function setActive(idx){
-      dots.forEach((d,i)=>d.classList.toggle("active", i===idx));
-    }
+    // Observe sections: show topnav only after leaving #home
     const io = new IntersectionObserver((entries)=>{
+      // find most visible
       const visible = entries
         .filter(e=>e.isIntersecting)
         .sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
       if(!visible) return;
-      const idx = Number(visible.target.dataset.dot || 0);
-      setActive(idx);
+
+      const secId = visible.target.id;
+
+      // show nav only from about onwards
+      if(secId === "home"){
+        topnav.classList.remove("show");
+      }else{
+        topnav.classList.add("show");
+      }
+      setActiveNav(secId);
+
+      // next button visibility update
+      updateNextVisibility(secId);
+
     }, {threshold:[0.6,0.75,0.9]});
+
     sections.forEach(s=>io.observe(s));
 
     /* =========================
-       Footer year
+       Next-section button
+       - always visible (also on home)
+       - scrolls to next section
        ========================= */
-    document.getElementById("y").textContent = new Date().getFullYear();
+    const nextBtn = document.getElementById("nextBtn");
+
+    function getCurrentSectionId(){
+      // pick section closest to top of scroller viewport
+      const scrollTop = scroller.scrollTop;
+      let best = sections[0];
+      let bestDist = Infinity;
+
+      for(const s of sections){
+        const dist = Math.abs(s.offsetTop - scrollTop);
+        if(dist < bestDist){
+          bestDist = dist;
+          best = s;
+        }
+      }
+      return best.id;
+    }
+
+    function scrollToSectionId(id){
+      const el = document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    function updateNextVisibility(currentId){
+      const idx = sections.findIndex(s => s.id === currentId);
+      if(idx < 0) return;
+
+      // Hide button on last section
+      if(idx === sections.length - 1){
+        nextBtn.classList.remove("show");
+      }else{
+        nextBtn.classList.add("show");
+      }
+    }
+
+    nextBtn.addEventListener("click", ()=>{
+      const currentId = getCurrentSectionId();
+      const idx = sections.findIndex(s => s.id === currentId);
+      const next = sections[Math.min(idx + 1, sections.length - 1)];
+      if(next) scrollToSectionId(next.id);
+    });
+
+    // show the button once content is visible
+    const initialShow = () => {
+      updateNextVisibility(getCurrentSectionId());
+      nextBtn.classList.add("show");
+    };
+    // slight delay to ensure layout ready
+    setTimeout(initialShow, 60);
 
     /* =========================
        LINEUP hover (robust)
@@ -678,7 +751,6 @@
       timer = startAuto();
     }
 
-    // Use pointer events (works for mouse + pen + touch)
     djLinks.forEach(link=>{
       const file = link.dataset.img;
 
@@ -686,7 +758,6 @@
         pauseAuto();
         activate(file);
       });
-
       link.addEventListener("pointerleave", ()=>{
         resumeAuto();
       });
