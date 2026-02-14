@@ -443,10 +443,21 @@
   position:absolute;
   inset:0;
   pointer-events:none;
+
   background: url("watermark.png") center / 900px auto no-repeat;
-  opacity: 0.12;   /* <<< Stärke */
+
+  opacity: 0;
+  transform: translateY(40px);   /* <<< Start leicht tiefer */
+  transition: opacity .6s ease .25s, transform .6s ease .25s;
   z-index: 0;
 }
+
+/* Wenn Section sichtbar ist */
+.section.wm-visible::before{
+  opacity: 0.12;      /* <<< Stärke */
+  transform: translateY(0);
+}
+
 .section:not(#home) .layer{
   position:relative;
   z-index: 1;
@@ -758,7 +769,10 @@
 
       const idx = sections.findIndex(s => s.id === secId);
       setNextMode(idx === sections.length - 1);
-
+      if(secId !== "home"){
+        visible.target.classList.add("wm-visible");
+      }
+      
     }, {threshold:[0.6,0.75,0.9]});
 
     sections.forEach(s=>io.observe(s));
