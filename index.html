@@ -437,31 +437,21 @@
     }
 
 
-/* Watermark Seite 2+  */
+/* Watermark Seite 2+ (statisch, funktioniert zuverlässig) */
 .section:not(#home)::before{
   content:"";
   position:absolute;
   inset:0;
   pointer-events:none;
-
   background: url("watermark.png") center / 900px auto no-repeat;
-
-  opacity: 0;
-  transform: translateY(40px);   /* <<< Start leicht tiefer */
-  transition: opacity .6s ease .25s, transform .6s ease .25s;
+  opacity: 0.12;  /* <<< Stärke */
   z-index: 0;
 }
-
-/* Wenn Section sichtbar ist */
-.section.wm-visible::before{
-  opacity: 0.20;      /* <<< Stärke */
-  transform: translateY(0);
-}
-
 .section:not(#home) .layer{
   position:relative;
   z-index: 1;
 }
+
 
   </style>
 </head>
