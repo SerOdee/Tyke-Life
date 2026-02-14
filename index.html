@@ -436,16 +436,22 @@
       text-align:center;
     }
 
-.wmOther{
-  background-image: url("watermark.png") !important;
-  background-repeat: no-repeat !important;
-  background-position: center 55% !important;  /* leicht tiefer */
-  background-size: 900px auto !important;      /* FIX statt contain */
-  opacity: 0.35 !important;                    /* TEST: deutlich sichtbar */
-  z-index: 0 !important;
+
+/* Watermark Seite 2+  */
+.section:not(#home)::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background: url("watermark.png") center / 900px auto no-repeat;
+  opacity: 0.12;   /* <<< Stärke */
+  z-index: 0;
+}
+.section:not(#home) .layer{
+  position:relative;
+  z-index: 1;
 }
 
-   
   </style>
 </head>
 
@@ -488,21 +494,8 @@
 
       <!-- ABOUT -->
       <section class="section" id="about">
-      .section:not(#home)::before{
-        content:"";
-        position:absolute;
-        inset:0;
-        pointer-events:none;
-        background: url("watermark.png") center / 900px auto no-repeat;
-        opacity: 0.12;          /* <<< HIER watermark Stärke */
-        z-index: 0;
-      }
-      .section:not(#home) .layer{
-        position:relative;
-        z-index: 1;
-      }
-
-
+        <div class="wm wmOther">
+        </div>
         <div class="secInner layer">
           <div class="titleBand">
             <img class="titleImg" src="About.png" alt="About" />
