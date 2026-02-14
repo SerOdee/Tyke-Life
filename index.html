@@ -451,6 +451,12 @@
   position:relative;
   z-index: 1;
 }
+    
+@media (max-width: 768px){
+  .section:not(#home)::before{
+    background-size: 75vw auto;   /* <<< Mobile Größe */
+  }
+}
 
 
   </style>
