@@ -754,32 +754,59 @@
       nextBtn.classList.add("show");
     }
 
-    const io = new IntersectionObserver((entries)=>{
-      const visible = entries
-        .filter(e=>e.isIntersecting)
-        .sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
-      if(!visible) return;
+// ===== Active section + Watermark (ohne IntersectionObserver) =====
+function getCurrentSection(){
+  const top = scroller.scrollTop;
+  let best = sections[0];
+  let bestDist = Infinity;
 
-      const secId = visible.target.id;
+  for(const s of sections){
+    const dist = Math.abs(s.offsetTop - top);
+    if(dist < bestDist){
+      bestDist = dist;
+      best = s;
+    }
+  }
+  return best;
+}
 
-      if(secId === "home") topnav.classList.remove("show");
-      else topnav.classList.add("show");
+function updateUI(){
+  const current = getCurrentSection();
+  const secId = current.id;
 
-      setActiveNav(secId);
+  // Topnav show/hide
+  if(secId === "home") topnav.classList.remove("show");
+  else topnav.classList.add("show");
 
-      const idx = sections.findIndex(s => s.id === secId);
-      setNextMode(idx === sections.length - 1);
-      if(secId !== "home"){
-        visible.target.classList.add("wm-visible");
-      }
-      
-}, {
-  root: scroller,                 // <<< WICHTIG: Scroll-Container als Root
-  threshold: [0.35, 0.6, 0.85]     // etwas toleranter
+  // active nav link
+  setActiveNav(secId);
+
+  // next button mode
+  const idx = sections.findIndex(s => s.id === secId);
+  setNextMode(idx === sections.length - 1);
+
+  // watermark: nur aktuelle Section sichtbar
+  sections.forEach(s => s.classList.remove("wm-visible"));
+  if(secId !== "home"){
+    current.classList.add("wm-visible");
+  }
+}
+
+// throttle via rAF (smooth)
+let ticking = false;
+scroller.addEventListener("scroll", () => {
+  if(!ticking){
+    ticking = true;
+    requestAnimationFrame(() => {
+      updateUI();
+      ticking = false;
+    });
+  }
 });
 
+// initial
+setTimeout(updateUI, 60);
 
-    sections.forEach(s=>io.observe(s));
 
     // initial: falls Observer erst spät feuert
 setTimeout(() => {
