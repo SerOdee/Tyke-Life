@@ -16,14 +16,19 @@
       --max: 980px;
       --pad: 18px;
 
-      /* ======= LOGO-HÖHE (Seite 1) ======= */
+      /* ======= LOGO-HÖHE (Seite 1) =======
+         Negative Werte = Logo höher.
+      */
       --homeLogoOffsetY: -120px; /* <<< LOGO VERSCHIEBUNG (ÄNDERN) */
 
-      /* ======= LAYOUT: Titel-Band Höhe (Seite 2+) =======
-         Erhöhen = Titel sitzt tiefer / mehr Luft.
-         Verringern = Titel sitzt höher / näher am Menü.
-      */
-      --titleBandHeight: 460px; /* <<< TITELBAND HÖHE (ÄNDERN) */
+      /* ======= TITELBAND (Seite 2+) ======= */
+      --titleBandHeight: 140px; /* <<< TITELBAND HÖHE (ÄNDERN) */
+      --titleBandTopPadDesktop: 58px; /* <<< Abstand unter Menü (Desktop) */
+      --titleBandTopPadMobile: 74px;  /* <<< Abstand unter Menü (Mobile) */
+
+      /* ======= CONTENT (Seite 2+) ======= */
+      --contentTopPadDesktop: 10px; /* <<< Content näher an Titel */
+      --contentTopPadMobile: 14px;
     }
 
     @font-face{
@@ -43,7 +48,7 @@
       background: var(--bg);
       color: var(--text);
       font-family: "Abtos", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      overflow:hidden;
+      overflow:hidden; /* nur scroller scrollt */
     }
 
     a{color:inherit}
@@ -116,42 +121,34 @@
       min-height:100vh;
       scroll-snap-align:start;
       display:flex;
-      align-items:stretch; /* wichtig: wir bauen innen "TitleBand + Content" */
-      padding: 0;          /* wir übernehmen spacing innen */
+      align-items:stretch;
+      padding: 0;
       border-top: 1px solid rgba(108,196,199,.35);
       position:relative;
       isolation:isolate;
     }
     .section:first-child{border-top:none}
 
-    /* ===== Background / Watermarks ===== */
-    .bgLayer{
+    /* ===== Watermarks ===== */
+    .wm{
       position:absolute;
       inset:0;
       pointer-events:none;
       z-index:0;
       background-repeat:no-repeat;
       background-position:center;
-      opacity:.08;
     }
-    .bgHome{
+    /* Seite 1 */
+    .wmHome{
       background-image:url("TykeSun.png");
       background-size: min(95vw, 1100px);
       opacity: .12;
     }
-
-    /* Tattoo watermark (Seite 2+) */
-.bgOther{ display:none; }
-    }
-
-    /* Zusatz watermark2 (Seite 2+) */
-    .bgOther2{
-      background-image:url("watermark2.png");
-      outline: 2px solid red;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 900px auto;;   /* <<< wichtig: sicher sichtbar */
-      opacity: 0.18;              /* <<< zum Test deutlich höher */
+    /* Seite 2+ */
+    .wmOther{
+      background-image:url("watermark.png");
+      background-size: min(92vw, 1150px);
+      opacity: .08;
     }
 
     .layer{ position:relative; z-index:1; width:100%; }
@@ -266,13 +263,12 @@
     }
     .nextBtn svg{width:18px;height:18px}
 
-    /* ===== Section layout: TitleBand (zwischen Menü und Inhalt) ===== */
+    /* ===== Section layout: TitleBand + ContentBand ===== */
     .secInner{
       width:100%;
       display:flex;
       flex-direction:column;
       min-height:100vh;
-      padding: 0;
     }
 
     .titleBand{
@@ -280,28 +276,25 @@
       display:flex;
       align-items:center;     /* vertikal mittig im Band */
       justify-content:center; /* horizontal mittig */
-      padding-top: 58px;      /* Platz für topnav (damit Titel nicht kollidiert) */
+      padding-top: var(--titleBandTopPadDesktop);
       padding-left: var(--pad);
       padding-right: var(--pad);
     }
 
-    /* Content-Block darunter */
     .contentBand{
       flex: 1;
       display:flex;
-      align-items:flex-start;   /* <<< näher am Titel */
-      padding: 10px 0 72px;     /* <<< etwas weniger Abstand oben */
+      align-items:flex-start; /* Content näher an Titel */
+      padding: var(--contentTopPadDesktop) 0 72px;
     }
-
 
     @media (max-width: 560px){
       .titleBand{
-        padding-top: 70px;   /* <<< MEHR ABSTAND ZUM MENÜ */
-        height: 150px;       /* optional: minimal höher */
+        padding-top: var(--titleBandTopPadMobile);
+        height: 150px;
       }
-    
       .contentBand{
-        padding: 14px 0 64px;
+        padding: var(--contentTopPadMobile) 0 64px;
       }
     }
 
@@ -331,7 +324,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 18px;
       align-items:center;
-      margin-top: 0;
     }
     .map{
       width:100%;
@@ -361,7 +353,7 @@
       gap: 12px;
       align-items: flex-start;
       position:relative;
-      z-index: 3;
+      z-index: 2;
     }
     .djLink{
       display:inline-block;
@@ -385,7 +377,7 @@
       position:relative;
       height: min(60vh, 500px);
       min-height: 320px;
-      z-index: 2;
+      z-index: 1;
     }
     .pic{
       position:absolute;
@@ -477,7 +469,7 @@
     <div class="scroller" id="scroller">
       <!-- HOME -->
       <section class="section" id="home" style="padding:0;border-top:none;">
-        <div class="bgLayer bgHome"></div>
+        <div class="wm wmHome"></div>
         <div class="wrap homeCenter layer">
           <img class="logo" src="logo3.png" alt="TYKE LIFE FESTIVAL" />
         </div>
@@ -485,8 +477,7 @@
 
       <!-- ABOUT -->
       <section class="section" id="about">
-        <div class="bgLayer bgOther2"></div>
-
+        <div class="wm wmOther"></div>
         <div class="secInner layer">
           <div class="titleBand">
             <img class="titleImg" src="About.png" alt="About" />
@@ -504,8 +495,7 @@
 
       <!-- INFOS -->
       <section class="section" id="infos">
-        <div class="bgLayer bgOther2"></div>
-
+        <div class="wm wmOther"></div>
         <div class="secInner layer">
           <div class="titleBand">
             <img class="titleImg" src="Infos.png" alt="Infos" />
@@ -535,8 +525,7 @@
 
       <!-- LINEUP -->
       <section class="section" id="lineup">
-        <div class="bgLayer bgOther2"></div>
-
+        <div class="wm wmOther"></div>
         <div class="secInner layer">
           <div class="titleBand">
             <img class="titleImg" src="Lineup.png" alt="Lineup" />
@@ -569,8 +558,7 @@
 
       <!-- TICKETS -->
       <section class="section" id="tickets">
-        <div class="bgLayer bgOther2"></div>
-
+        <div class="wm wmOther"></div>
         <div class="secInner layer">
           <div class="titleBand">
             <img class="titleImg" src="Tickets.png" alt="Tickets" />
@@ -589,8 +577,7 @@
 
       <!-- IMPRESSIONEN -->
       <section class="section" id="impressionen">
-        <div class="bgLayer bgOther2"></div>
-
+        <div class="wm wmOther"></div>
         <div class="secInner layer">
           <div class="titleBand">
             <img class="titleImg" src="Impressionen.png" alt="Impressionen" />
@@ -608,8 +595,7 @@
 
       <!-- KONTAKT -->
       <section class="section" id="kontakt">
-        <div class="bgLayer bgOther2"></div>
-
+        <div class="wm wmOther"></div>
         <div class="secInner layer">
           <div class="titleBand">
             <img class="titleImg" src="Kontakt.png" alt="Kontakt" />
@@ -730,10 +716,10 @@
     function setNextMode(isTop){
       modeTop = isTop;
       if(isTop){
-        nextPath.setAttribute("d", "M6 15l6-6 6 6");
+        nextPath.setAttribute("d", "M6 15l6-6 6 6"); // up
         nextBtn.setAttribute("aria-label", "Top");
       }else{
-        nextPath.setAttribute("d", "M6 9l6 6 6-6");
+        nextPath.setAttribute("d", "M6 9l6 6 6-6");  // down
         nextBtn.setAttribute("aria-label", "Next section");
       }
       nextBtn.classList.add("show");
