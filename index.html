@@ -149,15 +149,6 @@
       background-size: min(95vw, 1100px);
       opacity: .12;
     }
-    /* Seite 2+ */
-.wmOther{
-  background-image: url("watermark.png") !important;
-  background-repeat: no-repeat !important;
-  background-position: center 55% !important;  /* leicht tiefer */
-  background-size: 900px auto !important;      /* FIX statt contain */
-  opacity: 0.35 !important;                    /* TEST: deutlich sichtbar */
-  z-index: 0 !important;
-}
 
 
     .layer{ position:relative; z-index:1; width:100%; }
@@ -444,6 +435,15 @@
       line-height: 1.7;
       text-align:center;
     }
+
+.wmOther{
+  background-image: url("watermark.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: center 55% !important;  /* leicht tiefer */
+  background-size: 900px auto !important;      /* FIX statt contain */
+  opacity: 0.35 !important;                    /* TEST: deutlich sichtbar */
+  z-index: 0 !important;
+}
 
    
   </style>
