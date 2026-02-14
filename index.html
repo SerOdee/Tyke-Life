@@ -773,9 +773,20 @@
         visible.target.classList.add("wm-visible");
       }
       
-    }, {threshold:[0.6,0.75,0.9]});
+}, {
+  root: scroller,                 // <<< WICHTIG: Scroll-Container als Root
+  threshold: [0.35, 0.6, 0.85]     // etwas toleranter
+});
+
 
     sections.forEach(s=>io.observe(s));
+
+    // initial: falls Observer erst spät feuert
+setTimeout(() => {
+  const firstNonHome = document.querySelector('#about');
+  if (firstNonHome) firstNonHome.classList.add('wm-visible');
+}, 200);
+
 
     nextBtn.addEventListener("click", ()=>{
       const current = getMostRelevantSection();
