@@ -488,7 +488,15 @@
 
       <!-- ABOUT -->
       <section class="section" id="about">
-        <div class="wm wmOther"></div>
+        /* Watermark für Seite 2+ DIREKT auf der Section */
+        .section:not(#home){
+          background-image: url("watermark.png");
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 900px auto;   /* ggf. anpassen */
+          background-attachment: scroll;
+        }
+
         <div class="secInner layer">
           <div class="titleBand">
             <img class="titleImg" src="About.png" alt="About" />
