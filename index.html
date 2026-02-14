@@ -18,7 +18,6 @@
 
       /* ======= HIER KANNST DU SPÄTER DIE LOGO-HÖHE EINSTELLEN =======
          Negative Werte = Logo höher.
-         Aktuell: ungefähr "halbe Logo-Höhe" nach oben (visuell).
       */
       --homeLogoOffsetY: -120px; /* <<< LOGO VERSCHIEBUNG (ÄNDERN) */
     }
@@ -40,7 +39,7 @@
       background: var(--bg);
       color: var(--text);
       font-family: "Abtos", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      overflow:hidden; /* nur scroller scrollt */
+      overflow:hidden;
     }
 
     a{color:inherit}
@@ -192,7 +191,9 @@
       to{opacity:1; transform: translateY(var(--homeLogoOffsetY))}
     }
 
-    /* ===== Top Nav (ab Seite 2 sichtbar) ===== */
+    /* ===== Top Nav (ab Seite 2 sichtbar) =====
+       Rahmen/Form wie "Ticket Link" -> wir übernehmen exakt die Button-Optik
+    */
     .topnav{
       position:fixed;
       left: 50%;
@@ -200,13 +201,16 @@
       transform: translateX(-50%);
       z-index: 6000;
       display:flex;
-      gap: 14px;
+      gap: 10px;
       align-items:center;
-      padding: 10px 14px;
-      border: 1px solid var(--stroke);
-      border-radius: 999px;
+      padding: 10px 12px;
       background: rgba(252,248,205,.78);
       backdrop-filter: blur(4px);
+
+      /* Button-like frame */
+      border: 1px solid var(--stroke);
+      border-radius: 14px; /* <<< wie .btn */
+      box-shadow: none;
 
       opacity: 0;
       pointer-events:none;
@@ -222,16 +226,26 @@
       letter-spacing:.4px;
       text-transform: uppercase;
       font-size: 12px;
-      padding: 6px 6px;
-      border-bottom: 1px solid transparent;
+
+      /* make links feel like "small buttons" but still compact */
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      transition: background .12s ease, border-color .12s ease, transform .12s ease;
+      white-space:nowrap;
     }
-    .topnav a:hover{border-bottom-color: var(--stroke);}
-    .topnav a.active{color: var(--stroke); border-bottom-color: var(--stroke);}
+    .topnav a:hover{
+      border-color: var(--stroke);
+      transform: translateY(-1px);
+    }
+    .topnav a.active{
+      border-color: var(--stroke);
+      background: rgba(238,192,31,.18);
+      color: var(--text);
+    }
 
     @media (max-width: 720px){
       .topnav{
-        gap: 10px;
-        padding: 8px 10px;
         top: 10px;
         max-width: calc(100vw - 20px);
         overflow-x:auto;
@@ -241,7 +255,7 @@
       .topnav::-webkit-scrollbar-thumb{background: rgba(108,196,199,.45); border-radius:999px}
     }
 
-    /* ===== NEXT-SECTION Pfeil (Nr.3) ===== */
+    /* ===== NEXT-SECTION Pfeil / Top Button ===== */
     .nextBtn{
       position:fixed;
       left: 50%;
@@ -261,7 +275,7 @@
 
       opacity: 0;
       pointer-events:none;
-      transition: opacity .18s ease, transform .18s ease;
+      transition: opacity .18s ease, transform .18s ease, background .12s ease;
     }
     .nextBtn.show{
       opacity: 1;
@@ -351,7 +365,7 @@
       transition: transform .25s ease, filter .25s ease, opacity .25s ease;
       z-index: 1;
       background: rgba(252,248,205,.5);
-      pointer-events:none; /* blockiert nie Hover auf Namen */
+      pointer-events:none;
     }
     .pic.p1{ left: 3%;  top: 12%; transform: rotate(-6deg); }
     .pic.p2{ left: 32%; top: 2%;  transform: rotate(4deg);  }
@@ -399,7 +413,6 @@
 </head>
 
 <body>
-
   <!-- Passwort Gate -->
   <div id="gate">
     <div id="gateBox">
@@ -412,7 +425,6 @@
   </div>
 
   <div id="content">
-    <!-- Top navigation (sichtbar erst ab Seite 2) -->
     <nav class="topnav" id="topnav" aria-label="Navigation">
       <a href="#about" data-sec="about">About</a>
       <a href="#infos" data-sec="infos">Infos</a>
@@ -422,10 +434,9 @@
       <a href="#kontakt" data-sec="kontakt">Kontakt</a>
     </nav>
 
-    <!-- Next-section button -->
-    <button class="nextBtn" id="nextBtn" aria-label="Next section">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <button class="nextBtn" id="nextBtn" aria-label="Next section / Top">
+      <svg id="nextIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path id="nextPath" d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
 
@@ -627,7 +638,6 @@
       navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + secId));
     }
 
-    // Smooth scroll for nav links (inside scroller)
     navLinks.forEach(a=>{
       a.addEventListener("click", (e)=>{
         e.preventDefault();
@@ -637,40 +647,14 @@
       });
     });
 
-    // Observe sections: show topnav only after leaving #home
-    const io = new IntersectionObserver((entries)=>{
-      // find most visible
-      const visible = entries
-        .filter(e=>e.isIntersecting)
-        .sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
-      if(!visible) return;
-
-      const secId = visible.target.id;
-
-      // show nav only from about onwards
-      if(secId === "home"){
-        topnav.classList.remove("show");
-      }else{
-        topnav.classList.add("show");
-      }
-      setActiveNav(secId);
-
-      // next button visibility update
-      updateNextVisibility(secId);
-
-    }, {threshold:[0.6,0.75,0.9]});
-
-    sections.forEach(s=>io.observe(s));
-
     /* =========================
-       Next-section button
-       - always visible (also on home)
-       - scrolls to next section
+       Next button: last section becomes "Top"
        ========================= */
     const nextBtn = document.getElementById("nextBtn");
+    const nextPath = document.getElementById("nextPath");
+    let modeTop = false; // false: down, true: up/top
 
-    function getCurrentSectionId(){
-      // pick section closest to top of scroller viewport
+    function getMostRelevantSection(){
       const scrollTop = scroller.scrollTop;
       let best = sections[0];
       let bestDist = Infinity;
@@ -682,40 +666,76 @@
           best = s;
         }
       }
-      return best.id;
+      return best;
     }
 
-    function scrollToSectionId(id){
-      const el = document.getElementById(id);
-      if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
-    }
-
-    function updateNextVisibility(currentId){
-      const idx = sections.findIndex(s => s.id === currentId);
-      if(idx < 0) return;
-
-      // Hide button on last section
-      if(idx === sections.length - 1){
-        nextBtn.classList.remove("show");
+    function setNextMode(isTop){
+      modeTop = isTop;
+      if(isTop){
+        // arrow up
+        nextPath.setAttribute("d", "M6 15l6-6 6 6");
+        nextBtn.setAttribute("aria-label", "Top");
       }else{
-        nextBtn.classList.add("show");
+        // arrow down
+        nextPath.setAttribute("d", "M6 9l6 6 6-6");
+        nextBtn.setAttribute("aria-label", "Next section");
       }
     }
 
+    function updateNavAndNext(){
+      const current = getMostRelevantSection();
+      const secId = current.id;
+
+      // show topnav only after home
+      if(secId === "home") topnav.classList.remove("show");
+      else topnav.classList.add("show");
+
+      setActiveNav(secId);
+
+      const idx = sections.findIndex(s => s.id === secId);
+      const isLast = idx === sections.length - 1;
+      setNextMode(isLast);
+
+      // always show button
+      nextBtn.classList.add("show");
+    }
+
+    // use IntersectionObserver to update active nav reliably
+    const io = new IntersectionObserver((entries)=>{
+      const visible = entries
+        .filter(e=>e.isIntersecting)
+        .sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
+      if(!visible) return;
+      const secId = visible.target.id;
+
+      if(secId === "home") topnav.classList.remove("show");
+      else topnav.classList.add("show");
+
+      setActiveNav(secId);
+
+      const idx = sections.findIndex(s => s.id === secId);
+      setNextMode(idx === sections.length - 1);
+
+      nextBtn.classList.add("show");
+    }, {threshold:[0.6,0.75,0.9]});
+
+    sections.forEach(s=>io.observe(s));
+
     nextBtn.addEventListener("click", ()=>{
-      const currentId = getCurrentSectionId();
-      const idx = sections.findIndex(s => s.id === currentId);
+      const current = getMostRelevantSection();
+      const idx = sections.findIndex(s => s.id === current.id);
+
+      if(modeTop){
+        document.getElementById("home").scrollIntoView({behavior:"smooth", block:"start"});
+        return;
+      }
+
       const next = sections[Math.min(idx + 1, sections.length - 1)];
-      if(next) scrollToSectionId(next.id);
+      if(next) next.scrollIntoView({behavior:"smooth", block:"start"});
     });
 
-    // show the button once content is visible
-    const initialShow = () => {
-      updateNextVisibility(getCurrentSectionId());
-      nextBtn.classList.add("show");
-    };
-    // slight delay to ensure layout ready
-    setTimeout(initialShow, 60);
+    // initial
+    setTimeout(updateNavAndNext, 60);
 
     /* =========================
        LINEUP hover (robust)
