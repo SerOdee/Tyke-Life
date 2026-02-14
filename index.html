@@ -488,14 +488,20 @@
 
       <!-- ABOUT -->
       <section class="section" id="about">
-        /* Watermark für Seite 2+ DIREKT auf der Section */
-        .section:not(#home){
-          background-image: url("watermark.png");
-          background-repeat: no-repeat;
-          background-position: center;
-          background-size: 900px auto;   /* ggf. anpassen */
-          background-attachment: scroll;
-        }
+      .section:not(#home)::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        pointer-events:none;
+        background: url("watermark.png") center / 900px auto no-repeat;
+        opacity: 0.12;          /* <<< HIER watermark Stärke */
+        z-index: 0;
+      }
+      .section:not(#home) .layer{
+        position:relative;
+        z-index: 1;
+      }
+
 
         <div class="secInner layer">
           <div class="titleBand">
