@@ -150,10 +150,14 @@
       opacity: .12;
     }
     /* Seite 2+ */
-    .wmOther{
-      background-image:url("watermark.png");
-      background-size: min(92vw, 1150px);
-      opacity: .5;
+  /*  .wmOther{ */
+  /*    background-image:url("watermark.png"); */
+  /*    background-size: min(92vw, 1150px); */
+   /*   opacity: .5; */
+  background-image: none !important;
+  background: rgba(255,0,0,.25) !important;
+  opacity: 1 !important;
+  z-index: 2 !important;
     }
 
     .layer{ position:relative; z-index:1; width:100%; }
