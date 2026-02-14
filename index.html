@@ -3,10 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Tyke Life Festival – About, Infos, Lineup, Tickets, Impressionen, Kontakt." />
-  <meta name="robots" content="noindex, nofollow, noarchive">
-
-  <title>Tyke Life</title>
+  <meta name="description" content="Tyke-Life Festival – About, Infos, Lineup, Tickets, Impressionen, Kontakt." />
+  <title>Tyke-Life</title>
 
   <style>
     :root{
@@ -48,12 +46,13 @@
     /* ===== Passwort-Gate ===== */
     #gate{
       position:relative;
-      z-index: 30;
+      z-index: 9999;
       min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
       padding:24px;
+      background: var(--bg);
     }
     #gateBox{
       width:100%;
@@ -115,30 +114,40 @@
       padding: 72px 0;
       border-top: 1px solid rgba(108,196,199,.35);
       position:relative;
+      isolation:isolate; /* wichtig: saubere z-index Layer pro Sektion */
     }
     .section:first-child{border-top:none}
     @media (max-width: 560px){
       .section{padding: 64px 0;}
     }
 
-    /* ===== Watermarks ===== */
-    .wm{
+    /* ===== Background / Watermarks ===== */
+    .bgLayer{
       position:absolute;
       inset:0;
       pointer-events:none;
       z-index:0;
       background-repeat:no-repeat;
       background-position:center;
-      background-size: min(78vw, 980px);
-      opacity: .08; /* very subtle; tweak if needed */
+      opacity:.08;
     }
-    .wm.home{ background-image:url("TykeSun.png"); opacity: .10; }
-    .wm.other{ background-image:url("Tattoo.png"); opacity: .06; background-size: min(70vw, 900px); }
+    /* Home: TykeSun als echter Hintergrund */
+    .bgHome{
+      background-image:url("TykeSun.png");
+      background-size: min(95vw, 1100px);
+      opacity: .12; /* etwas sichtbarer */
+    }
+    /* Andere Seiten: Tattoo Wasserzeichen */
+    .bgOther{
+      background-image:url("Tattoo.png");
+      background-size: min(80vw, 980px);
+      opacity: .06;
+    }
 
-    /* Make content above watermark */
+    /* Content Layer über Background */
     .layer{ position:relative; z-index:1; }
 
-    /* ===== Section headers as images ===== */
+    /* ===== Header as image ===== */
     .sectionHeader{
       text-align:center;
       margin-bottom: 14px;
@@ -146,7 +155,7 @@
     .titleImg{
       display:block;
       margin: 0 auto 10px;
-      max-width: min(520px, 86vw);
+      max-width: min(560px, 90vw);
       max-height: 90px;
       width:auto;
       height:auto;
@@ -161,7 +170,7 @@
     .lead.center{margin-left:auto; margin-right:auto; text-align:center;}
     .hl{ color: var(--accent); font-weight: 950; }
 
-    /* ===== Right Dot Nav (auto-hide) ===== */
+    /* ===== Dotnav (auto-hide, aber klickbar) ===== */
     .dotnav{
       position:fixed;
       right: 16px;
@@ -173,9 +182,10 @@
       padding: 10px 8px;
       border: 1px solid var(--stroke);
       border-radius: 999px;
-      background: rgba(252,248,205,.70);
-      z-index: 50;
-      opacity: 2;
+      background: rgba(252,248,205,.75);
+      z-index: 5000;
+
+      opacity: 0;
       pointer-events:none;
       transition: opacity .25s ease;
     }
@@ -192,6 +202,7 @@
       transition: .12s ease;
       position:relative;
       outline:none;
+      display:block;
     }
     .dotnav a.active{
       background: var(--dotActive);
@@ -209,7 +220,7 @@
       letter-spacing:.4px;
       text-transform: uppercase;
       color: rgba(74,73,74,.9);
-      background: rgba(252,248,205,.90);
+      background: rgba(252,248,205,.92);
       border: 1px solid var(--stroke);
       padding: 8px 10px;
       border-radius: 999px;
@@ -223,7 +234,7 @@
       .dotnav a[data-label]::before{display:none}
     }
 
-    /* ===== HOME: logo + fade ===== */
+    /* ===== HOME ===== */
     .homeCenter{
       height:100vh;
       display:flex;
@@ -237,16 +248,14 @@
       max-width: 90vw;
       max-height: 60vh;
       opacity: 0;
-      animation: logoFade .8s ease-out forwards;
-      position:relative;
-      z-index:1;
+      animation: logoFade .85s ease-out forwards;
     }
     @keyframes logoFade{
       from{opacity:0; transform: translateY(10px)}
       to{opacity:1; transform:none}
     }
 
-    /* ===== INFOS: Text + Karte ===== */
+    /* ===== INFOS ===== */
     .infosGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -266,7 +275,7 @@
       .infosGrid{grid-template-columns:1fr}
     }
 
-    /* ===== LINEUP: Namen + überlagerte Bilder ===== */
+    /* ===== LINEUP (fix hover & pointer) ===== */
     .lineupGrid{
       display:grid;
       grid-template-columns: 1fr 1.15fr;
@@ -282,6 +291,8 @@
       flex-direction:column;
       gap: 12px;
       align-items: flex-start;
+      position:relative;
+      z-index: 3; /* wichtig: über gallery-layer */
     }
     .djLink{
       display:inline-block;
@@ -306,6 +317,7 @@
       position:relative;
       height: min(66vh, 520px);
       min-height: 320px;
+      z-index: 2;
     }
     .pic{
       position:absolute;
@@ -318,27 +330,30 @@
       box-shadow: 0 18px 50px rgba(74,73,74,.18);
       opacity: .88;
       filter: saturate(.98) contrast(1.02) brightness(.98);
-      transition: transform .25s ease, filter .25s ease, opacity .25s ease, z-index 0s;
+      transition: transform .25s ease, filter .25s ease, opacity .25s ease;
       z-index: 1;
       background: rgba(252,248,205,.5);
+      pointer-events:none; /* wichtig: Bilder blockieren keinen Hover auf Text */
     }
     .pic.p1{ left: 3%;  top: 12%; transform: rotate(-6deg); }
     .pic.p2{ left: 32%; top: 2%;  transform: rotate(4deg);  }
     .pic.p3{ left: 18%; top: 30%; transform: rotate(-2deg); }
     .pic.p4{ left: 46%; top: 26%; transform: rotate(7deg);  }
+
     .pic.active{
       z-index: 10;
       opacity: 1;
-      filter: saturate(1.05) contrast(1.06) brightness(1.03);
+      filter: saturate(1.06) contrast(1.08) brightness(1.04);
       transform: rotate(0deg) scale(1.03);
     }
+
     @media (max-width: 820px){
       .lineupGrid{grid-template-columns:1fr}
       .gallery{height:420px}
       .pic{width:58%}
     }
 
-    /* ===== Tickets Button ===== */
+    /* ===== Buttons ===== */
     .btnrow{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
     .btn{
       display:inline-flex;
@@ -354,151 +369,6 @@
     }
     .btn:hover{transform: translateY(-1px)}
     .btn.primary{ background: rgba(238,192,31,.18); }
-
-    /* ===== Impressionen – Desktop 2x3 + paging; Mobile swipe; Lightbox ===== */
-    .impFrame{
-      margin-top: 14px;
-      position: relative;
-      border: 1px solid rgba(108,196,199,.6);
-      border-radius: 16px;
-      padding: 14px;
-      background: rgba(252,248,205,.35);
-    }
-    .impGrid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-    .impThumb{
-      width:100%;
-      height: 22vh;
-      max-height: 210px;
-      min-height: 140px;
-      border-radius: 14px;
-      border: 1px solid var(--stroke);
-      object-fit: cover;
-      background: rgba(252,248,205,.55);
-      cursor:pointer;
-    }
-    .impArrow{
-      position:absolute;
-      top:50%;
-      transform: translateY(-50%);
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      border: 1px solid var(--stroke);
-      background: rgba(252,248,205,.90);
-      color: var(--text);
-      font-weight: 950;
-      cursor:pointer;
-      display:grid;
-      place-items:center;
-      user-select:none;
-      z-index: 2;
-    }
-    .impArrow:hover{background: rgba(238,192,31,.18)}
-    .impArrow.left{left: -14px;}
-    .impArrow.right{right: -14px;}
-    .impMeta{
-      margin-top: 10px;
-      font-size: 13px;
-      color: rgba(74,73,74,.70);
-      text-align:center;
-    }
-
-    .impSwipe{
-      display:none;
-      overflow-x:auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      gap: 0;
-    }
-    .impSlide{
-      flex: 0 0 100%;
-      scroll-snap-align: center;
-      padding: 4px 2px;
-      display:flex;
-      justify-content:center;
-    }
-    .impSwipeImg{
-      width: 92%;
-      height: 52vh;
-      max-height: 520px;
-      border-radius: 14px;
-      border: 1px solid var(--stroke);
-      object-fit: cover;
-      background: rgba(252,248,205,.55);
-      cursor:pointer;
-    }
-    @media (max-width: 680px){
-      .impGrid, .impArrow{ display:none; }
-      .impSwipe{ display:flex; }
-      .impFrame{ padding: 10px; }
-    }
-
-    #lightbox{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      background: rgba(252,248,205,.92);
-      z-index: 999;
-      padding: 18px;
-    }
-    #lightbox.open{display:flex;}
-    .lbBox{
-      position:relative;
-      width: min(1100px, 96vw);
-      height: min(78vh, 720px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .lbImg{
-      max-width: 100%;
-      max-height: 100%;
-      width:auto;
-      height:auto;
-      border-radius: 16px;
-      border: 1px solid var(--stroke);
-      object-fit: contain;
-      background: rgba(252,248,205,.55);
-      box-shadow: 0 18px 60px rgba(74,73,74,.22);
-    }
-    .lbClose{
-      position:absolute;
-      top: -8px;
-      right: -8px;
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid var(--stroke);
-      background: rgba(252,248,205,.95);
-      font-weight: 950;
-      cursor:pointer;
-      display:grid;
-      place-items:center;
-    }
-    .lbNav{
-      position:absolute;
-      top:50%;
-      transform: translateY(-50%);
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      border: 1px solid var(--stroke);
-      background: rgba(252,248,205,.95);
-      font-weight: 950;
-      cursor:pointer;
-      display:grid;
-      place-items:center;
-      user-select:none;
-    }
-    .lbNav:hover, .lbClose:hover{background: rgba(238,192,31,.18)}
-    .lbPrev{left: -10px;}
-    .lbNext{right: -10px;}
 
     .fine{
       margin-top: 14px;
@@ -538,7 +408,7 @@
     <div class="scroller" id="scroller">
       <!-- HOME -->
       <section class="section" id="home" data-dot="0" style="padding:0;border-top:none;">
-        <div class="wm home"></div>
+        <div class="bgLayer bgHome"></div>
         <div class="wrap homeCenter layer">
           <img class="logo" src="logo3.png" alt="TYKE LIFE FESTIVAL" />
         </div>
@@ -546,13 +416,13 @@
 
       <!-- ABOUT -->
       <section class="section" id="about" data-dot="1">
-        <div class="wm other"></div>
+        <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
             <img class="titleImg" src="About.png" alt="About" />
             <p class="lead center">
               <span class="hl">Tyke-Life</span> ist ein kleines Festival – direkt, sauber, ohne unnötigen Kram.
-              Hier steht euer Text: Konzept, Vibe, Location-Feeling, Community.
+              Hier kommt euer finaler About-Text rein.
             </p>
           </div>
         </div>
@@ -560,7 +430,7 @@
 
       <!-- INFOS -->
       <section class="section" id="infos" data-dot="2">
-        <div class="wm other"></div>
+        <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
             <img class="titleImg" src="Infos.png" alt="Infos" />
@@ -587,7 +457,7 @@
 
       <!-- LINEUP -->
       <section class="section" id="lineup" data-dot="3">
-        <div class="wm other"></div>
+        <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
             <img class="titleImg" src="Lineup.png" alt="Lineup" />
@@ -616,7 +486,7 @@
 
       <!-- TICKETS -->
       <section class="section" id="tickets" data-dot="4">
-        <div class="wm other"></div>
+        <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
             <img class="titleImg" src="Tickets.png" alt="Tickets" />
@@ -631,34 +501,27 @@
         </div>
       </section>
 
-      <!-- IMPRESSIONEN -->
+      <!-- IMPRESSIONEN (nur Insta-Link) -->
       <section class="section" id="impressionen" data-dot="5">
-        <div class="wm other"></div>
+        <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
             <img class="titleImg" src="Impressionen.png" alt="Impressionen" />
             <p class="lead center">
-              Fotos aus <span class="hl">/impressionen/</span> (manifest.json).
+              Alle Impressionen gibt’s auf Instagram.
             </p>
           </div>
 
-          <div class="impFrame">
-            <div class="impArrow left" id="impPrev" aria-label="Vorherige">‹</div>
-            <div class="impArrow right" id="impNext" aria-label="Nächste">›</div>
-
-            <div class="impGrid" id="impGrid" aria-label="Impressionen Grid"></div>
-            <div class="impSwipe" id="impSwipe" aria-label="Impressionen Swipe"></div>
-
-            <div class="impMeta" id="impMeta"></div>
+          <div class="btnrow">
+            <!-- HIER deinen echten Insta-Link einsetzen -->
+            <a class="btn primary" href="https://instagram.com/" target="_blank" rel="noopener">INSTAGRAM</a>
           </div>
-
-          <p class="fine" id="impHint"></p>
         </div>
       </section>
 
       <!-- KONTAKT -->
       <section class="section" id="kontakt" data-dot="6">
-        <div class="wm other"></div>
+        <div class="bgLayer bgOther"></div>
         <div class="wrap layer">
           <div class="sectionHeader">
             <img class="titleImg" src="Kontakt.png" alt="Kontakt" />
@@ -673,16 +536,6 @@
           </p>
         </div>
       </section>
-    </div>
-  </div>
-
-  <!-- LIGHTBOX -->
-  <div id="lightbox" aria-hidden="true">
-    <div class="lbBox">
-      <button class="lbClose" id="lbClose" aria-label="Schliessen">×</button>
-      <button class="lbNav lbPrev" id="lbPrev" aria-label="Zurück">‹</button>
-      <img class="lbImg" id="lbImg" alt="Impression gross" />
-      <button class="lbNav lbNext" id="lbNext" aria-label="Weiter">›</button>
     </div>
   </div>
 
@@ -712,7 +565,7 @@
       gate.style.display = "none";
       content.style.display = "block";
       err.style.display = "none";
-      showDotsBriefly();
+      showDotsFor(2000);
     }
     function lock(){
       gate.style.display = "flex";
@@ -741,35 +594,41 @@
     });
 
     /* =========================
-       Dotnav auto-hide when idle
+       Dotnav show/hide + click
        ========================= */
     const dotnav = document.getElementById("dotnav");
     const scroller = document.getElementById("scroller");
-    let hideTimer = null;
 
-    function showDotsBriefly(){
+    let hideTimer = null;
+    function showDotsFor(ms=1200){
       dotnav.classList.add("show");
       clearTimeout(hideTimer);
-      hideTimer = setTimeout(()=>dotnav.classList.remove("show"), 1200);
+      hideTimer = setTimeout(()=>dotnav.classList.remove("show"), ms);
     }
 
-    // show on any scroll / touch / wheel
-    ["scroll","wheel","touchmove","keydown"].forEach(evt=>{
-      scroller.addEventListener(evt, showDotsBriefly, {passive:true});
+    // Show dots on interaction (scroll + mouse + touch)
+    scroller.addEventListener("scroll", ()=>showDotsFor(1200), {passive:true});
+    window.addEventListener("mousemove", ()=>showDotsFor(900), {passive:true});
+    window.addEventListener("touchstart", ()=>showDotsFor(1200), {passive:true});
+    window.addEventListener("wheel", ()=>showDotsFor(1200), {passive:true});
+
+    // Dots scroll inside container
+    const dots = Array.from(document.querySelectorAll(".dotnav a"));
+    dots.forEach(dot=>{
+      dot.addEventListener("click",(e)=>{
+        e.preventDefault();
+        showDotsFor(1400);
+        const id = dot.getAttribute("href");
+        const target = document.querySelector(id);
+        if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+      });
     });
 
-    /* =========================
-       Dot active (IntersectionObserver)
-       ========================= */
-    document.getElementById("y").textContent = new Date().getFullYear();
-
-    const dots = Array.from(document.querySelectorAll(".dotnav a"));
+    // Active dot (IntersectionObserver)
     const sections = Array.from(document.querySelectorAll(".section"));
-
     function setActive(idx){
       dots.forEach((d,i)=>d.classList.toggle("active", i===idx));
     }
-
     const io = new IntersectionObserver((entries)=>{
       const visible = entries
         .filter(e=>e.isIntersecting)
@@ -778,25 +637,15 @@
       const idx = Number(visible.target.dataset.dot || 0);
       setActive(idx);
     }, {threshold:[0.6,0.75,0.9]});
-
     sections.forEach(s=>io.observe(s));
-    
-    window.addEventListener("mousemove", () => showDotsBriefly(), {passive:true});
-    window.addEventListener("touchstart", () => showDotsBriefly(), {passive:true});
-
-    dots.forEach(dot=>{
-      dot.addEventListener("click",(e)=>{
-        e.preventDefault();
-        showDotsBriefly();
-        const id = dot.getAttribute("href");
-        const target = document.querySelector(id);
-        if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
-      });
-    });
 
     /* =========================
-       LINEUP: Hover -> Bild nach vorne
-       + Auto-Wechsel
+       Footer year
+       ========================= */
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    /* =========================
+       LINEUP hover (robust)
        ========================= */
     const djLinks = Array.from(document.querySelectorAll(".djLink"));
     const pics = Array.from(document.querySelectorAll(".gallery .pic"));
@@ -829,22 +678,16 @@
       timer = startAuto();
     }
 
+    // Use pointer events (works for mouse + pen + touch)
     djLinks.forEach(link=>{
       const file = link.dataset.img;
 
-      link.addEventListener("mouseenter", ()=>{
+      link.addEventListener("pointerenter", ()=>{
         pauseAuto();
         activate(file);
-      });
-      link.addEventListener("mouseleave", ()=>{
-        resumeAuto();
       });
 
-      link.addEventListener("focus", ()=>{
-        pauseAuto();
-        activate(file);
-      });
-      link.addEventListener("blur", ()=>{
+      link.addEventListener("pointerleave", ()=>{
         resumeAuto();
       });
 
@@ -854,164 +697,6 @@
         activate(file);
       });
     });
-
-    /* =========================
-       IMPRESSIONEN: load manifest + paging + lightbox + swipe
-       ========================= */
-    const impGrid = document.getElementById("impGrid");
-    const impSwipe = document.getElementById("impSwipe");
-    const impHint = document.getElementById("impHint");
-    const impMeta = document.getElementById("impMeta");
-    const btnPrev = document.getElementById("impPrev");
-    const btnNext = document.getElementById("impNext");
-
-    const lb = document.getElementById("lightbox");
-    const lbImg = document.getElementById("lbImg");
-    const lbClose = document.getElementById("lbClose");
-    const lbPrev = document.getElementById("lbPrev");
-    const lbNext = document.getElementById("lbNext");
-
-    let impFiles = [];
-    let page = 0;
-    const pageSize = 6;
-    let lbIndex = 0;
-
-    const isMobile = () => window.matchMedia("(max-width: 680px)").matches;
-
-    function openLightbox(idx){
-      if(!impFiles.length) return;
-      lbIndex = (idx + impFiles.length) % impFiles.length;
-      lbImg.src = "impressionen/" + impFiles[lbIndex];
-      lb.classList.add("open");
-      lb.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
-    }
-    function closeLightbox(){
-      lb.classList.remove("open");
-      lb.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
-    }
-    function lbGo(dir){
-      if(!impFiles.length) return;
-      lbIndex = (lbIndex + dir + impFiles.length) % impFiles.length;
-      lbImg.src = "impressionen/" + impFiles[lbIndex];
-    }
-
-    lbClose.addEventListener("click", closeLightbox);
-    lbPrev.addEventListener("click", ()=>lbGo(-1));
-    lbNext.addEventListener("click", ()=>lbGo(1));
-    lb.addEventListener("click", (e)=>{ if(e.target === lb) closeLightbox(); });
-
-    document.addEventListener("keydown", (e)=>{
-      if(!lb.classList.contains("open")) return;
-      if(e.key === "Escape") closeLightbox();
-      if(e.key === "ArrowLeft") lbGo(-1);
-      if(e.key === "ArrowRight") lbGo(1);
-    });
-
-    // Lightbox swipe
-    let touchX = null;
-    lb.addEventListener("touchstart", (e)=>{
-      touchX = e.touches[0].clientX;
-    }, {passive:true});
-    lb.addEventListener("touchend", (e)=>{
-      if(touchX === null) return;
-      const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : touchX;
-      const dx = endX - touchX;
-      touchX = null;
-      if(Math.abs(dx) > 50){
-        lbGo(dx < 0 ? 1 : -1);
-      }
-    }, {passive:true});
-
-    function renderDesktop(){
-      const totalPages = Math.max(1, Math.ceil(impFiles.length / pageSize));
-      page = Math.min(page, totalPages - 1);
-
-      const start = page * pageSize;
-      const slice = impFiles.slice(start, start + pageSize);
-
-      impGrid.innerHTML = "";
-      slice.forEach((fn, i)=>{
-        const img = document.createElement("img");
-        img.className = "impThumb";
-        img.src = "impressionen/" + fn;
-        img.alt = "Impression";
-        img.addEventListener("click", ()=>openLightbox(start + i));
-        impGrid.appendChild(img);
-      });
-
-      impMeta.textContent = `Seite ${page + 1} / ${totalPages} · ${impFiles.length} Fotos`;
-      btnPrev.style.display = totalPages > 1 ? "grid" : "none";
-      btnNext.style.display = totalPages > 1 ? "grid" : "none";
-    }
-
-    function renderMobile(){
-      impSwipe.innerHTML = "";
-      impFiles.forEach((fn, i)=>{
-        const slide = document.createElement("div");
-        slide.className = "impSlide";
-
-        const img = document.createElement("img");
-        img.className = "impSwipeImg";
-        img.src = "impressionen/" + fn;
-        img.alt = "Impression";
-        img.addEventListener("click", ()=>openLightbox(i));
-
-        slide.appendChild(img);
-        impSwipe.appendChild(slide);
-      });
-
-      impMeta.textContent = `${impFiles.length} Fotos · Swipe links/rechts`;
-    }
-
-    function renderImpressionen(){
-      if(!impFiles.length) return;
-      renderMobile();   // baut impSwipe
-      renderDesktop();  // baut impGrid
-    }
-
-    btnPrev.addEventListener("click", ()=>{
-      page = Math.max(0, page - 1);
-      renderDesktop();
-    });
-    btnNext.addEventListener("click", ()=>{
-      const totalPages = Math.max(1, Math.ceil(impFiles.length / pageSize));
-      page = Math.min(totalPages - 1, page + 1);
-      renderDesktop();
-    });
-
-    window.addEventListener("resize", ()=>{
-      if(!impFiles.length) return;
-      renderImpressionen();
-    });
-
-
-    async function loadImpressionen(){
-      try{
-        const res = await fetch(new URL("impressionen/manifest.json", window.location.href), { cache: "no-cache" });
-        if(!res.ok) throw new Error("manifest not found");
-        const files = await res.json();
-        if(!Array.isArray(files) || files.length === 0) throw new Error("empty manifest");
-
-        impFiles = files.filter(fn => /\.(png|jpg|jpeg|webp|gif)$/i.test(fn));
-        if(!impFiles.length) throw new Error("no image files in manifest");
-
-        impHint.textContent = "";
-        page = 0;
-        renderImpressionen();
-      }catch(e){
-        impFiles = [];
-        impGrid.innerHTML = "";
-        impSwipe.innerHTML = "";
-        impMeta.textContent = "";
-        impHint.textContent = "Keine Impressionen geladen. Bitte /impressionen/manifest.json anlegen.";
-        btnPrev.style.display = "none";
-        btnNext.style.display = "none";
-      }
-    }
-
-    loadImpressionen();
   </script>
 </body>
 </html>
