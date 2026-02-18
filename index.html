@@ -24,11 +24,11 @@
       /* ======= TITELBAND (Seite 2+) ======= */
       --titleBandHeight: 140px; /* <<< TITELBAND HÖHE (ÄNDERN) */
       --titleBandTopPadDesktop: 200px; /* <<< Abstand unter Menü (Desktop) */
-      --titleBandTopPadMobile: 74px;  /* <<< Abstand unter Menü (Mobile) */
+      --titleBandTopPadMobile: 200px;  /* <<< Abstand unter Menü (Mobile) */
 
       /* ======= CONTENT (Seite 2+) ======= */
       --contentTopPadDesktop: 250px; /* <<< Content näher an Titel */
-      --contentTopPadMobile: 14px;
+      --contentTopPadMobile: 180px;
     }
 
     @font-face{
@@ -162,17 +162,27 @@
       padding:0;
     }
     .logo{
-      width:auto;
-      height:auto;
-      max-width: 90vw;
-      max-height: 60vh;
+      width: auto;
+      height: auto;
+    
+      max-width: min(80vw, 900px);   /* <<< MAX 900px breit */
+      max-height: min(75vh, 650px);  /* <<< MAX 650px hoch */
+    
       opacity: 0;
       animation: logoFade .85s ease-out forwards;
-      transform: translateY(var(--homeLogoOffsetY)); /* <<< LOGO POSITION (ÄNDERN) */
+      transform: translateY(var(--homeLogoOffsetY));
     }
     @keyframes logoFade{
       from{opacity:0; transform: translateY(calc(var(--homeLogoOffsetY) + 10px))}
       to{opacity:1; transform: translateY(var(--homeLogoOffsetY))}
+    }
+    @media (min-width: 1024px){
+      .logo{
+        height: 8vh;     /* <<< erzwingt Größe */
+        width: auto;
+        max-height: none;
+        max-width: none;
+      }
     }
 
     /* ===== Top Nav (ab Seite 2 sichtbar) ===== */
@@ -436,16 +446,29 @@
       text-align:center;
     }
 
-.wmOther{
-  background-image: url("watermark.png") !important;
-  background-repeat: no-repeat !important;
-  background-position: center 55% !important;  /* leicht tiefer */
-  background-size: 900px auto !important;      /* FIX statt contain */
-  opacity: 0.35 !important;                    /* TEST: deutlich sichtbar */
-  z-index: 0 !important;
+
+/* Watermark Seite 2+ (statisch, funktioniert zuverlässig) */
+.section:not(#home)::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background: url("watermark.png") center / 900px auto no-repeat;
+  opacity: 0.03;  /* <<< Stärke */
+  z-index: 0;
+}
+.section:not(#home) .layer{
+  position:relative;
+  z-index: 1;
+}
+    
+@media (max-width: 768px){
+  .section:not(#home)::before{
+    background-size: 75vw auto;   /* <<< Mobile Größe */
+  }
 }
 
-   
+
   </style>
 </head>
 
@@ -488,7 +511,8 @@
 
       <!-- ABOUT -->
       <section class="section" id="about">
-        <div class="wm wmOther"></div>
+        <div class="wm wmOther">
+        </div>
         <div class="secInner layer">
           <div class="titleBand">
             <img class="titleImg" src="About.png" alt="About" />
@@ -496,8 +520,23 @@
           <div class="contentBand">
             <div class="wrap">
               <p class="lead center">
-                <span class="hl">Tyke Life</span> Text von D.
-                Hier kommt euer finaler About-Text rein.
+                <span class="hl">Tyke Life</span> 
+
+Das Tyke Life Festival findet am 18. Juli statt – an Yves’ Geburtstag.
+
+Wir feiern nicht nur in Erinnerung, sondern in allem, was er verkörperte: authentisch, empathisch, immer nah bei den Menschen, kreativ und chaotisch, voller Ideen und überraschender Wendungen, exzessiv, lebendig, intensiv, grenzenlos.
+
+«Tyke Life» war seine Art zu leben – zwischen Musik, Kunst und Begegnung, immer auf der Suche nach Verbindung, innen wie aussen. Wie Yves selbst einmal schrieb:
+
+<em>During the last decade artistic expression through drawing and painting has always been and still is interlocked with my own inner process of growth. Throughout this process I more and more came to the realization that I really want to extract and communicate spiritual visions through artistic expression…</em>
+
+Kunst war für ihn kein Produkt, sondern Ausdruck seines inneren Prozesses – genau darum geht es an diesem Tag: mit Freunden zusammenzukommen, zu tanzen, zu lachen, sich zu erinnern – und das Leben zu feiern.
+
+Kein Abschied.
+Ein Geburtstag.
+
+Tyke lives where we meet.
+
               </p>
             </div>
           </div>
@@ -516,7 +555,7 @@
               <div class="infosGrid">
                 <div>
                   <p class="lead">
-                    <span class="hl">START:</span> 14:00&nbsp;&nbsp;
+                    <span class="hl">START:</span> 14:00<br/>
                     <span class="hl">ENDE:</span> 22:00<br/>
                     <span class="hl">DATUM:</span> TBA<br/>
                     <span class="hl">ORT:</span> TBA<br/>
@@ -543,9 +582,9 @@
           </div>
           <div class="contentBand">
             <div class="wrap">
-              <p class="lead center" style="margin-bottom:18px;">
-                Hover über einen Namen → <span class="hl">Foto kommt nach vorne</span>. Ohne Hover wechseln wir automatisch.
-              </p>
+             <!-- <p class="lead center" style="margin-bottom:18px;">
+                Hover über einen Namen → <span class="hl">Foto kommt nach vorne</span>. Ohne Hover wechseln wir automatisch. 
+              </p> -->
 
               <div class="lineupGrid">
                 <ul class="djList" aria-label="DJs">
@@ -597,7 +636,7 @@
             <div class="wrap">
               <p class="lead center">Alle Impressionen gibt’s auf Instagram.</p>
               <div class="btnrow" style="margin-top:16px;">
-                <a class="btn primary" href="https://instagram.com/" target="_blank" rel="noopener">INSTAGRAM</a>
+                <a class="btn primary" href="https://www.instagram.com/tykelife_festival/" target="_blank" rel="noopener">INSTAGRAM</a>
               </div>
             </div>
           </div>
@@ -736,25 +775,66 @@
       nextBtn.classList.add("show");
     }
 
-    const io = new IntersectionObserver((entries)=>{
-      const visible = entries
-        .filter(e=>e.isIntersecting)
-        .sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
-      if(!visible) return;
+// ===== Active section + Watermark (ohne IntersectionObserver) =====
+function getCurrentSection(){
+  const top = scroller.scrollTop;
+  let best = sections[0];
+  let bestDist = Infinity;
 
-      const secId = visible.target.id;
+  for(const s of sections){
+    const dist = Math.abs(s.offsetTop - top);
+    if(dist < bestDist){
+      bestDist = dist;
+      best = s;
+    }
+  }
+  return best;
+}
 
-      if(secId === "home") topnav.classList.remove("show");
-      else topnav.classList.add("show");
+function updateUI(){
+  const current = getCurrentSection();
+  const secId = current.id;
 
-      setActiveNav(secId);
+  // Topnav show/hide
+  if(secId === "home") topnav.classList.remove("show");
+  else topnav.classList.add("show");
 
-      const idx = sections.findIndex(s => s.id === secId);
-      setNextMode(idx === sections.length - 1);
+  // active nav link
+  setActiveNav(secId);
 
-    }, {threshold:[0.6,0.75,0.9]});
+  // next button mode
+  const idx = sections.findIndex(s => s.id === secId);
+  setNextMode(idx === sections.length - 1);
 
-    sections.forEach(s=>io.observe(s));
+  // watermark: nur aktuelle Section sichtbar
+  sections.forEach(s => s.classList.remove("wm-visible"));
+  if(secId !== "home"){
+    current.classList.add("wm-visible");
+  }
+}
+
+// throttle via rAF (smooth)
+let ticking = false;
+scroller.addEventListener("scroll", () => {
+  if(!ticking){
+    ticking = true;
+    requestAnimationFrame(() => {
+      updateUI();
+      ticking = false;
+    });
+  }
+});
+
+// initial
+setTimeout(updateUI, 60);
+
+
+    // initial: falls Observer erst spät feuert
+setTimeout(() => {
+  const firstNonHome = document.querySelector('#about');
+  if (firstNonHome) firstNonHome.classList.add('wm-visible');
+}, 200);
+
 
     nextBtn.addEventListener("click", ()=>{
       const current = getMostRelevantSection();
