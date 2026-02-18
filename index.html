@@ -521,7 +521,44 @@
   .cdNum{ font-size: 22px; }
 }
 
-    
+    /* privacyBanner */
+  .privacyBanner{
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 9999;
+  display: none;                 /* wird per JS eingeblendet */
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  background: rgba(252,248,205,.92);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(74,73,74,.12);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.privacyBanner a{
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.privacyBtn{
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: rgba(238,192,31,.18);
+  font: inherit;
+  font-weight: 950;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
+  
 
 /* Watermark Seite 2+ (statisch, funktioniert zuverlässig) */
 .section:not(#home)::before{
@@ -1054,7 +1091,35 @@ function updateCountdown(){
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
+    // ===== Privacy banner (localStorage) =====
+const privacyBanner = document.getElementById("privacyBanner");
+const privacyOk = document.getElementById("privacyOk");
+
+function showPrivacyBanner(){
+  if (!privacyBanner) return;
+  const seen = localStorage.getItem("privacy_ok");
+  if (!seen) privacyBanner.style.display = "flex";
+}
+
+privacyOk?.addEventListener("click", () => {
+  localStorage.setItem("privacy_ok", "1");
+  privacyBanner.style.display = "none";
+});
+
+// zeigen sobald Seite entsperrt ist
+setTimeout(showPrivacyBanner, 300);
+
     
   </script>
+  
+<!-- Privacy mini banner -->
+<div id="privacyBanner" class="privacyBanner" role="dialog" aria-live="polite">
+  <div class="privacyText">
+    Wir nutzen anonymes Analytics (Cloudflare Web Analytics), um Besucherzahlen zu verstehen.
+    <a href="privacy.html">Datenschutz</a>
+  </div>
+  <button id="privacyOk" class="privacyBtn">OK</button>
+</div>
+
 </body>
 </html>
