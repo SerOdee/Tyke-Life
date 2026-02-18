@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Tyke-Life Festival – About, Infos, Lineup, Tickets, Impressionen, Kontakt." />
-  <title>Tyke-Life</title>
+  <meta name="description" content="Tyke Life Festival – About, Infos, Lineup, Tickets, Impressionen, Kontakt." />
+  <title>Tyke Life</title>
 
   <style>
     :root{
@@ -22,7 +22,7 @@
       --homeLogoOffsetY: -120px; /* <<< LOGO VERSCHIEBUNG (ÄNDERN) */
 
       /* ======= TITELBAND (Seite 2+) ======= */
-      --titleBandHeight: 140px; /* <<< TITELBAND HÖHE (ÄNDERN) */
+      --titleBandHeight: 250px; /* <<< TITELBAND HÖHE (ÄNDERN) */
       --titleBandTopPadDesktop: 200px; /* <<< Abstand unter Menü (Desktop) */
       --titleBandTopPadMobile: 200px;  /* <<< Abstand unter Menü (Mobile) */
 
@@ -195,7 +195,7 @@
       display:flex;
       gap: 10px;
       align-items:center;
-      padding: 10px 12px;
+      padding: 16px 20px;
       background: rgba(252,248,205,.78);
       backdrop-filter: blur(4px);
 
@@ -214,7 +214,7 @@
       font-weight: 950;
       letter-spacing:.4px;
       text-transform: uppercase;
-      font-size: 12px;
+      font-size: 16px;
       padding: 8px 10px;
       border-radius: 12px;
       border: 1px solid transparent;
@@ -447,6 +447,82 @@
     }
 
 
+   
+    /* ===== ABOUT Layout ===== */
+
+.aboutGrid{
+  display: flex;              /* <<< flex statt grid (stabiler) */
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.aboutText{
+  max-width: 500px;   /* <<< HIER Textbreite einstellen */
+}
+
+.aboutImage{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.aboutImage img{
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid var(--stroke);
+  background: rgba(252,248,205,.6);
+}
+
+/* Mobile */
+@media (max-width: 860px){
+  .aboutGrid{
+    flex-direction: column;   /* <<< jetzt untereinander */
+    text-align: center;
+  }
+
+  .aboutImage{
+    margin-top: 20px;
+  }
+}
+
+/* ===== Countdown ===== */
+.countdown{
+  display:flex;
+  gap: 12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top: 14px;
+}
+.cdBox{
+  min-width: 92px;
+  padding: 12px 12px;
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  background: rgba(252,248,205,.55);
+  text-align:center;
+}
+.cdNum{
+  font-weight: 950;
+  font-size: 26px;
+  letter-spacing: .5px;
+}
+.cdLbl{
+  margin-top: 4px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: rgba(74,73,74,.75);
+}
+@media (max-width: 560px){
+  .cdBox{ min-width: 78px; }
+  .cdNum{ font-size: 22px; }
+}
+
+    
+
 /* Watermark Seite 2+ (statisch, funktioniert zuverlässig) */
 .section:not(#home)::before{
   content:"";
@@ -509,39 +585,48 @@
         </div>
       </section>
 
-      <!-- ABOUT -->
-      <section class="section" id="about">
-        <div class="wm wmOther">
-        </div>
-        <div class="secInner layer">
-          <div class="titleBand">
-            <img class="titleImg" src="About.png" alt="About" />
+ <!-- ABOUT -->
+<section class="section" id="about">
+  <div class="wm wmOther"></div>
+
+  <div class="secInner layer">
+    <div class="titleBand">
+      <img class="titleImg" src="About.png" alt="About" />
+    </div>
+
+    <div class="contentBand">
+      <div class="wrap">
+        <div class="aboutGrid">
+
+          <div class="aboutText">
+            <p class="lead">
+              Das Tyke Life Festival findet am 18. Juli statt – an Yves’ Geburtstag.
+              <br><br>
+              Wir feiern nicht nur in Erinnerung, sondern in allem, was er verkörperte: authentisch, empathisch, immer nah bei den Menschen; kreativ und chaotisch, voller Ideen und überraschender Wendungen; exzessiv, lebendig, intensiv, grenzenlos.
+              <br>
+              «Tyke Life» war seine Art zu leben – zwischen Musik, Kunst und Begegnung, immer auf der Suche nach Verbindung, innen wie aussen. Wie Yves selbst einmal schrieb:
+              <br><br>
+              <em>During the last decade artistic expression through drawing and painting has always been and still is interlocked with my own inner process of growth. Throughout this process I more and more came to the realization that I really want to extract and communicate spiritual visions through artistic expression…</em>
+              <br><br>
+              Kunst war für ihn kein Produkt, sondern Ausdruck seines inneren Prozesses – genau darum geht es an diesem Tag: mit Freunden zusammenzukommen, zu tanzen, zu lachen, sich zu erinnern – und das Leben zu feiern.
+              <br><br>
+              Kein Abschied <br>
+              Ein Geburtstag
+              <br><br>
+              Tyke lives where we meet
+            </p>
           </div>
-          <div class="contentBand">
-            <div class="wrap">
-              <p class="lead center">
-                <span class="hl">Tyke Life</span> 
 
-Das Tyke Life Festival findet am 18. Juli statt – an Yves’ Geburtstag.
-
-Wir feiern nicht nur in Erinnerung, sondern in allem, was er verkörperte: authentisch, empathisch, immer nah bei den Menschen, kreativ und chaotisch, voller Ideen und überraschender Wendungen, exzessiv, lebendig, intensiv, grenzenlos.
-
-«Tyke Life» war seine Art zu leben – zwischen Musik, Kunst und Begegnung, immer auf der Suche nach Verbindung, innen wie aussen. Wie Yves selbst einmal schrieb:
-
-<em>During the last decade artistic expression through drawing and painting has always been and still is interlocked with my own inner process of growth. Throughout this process I more and more came to the realization that I really want to extract and communicate spiritual visions through artistic expression…</em>
-
-Kunst war für ihn kein Produkt, sondern Ausdruck seines inneren Prozesses – genau darum geht es an diesem Tag: mit Freunden zusammenzukommen, zu tanzen, zu lachen, sich zu erinnern – und das Leben zu feiern.
-
-Kein Abschied.
-Ein Geburtstag.
-
-Tyke lives where we meet.
-
-              </p>
-            </div>
+          <div class="aboutImage">
+            <img src="AboutYves.png" alt="Yves" />
           </div>
+
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       <!-- INFOS -->
       <section class="section" id="infos">
@@ -561,13 +646,16 @@ Tyke lives where we meet.
                     <span class="hl">ORT:</span> TBA<br/>
                     <span class="hl">MUSIK:</span> Techno
                   </p>
+                  <br/><br/>
+                  <p class="fine" id="ticketHint">more to come soon...</p>
                 </div>
 
                 <div>
                   <img class="map" src="Karte.png" alt="Kartenausschnitt" />
-                  <div class="fine" style="text-align:left;margin-top:8px">Karte.png</div>
+                  <div class="fine" style="text-align:left;margin-top:8px">X marks the spot</div>
                 </div>
               </div>
+              
             </div>
           </div>
         </div>
@@ -615,12 +703,22 @@ Tyke lives where we meet.
           </div>
           <div class="contentBand">
             <div class="wrap">
-              <p class="lead center"><span class="hl">Vorverkauf</span> folgt.</p>
-              <div class="btnrow" style="margin-top:16px;">
-                <a class="btn primary" href="https://example.com" target="_blank" rel="noopener">TICKET LINK</a>
+              <p class="lead center"><span class="hl">Early Bird</span> vorverkauf startet in:</p>
+            
+              <div id="countdown" class="countdown" aria-live="polite">
+                <div class="cdBox"><div class="cdNum" id="cdDays">--</div><div class="cdLbl">Tage</div></div>
+                <div class="cdBox"><div class="cdNum" id="cdHours">--</div><div class="cdLbl">Std</div></div>
+                <div class="cdBox"><div class="cdNum" id="cdMins">--</div><div class="cdLbl">Min</div></div>
+                <div class="cdBox"><div class="cdNum" id="cdSecs">--</div><div class="cdLbl">Sek</div></div>
               </div>
-              <p class="fine">Link später ersetzen.</p>
+            
+              <div id="ticketBtnWrap" class="btnrow" style="margin-top:16px; display:none;">
+                <a class="btn primary" id="ticketLink" href="https://example.com" target="_blank" rel="noopener">TICKET LINK</a>
+              </div>
+            
+              <p class="fine" id="ticketHint">be ready, Tickets are limited!</p>
             </div>
+
           </div>
         </div>
       </section>
@@ -634,7 +732,7 @@ Tyke lives where we meet.
           </div>
           <div class="contentBand">
             <div class="wrap">
-              <p class="lead center">Alle Impressionen gibt’s auf Instagram.</p>
+              <p class="lead center">Alle Impressionen und wichtige Updates findest du auf Instagram.</p>
               <div class="btnrow" style="margin-top:16px;">
                 <a class="btn primary" href="https://www.instagram.com/tykelife_festival/" target="_blank" rel="noopener">INSTAGRAM</a>
               </div>
@@ -901,6 +999,60 @@ setTimeout(() => {
         activate(file);
       });
     });
+
+    /* =========================
+   Tickets Countdown -> Link wenn 0
+   ========================= */
+
+// >>> HIER SPÄTER ÄNDERN (Datum/Uhrzeit & Link)
+const TICKET_LAUNCH = "2026-03-01T18:00:00+01:00"; // <<< Startzeit Vorverkauf (ISO, mit Zeitzone)
+const TICKET_URL = "https://example.com";          // <<< Ticket-Link
+
+const cd = {
+  wrap: document.getElementById("countdown"),
+  days: document.getElementById("cdDays"),
+  hrs:  document.getElementById("cdHours"),
+  mins: document.getElementById("cdMins"),
+  secs: document.getElementById("cdSecs"),
+};
+
+const ticketBtnWrap = document.getElementById("ticketBtnWrap");
+const ticketLink = document.getElementById("ticketLink");
+const ticketHint = document.getElementById("ticketHint");
+
+ticketLink.href = TICKET_URL;
+
+function pad2(n){ return String(n).padStart(2,"0"); }
+
+function updateCountdown(){
+  const target = new Date(TICKET_LAUNCH).getTime();
+  const now = Date.now();
+  let diff = target - now;
+
+  if (diff <= 0){
+    // Countdown fertig -> Button zeigen
+    cd.wrap.style.display = "none";
+    ticketBtnWrap.style.display = "flex";
+    ticketHint.textContent = "Tickets sind jetzt verfügbar.";
+    return;
+  }
+
+  const s = Math.floor(diff / 1000);
+  const days = Math.floor(s / 86400);
+  const hours = Math.floor((s % 86400) / 3600);
+  const mins  = Math.floor((s % 3600) / 60);
+  const secs  = s % 60;
+
+  cd.days.textContent = days;
+  cd.hrs.textContent  = pad2(hours);
+  cd.mins.textContent = pad2(mins);
+  cd.secs.textContent = pad2(secs);
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+    
   </script>
 </body>
 </html>
