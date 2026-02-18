@@ -447,28 +447,46 @@
     }
 
     /* ===== ABOUT Layout ===== */
+/* ===== ABOUT Layout ===== */
 
 .aboutGrid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  display: flex;              /* <<< flex statt grid (stabiler) */
   align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.aboutText{
+  flex: 1;
+}
+
+.aboutImage{
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .aboutImage img{
   width: 100%;
+  max-width: 450px;
   height: auto;
   border-radius: 18px;
   border: 1px solid var(--stroke);
   background: rgba(252,248,205,.6);
 }
 
-/* Mobile: Bild unter Text */
+/* Mobile */
 @media (max-width: 860px){
   .aboutGrid{
-    grid-template-columns: 1fr;
+    flex-direction: column;   /* <<< jetzt untereinander */
+    text-align: center;
+  }
+
+  .aboutImage{
+    margin-top: 20px;
   }
 }
+
 
 
 /* Watermark Seite 2+ (statisch, funktioniert zuverlässig) */
@@ -550,20 +568,21 @@
                 <span class="hl"></span> 
 
 Das Tyke Life Festival findet am 18. Juli statt – an Yves’ Geburtstag.
-                <br><br>
+                <br>
 
 Wir feiern nicht nur in Erinnerung, sondern in allem, was er verkörperte: authentisch, empathisch, immer nah bei den Menschen, kreativ und chaotisch, voller Ideen und überraschender Wendungen, exzessiv, lebendig, intensiv, grenzenlos.
-                <br><br>
+                <br>
 «Tyke Life» war seine Art zu leben – zwischen Musik, Kunst und Begegnung, immer auf der Suche nach Verbindung, innen wie aussen. Wie Yves selbst einmal schrieb:
-                <br><br>
+                <br>
 <em>During the last decade artistic expression through drawing and painting has always been and still is interlocked with my own inner process of growth. Throughout this process I more and more came to the realization that I really want to extract and communicate spiritual visions through artistic expression…</em>
-                <br><br>
+                <br>
 Kunst war für ihn kein Produkt, sondern Ausdruck seines inneren Prozesses – genau darum geht es an diesem Tag: mit Freunden zusammenzukommen, zu tanzen, zu lachen, sich zu erinnern – und das Leben zu feiern.
-                <br><br>                <br><br>
-Kein Abschied.                <br><br>
+                <br>
+Kein Abschied.<br>
 Ein Geburtstag.
-                <br><br>                <br><br>
+                <br>
 Tyke lives where we meet.
+          
       <div class="aboutImage">
         <img src="AboutYves.png" alt="Yves" />
       </div>
