@@ -521,6 +521,27 @@
   .cdNum{ font-size: 22px; }
 }
 
+/* Watermark Seite 2+ (statisch, funktioniert zuverlässig) */
+.section:not(#home)::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background: url("watermark.png") center / 900px auto no-repeat;
+  opacity: 0.03;  /* <<< Stärke */
+  z-index: 0;
+}
+.section:not(#home) .layer{
+  position:relative;
+  z-index: 1;
+}
+    
+@media (max-width: 768px){
+  .section:not(#home)::before{
+    background-size: 75vw auto;   /* <<< Mobile Größe */
+  }
+}
+
     /* privacyBanner */
   .privacyBanner{
   position: fixed;
@@ -558,30 +579,7 @@
   cursor: pointer;
   white-space: nowrap;
 }
-  
-
-/* Watermark Seite 2+ (statisch, funktioniert zuverlässig) */
-.section:not(#home)::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background: url("watermark.png") center / 900px auto no-repeat;
-  opacity: 0.03;  /* <<< Stärke */
-  z-index: 0;
-}
-.section:not(#home) .layer{
-  position:relative;
-  z-index: 1;
-}
     
-@media (max-width: 768px){
-  .section:not(#home)::before{
-    background-size: 75vw auto;   /* <<< Mobile Größe */
-  }
-}
-
-
   </style>
 </head>
 
