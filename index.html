@@ -709,6 +709,30 @@ html{
   color:#6cc4c7;
 }
 
+    /* ===== Smart Mail ===== */
+
+.mailSmart{
+  cursor: pointer;
+  position: relative;
+  border-bottom: 1px solid var(--stroke);
+  transition: color .3s ease, border-color .3s ease;
+}
+
+.mailSmart:hover{
+  color: #6cc4c7;
+  border-color: #6cc4c7;
+}
+
+/* Fade-in Effekt */
+.mailSmart.revealed{
+  animation: mailFade .35s ease forwards;
+}
+
+@keyframes mailFade{
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
     
   </style>
 </head>
@@ -885,7 +909,7 @@ html{
           <div class="faqItem">
             <button class="faqQuestion">Fundsachen</button>
             <div class="faqAnswer">
-              <p>Bitte meldet euch unter <button class="mailReveal">E-Mail anzeigen</button>.</p>
+              <p>Bitte meldet euch unter <span class="mailSmart">info@…</span>.</p>
             </div>
           </div>
 
@@ -1018,7 +1042,7 @@ html{
         <div class="contactBlock">
           <p class="contactLabel">Kontakt</p>
           <p class="contactMail">
-            <button class="mailReveal">E-Mail anzeigen</button>
+            <span class="mailSmart">info@…</span>
           </p>
         </div>
 
@@ -1377,23 +1401,24 @@ setTimeout(showPrivacyBanner, 300);
 });
 
 
-// ===== Mail Reveal (on click) =====
+// ===== Smart Mail (Hover Text + Click Open + Fade) =====
 (function(){
   const user = "info";
   const domain = "tyke-life.ch";
   const email = user + "@" + domain;
 
-  document.querySelectorAll(".mailReveal").forEach(btn=>{
-    btn.addEventListener("click", function(){
+  document.querySelectorAll(".mailSmart").forEach(el => {
 
-      // Mail-Link erzeugen
-      const link = document.createElement("a");
-      link.href = "mailto:" + email;
-      link.textContent = email;
+    el.addEventListener("click", function(){
 
-      // Button ersetzen
-      this.replaceWith(link);
+      // Text ersetzen mit echter Mail
+      this.textContent = email;
+      this.classList.add("revealed");
+
+      // Mailprogramm öffnen
+      window.location.href = "mailto:" + email;
     });
+
   });
 })();
 
