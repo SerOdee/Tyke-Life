@@ -870,7 +870,7 @@ html{
           <div class="faqItem">
             <button class="faqQuestion">Fundsachen</button>
             <div class="faqAnswer">
-              <p>Bitte meldet euch unter <span id="mail"></span>.</p>
+              <p>Bitte meldet euch unter <span id="mailto"></span>.</p>
             </div>
           </div>
 
@@ -1003,7 +1003,7 @@ html{
         <div class="contactBlock">
           <p class="contactLabel">Kontakt</p>
           <p class="contactMail">
-            <span id="mail"></span>
+            <span id="mailto"></span>
           </p>
         </div>
 
@@ -1368,7 +1368,7 @@ setTimeout(showPrivacyBanner, 300);
   const domain = "tyke-life.ch";
   const email = user + "@" + domain;
 
-  const container = document.getElementById("mail");
+  const container = document.getElementById("mailto");
   if(container){
     container.innerHTML =
       '<a href="mailto:' + email + '">' + email + '</a>';
