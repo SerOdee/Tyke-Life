@@ -694,6 +694,21 @@ html{
   text-decoration: none;
   border-bottom: 1px solid var(--stroke);
 }
+
+.mailReveal{
+  background:none;
+  border:none;
+  padding:0;
+  font:inherit;
+  cursor:pointer;
+  border-bottom:1px solid var(--stroke);
+  color: var(--text);
+}
+
+.mailReveal:hover{
+  color:#6cc4c7;
+}
+
     
   </style>
 </head>
@@ -870,7 +885,7 @@ html{
           <div class="faqItem">
             <button class="faqQuestion">Fundsachen</button>
             <div class="faqAnswer">
-              <p>Bitte meldet euch unter <span class="mailObfuscated"></span>.</p>
+              <p>Bitte meldet euch unter <button class="mailReveal">E-Mail anzeigen</button>.</p>
             </div>
           </div>
 
@@ -1003,7 +1018,7 @@ html{
         <div class="contactBlock">
           <p class="contactLabel">Kontakt</p>
           <p class="contactMail">
-            <span class="mailObfuscated"></span>
+            <button class="mailReveal">E-Mail anzeigen</button>
           </p>
         </div>
 
@@ -1362,13 +1377,25 @@ setTimeout(showPrivacyBanner, 300);
 });
 
 
-// ===== m ail =====
+// ===== Mail Reveal (on click) =====
+(function(){
+  const user = "info";
+  const domain = "tyke-life.ch";
+  const email = user + "@" + domain;
 
-const email = "info" + "@" + "tyke-life.ch";
+  document.querySelectorAll(".mailReveal").forEach(btn=>{
+    btn.addEventListener("click", function(){
 
-document.querySelectorAll(".mailObfuscated").forEach(el => {
-  el.innerHTML = `<a href="mailto:${email}">${email}</a>`;
-});
+      // Mail-Link erzeugen
+      const link = document.createElement("a");
+      link.href = "mailto:" + email;
+      link.textContent = email;
+
+      // Button ersetzen
+      this.replaceWith(link);
+    });
+  });
+})();
 
   </script>
   
