@@ -841,7 +841,7 @@ html{
           <div class="faqItem">
             <button class="faqQuestion">Fundsachen</button>
             <div class="faqAnswer">
-              <p>Bitte meldet euch unter <span id="Mail"></span>.</p>
+              <p>Bitte meldet euch unter <span id="mail"></span>.</p>
             </div>
           </div>
 
@@ -957,26 +957,41 @@ html{
         </div>
       </section>
 
-      <!-- KONTAKT -->
-      <section class="section" id="kontakt">
-        <div class="wm wmOther"></div>
-        <div class="secInner layer">
-          <div class="titleBand">
-            <img class="titleImg" src="Kontakt.png" alt="Kontakt" />
-          </div>
-          <div class="contentBand">
-            <div class="wrap">
-              <p class="lead center">
-                <p>Mail: <span id="Mail"></span>.</p>
-              </p>
-              <p class="fine" style="margin-top:18px;">
-                © <span id="y"></span> Tyke Life ·
-                <a href="#" id="logout" style="text-decoration:none;">Logout</a>
-              </p>
-            </div>
-          </div>
+<!-- KONTAKT -->
+<section class="section" id="kontakt">
+
+  <div class="secInner layer">
+
+    <!-- Titel -->
+    <div class="titleBand">
+      <img class="titleImg" src="Kontakt.png" alt="Kontakt" />
+    </div>
+
+    <!-- Content -->
+    <div class="contentBand">
+      <div class="wrap center">
+
+        <div class="contactBlock">
+          <p class="contactLabel">Kontakt</p>
+          <p class="contactMail">
+            <span id="mail"></span>
+          </p>
         </div>
-      </section>
+
+        <div class="contactFooter">
+          <p class="fine">
+            © <span id="y"></span> Tyke Life
+          </p>
+          <p class="fine">
+            <a href="#" id="logout" class="logoutLink">Logout</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
 
     </div>
   </div>
@@ -1324,7 +1339,7 @@ setTimeout(showPrivacyBanner, 300);
   const domain = "tyke-life.ch";
   const email = user + "@" + domain;
 
-  const container = document.getElementById("Mail");
+  const container = document.getElementById("mail");
   if(container){
     container.innerHTML =
       '<a href="mailto:' + email + '">' + email + '</a>';
