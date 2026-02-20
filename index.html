@@ -567,6 +567,10 @@
   letter-spacing: .6px;
   cursor: pointer;
   position: relative;
+
+  color: var(--text);            /* <<< FIX */
+  appearance: none;              /* <<< verhindert iOS Styling */
+  -webkit-appearance: none;      /* <<< Safari */
 }
 
 .faqQuestion::after{
