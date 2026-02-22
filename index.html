@@ -7,6 +7,30 @@
   <title>Tyke Life</title>
 
   <style>
+
+html, body{
+  height: 100%;
+  margin: 0;
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+  overflow-x: hidden;
+}
+
+.section{
+  min-height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-top: 1px solid rgba(108,196,199,.35);
+}
+
+.section:first-child{
+  border-top: none;
+}
+
+    
     :root{
       --bg: #fcf8cd;
       --text: #4a494a;
@@ -109,16 +133,6 @@
     #gateErr{display:none;color:#b24a4a;font-size:13px;margin-top:10px;text-align:center}
 
     #content{display:none; position:relative; z-index: 1;}
-
-/* ===== Scroll Container + Fullscreen Sections (Snap wie vorher) ===== */
-
-.scroller{
-  height: 100vh;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;   /* <<< wieder Sektion zu Sektion */
-  scroll-behavior: smooth;
-  position: relative;
-}
 
 /* Jede Sektion ist exakt 1 Screen hoch */
 .section{
@@ -809,7 +823,7 @@ html{
       </svg>
     </button>
 
-    <div class="scroller" id="scroller">
+
       <!-- HOME -->
       <section class="section" id="home" style="padding:0;border-top:none;">
         <div class="wm wmHome"></div>
@@ -1134,120 +1148,113 @@ html{
   <button id="privacyOk" class="privacyBtn">OK</button>
 </div>
   
-  <script>
-    /* =========================
-       Passwortschutz (Cookie)
-       ========================= */
-    const PASSWORD = "Yves";   // <<< HIER Passwort setzen
-    const COOKIE_NAME = "tyke_access";
-    const COOKIE_DAYS = 14;
+<script>
+/* =========================
+   Tyke Life – Core Script (clean + stable)
+   ========================= */
 
-    const gate = document.getElementById("gate");
-    const content = document.getElementById("content");
-    const err = document.getElementById("gateErr");
-    const pwInput = document.getElementById("pw");
+/* =========================
+   Passwortschutz (Cookie)
+   ========================= */
+const PASSWORD = "Yves";   // <<< HIER Passwort setzen
+const COOKIE_NAME = "tyke_access";
+const COOKIE_DAYS = 14;
 
-    function setCookie(name, value, days){
-      const d = new Date();
-      d.setTime(d.getTime() + (days*24*60*60*1000));
-      document.cookie = `${name}=${encodeURIComponent(value)}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
-    }
-    function getCookie(name){
-      const needle = name + "=";
-      return document.cookie.split(";").map(c=>c.trim()).find(c=>c.startsWith(needle))?.slice(needle.length) || "";
-    }
-    function unlock(){
-      gate.style.display = "none";
-      content.style.display = "block";
-    }
-    function lock(){
-      gate.style.display = "flex";
-      content.style.display = "none";
-    }
+const gate = document.getElementById("gate");
+const content = document.getElementById("content");
+const err = document.getElementById("gateErr");
+const pwInput = document.getElementById("pw");
 
-    if (decodeURIComponent(getCookie(COOKIE_NAME)) === "ok") unlock(); else lock();
+function setCookie(name, value, days){
+  const d = new Date();
+  d.setTime(d.getTime() + (days*24*60*60*1000));
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
+}
+function getCookie(name){
+  const needle = name + "=";
+  return document.cookie.split(";").map(c=>c.trim()).find(c=>c.startsWith(needle))?.slice(needle.length) || "";
+}
+function unlock(){
+  gate.style.display = "none";
+  content.style.display = "block";
+}
+function lock(){
+  gate.style.display = "flex";
+  content.style.display = "none";
+}
 
-    document.getElementById("enter").addEventListener("click", () => {
-      if (pwInput.value === PASSWORD) {
-        setCookie(COOKIE_NAME, "ok", COOKIE_DAYS);
-        unlock();
-      } else {
-        err.style.display = "block";
-        pwInput.select();
-      }
-    });
-    pwInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") document.getElementById("enter").click();
-    });
+if (decodeURIComponent(getCookie(COOKIE_NAME)) === "ok") unlock(); else lock();
 
-    document.getElementById("logout").addEventListener("click", (e) => {
-      e.preventDefault();
-      setCookie(COOKIE_NAME, "", -1);
-      location.reload();
-    });
+document.getElementById("enter")?.addEventListener("click", () => {
+  if (pwInput?.value === PASSWORD) {
+    setCookie(COOKIE_NAME, "ok", COOKIE_DAYS);
+    unlock();
+  } else {
+    if(err) err.style.display = "block";
+    pwInput?.select();
+  }
+});
+pwInput?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") document.getElementById("enter")?.click();
+});
 
-    document.getElementById("y").textContent = new Date().getFullYear();
+document.getElementById("logout")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  setCookie(COOKIE_NAME, "", -1);
+  location.reload();
+});
 
-    /* =========================
-       Topnav (nur ab Seite 2) + active
-       ========================= */
-    const scroller = document.getElementById("scroller");
-    const topnav = document.getElementById("topnav");
-    const navLinks = Array.from(topnav.querySelectorAll("a"));
-    const sections = Array.from(document.querySelectorAll(".section"));
+const yearEl = document.getElementById("y");
+if(yearEl) yearEl.textContent = new Date().getFullYear();
 
-    function setActiveNav(secId){
-      navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + secId));
-    }
+/* =========================
+   Scroll / Navigation (stabil)
+   - nutzt deinen .scroller Container
+   - nutzt IntersectionObserver (root=scroller)
+   - KEINE wheel-hacks mehr
+   ========================= */
+const scroller = document.getElementById("scroller");
+const topnav = document.getElementById("topnav");
+const nextBtn = document.getElementById("nextBtn");
+const nextPath = document.getElementById("nextPath");
 
-    navLinks.forEach(a=>{
-      a.addEventListener("click", (e)=>{
-        e.preventDefault();
-        const id = a.getAttribute("href");
-        const target = document.querySelector(id);
-        if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
-      });
-    });
+const sections = Array.from(document.querySelectorAll(".section"));
+const navLinks = topnav ? Array.from(topnav.querySelectorAll("a")) : [];
 
-    /* =========================
-       Next button: last section becomes "Top"
-       ========================= */
-    const nextBtn = document.getElementById("nextBtn");
-    const nextPath = document.getElementById("nextPath");
-    let modeTop = false;
+function setActiveNav(secId){
+  navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + secId));
+}
 
-    function getMostRelevantSection(){
-      const scrollTop = scroller.scrollTop;
-      let best = sections[0];
-      let bestDist = Infinity;
-      for(const s of sections){
-        const dist = Math.abs(s.offsetTop - scrollTop);
-        if(dist < bestDist){
-          bestDist = dist;
-          best = s;
-        }
-      }
-      return best;
-    }
+navLinks.forEach(a=>{
+  a.addEventListener("click", (e)=>{
+    e.preventDefault();
+    const id = a.getAttribute("href");
+    const target = id ? document.querySelector(id) : null;
+    if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+});
 
-    function setNextMode(isTop){
-      modeTop = isTop;
-      if(isTop){
-        nextPath.setAttribute("d", "M6 15l6-6 6 6"); // up
-        nextBtn.setAttribute("aria-label", "Top");
-      }else{
-        nextPath.setAttribute("d", "M6 9l6 6 6-6");  // down
-        nextBtn.setAttribute("aria-label", "Next section");
-      }
-      nextBtn.classList.add("show");
-    }
+let modeTop = false;
+function setNextMode(isTop){
+  modeTop = isTop;
+  if(!nextBtn || !nextPath) return;
 
-// ===== Active section + Watermark (ohne IntersectionObserver) =====
-function getCurrentSection(){
+  if(isTop){
+    nextPath.setAttribute("d", "M6 15l6-6 6 6"); // up
+    nextBtn.setAttribute("aria-label", "Top");
+  }else{
+    nextPath.setAttribute("d", "M6 9l6 6 6-6");  // down
+    nextBtn.setAttribute("aria-label", "Next section");
+  }
+  nextBtn.classList.add("show");
+}
+
+// sichtbare Section bestimmen (für nextBtn)
+function currentSectionByScroll(){
+  if(!scroller) return sections[0] || null;
   const top = scroller.scrollTop;
-  let best = sections[0];
+  let best = sections[0] || null;
   let bestDist = Infinity;
-
   for(const s of sections){
     const dist = Math.abs(s.offsetTop - top);
     if(dist < bestDist){
@@ -1258,121 +1265,122 @@ function getCurrentSection(){
   return best;
 }
 
-function updateUI(){
-  const current = getCurrentSection();
-  const secId = current.id;
+// IO: active + topnav + watermark + next mode
+function applyActive(secId){
+  if(!secId) return;
 
-  // Topnav show/hide
-  if(secId === "home") topnav.classList.remove("show");
-  else topnav.classList.add("show");
+  // Topnav show/hide (nur ab Seite 2)
+  if(topnav){
+    if(secId === "home") topnav.classList.remove("show");
+    else topnav.classList.add("show");
+  }
 
-  // active nav link
+  // active link
   setActiveNav(secId);
 
-  // next button mode
+  // next mode
   const idx = sections.findIndex(s => s.id === secId);
   setNextMode(idx === sections.length - 1);
 
-  // watermark: nur aktuelle Section sichtbar
+  // watermark sichtbar auf allen ausser home (oder passe es an wenn du willst)
   sections.forEach(s => s.classList.remove("wm-visible"));
-  if(secId !== "home"){
-    current.classList.add("wm-visible");
-  }
+  const cur = sections[idx] || null;
+  if(cur && secId !== "home") cur.classList.add("wm-visible");
 }
 
-// throttle via rAF (smooth)
-let ticking = false;
-scroller.addEventListener("scroll", () => {
-  if(!ticking){
-    ticking = true;
-    requestAnimationFrame(() => {
-      updateUI();
-      ticking = false;
-    });
+// IntersectionObserver nur wenn scroller existiert
+if(scroller && sections.length){
+  const io = new IntersectionObserver((entries)=>{
+    // beste sichtbare section
+    const vis = entries
+      .filter(e=>e.isIntersecting)
+      .sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
+
+    if(!vis) return;
+    applyActive(vis.target.id);
+  }, {
+    root: scroller,
+    threshold: [0.25, 0.5, 0.75]
+  });
+
+  sections.forEach(s => io.observe(s));
+
+  // initial state
+  setTimeout(() => {
+    const cur = currentSectionByScroll();
+    if(cur) applyActive(cur.id);
+    if(nextBtn) nextBtn.classList.add("show");
+  }, 80);
+}
+
+nextBtn?.addEventListener("click", ()=>{
+  const cur = currentSectionByScroll();
+  if(!cur) return;
+  const idx = sections.findIndex(s => s.id === cur.id);
+
+  if(modeTop){
+    document.getElementById("home")?.scrollIntoView({behavior:"smooth", block:"start"});
+    return;
   }
+  const next = sections[Math.min(idx + 1, sections.length - 1)];
+  if(next) next.scrollIntoView({behavior:"smooth", block:"start"});
 });
 
-// initial
-setTimeout(updateUI, 60);
+/* =========================
+   LINEUP hover + auto cycle
+   ========================= */
+const djLinks = Array.from(document.querySelectorAll(".djLink"));
+const pics = Array.from(document.querySelectorAll(".gallery .pic"));
 
+let hoverLock = false;
+let autoIdx = 0;
+const order = ["Floostix.jpg","arearge.jpg","Livio.jpg","DJ4.jpg"];
 
-    // initial: falls Observer erst spät feuert
-setTimeout(() => {
-  const firstNonHome = document.querySelector('#about');
-  if (firstNonHome) firstNonHome.classList.add('wm-visible');
-}, 200);
+function activate(file){
+  pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
+}
+if(pics.length) activate(order[0]);
 
+function startAuto(){
+  return setInterval(()=>{
+    if(hoverLock) return;
+    autoIdx = (autoIdx + 1) % order.length;
+    activate(order[autoIdx]);
+  }, 2600); // <<< etwas schneller
+}
+let timer = startAuto();
 
-    nextBtn.addEventListener("click", ()=>{
-      const current = getMostRelevantSection();
-      const idx = sections.findIndex(s => s.id === current.id);
+function pauseAuto(){
+  hoverLock = true;
+  clearInterval(timer);
+}
+function resumeAuto(){
+  hoverLock = false;
+  clearInterval(timer);
+  timer = startAuto();
+}
 
-      if(modeTop){
-        document.getElementById("home").scrollIntoView({behavior:"smooth", block:"start"});
-        return;
-      }
-      const next = sections[Math.min(idx + 1, sections.length - 1)];
-      if(next) next.scrollIntoView({behavior:"smooth", block:"start"});
-    });
+djLinks.forEach(link=>{
+  const file = link.dataset.img;
 
-    setTimeout(()=>nextBtn.classList.add("show"), 60);
+  link.addEventListener("pointerenter", ()=>{
+    pauseAuto();
+    activate(file);
+  });
+  link.addEventListener("pointerleave", ()=>{
+    resumeAuto();
+  });
 
-    /* =========================
-       LINEUP hover
-       ========================= */
-    const djLinks = Array.from(document.querySelectorAll(".djLink"));
-    const pics = Array.from(document.querySelectorAll(".gallery .pic"));
+  link.addEventListener("click", (e)=>{
+    e.preventDefault();
+    pauseAuto();
+    activate(file);
+  });
+});
 
-    let hoverLock = false;
-    let autoIdx = 0;
-    const order = ["Floostix.jpg","arearge.jpg","Livio.jpg","DJ4.jpg"];
-
-    function activate(file){
-      pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
-    }
-    activate(order[0]);
-
-    function startAuto(){
-      return setInterval(()=>{
-        if(hoverLock) return;
-        autoIdx = (autoIdx + 1) % order.length;
-        activate(order[autoIdx]);
-      }, 3200);
-    }
-    let timer = startAuto();
-
-    function pauseAuto(){
-      hoverLock = true;
-      clearInterval(timer);
-    }
-    function resumeAuto(){
-      hoverLock = false;
-      clearInterval(timer);
-      timer = startAuto();
-    }
-
-    djLinks.forEach(link=>{
-      const file = link.dataset.img;
-
-      link.addEventListener("pointerenter", ()=>{
-        pauseAuto();
-        activate(file);
-      });
-      link.addEventListener("pointerleave", ()=>{
-        resumeAuto();
-      });
-
-      link.addEventListener("click", (e)=>{
-        e.preventDefault();
-        pauseAuto();
-        activate(file);
-      });
-    });
-
-    /* =========================
+/* =========================
    Tickets Countdown -> Link wenn 0
    ========================= */
-
 // >>> HIER SPÄTER ÄNDERN (Datum/Uhrzeit & Link)
 const TICKET_LAUNCH = "2026-03-01T18:00:00+01:00"; // <<< Startzeit Vorverkauf (ISO, mit Zeitzone)
 const TICKET_URL = "https://example.com";          // <<< Ticket-Link
@@ -1389,20 +1397,21 @@ const ticketBtnWrap = document.getElementById("ticketBtnWrap");
 const ticketLink = document.getElementById("ticketLink");
 const ticketHint = document.getElementById("ticketHint");
 
-ticketLink.href = TICKET_URL;
+if(ticketLink) ticketLink.href = TICKET_URL;
 
 function pad2(n){ return String(n).padStart(2,"0"); }
 
 function updateCountdown(){
+  if(!cd.wrap) return;
+
   const target = new Date(TICKET_LAUNCH).getTime();
   const now = Date.now();
   let diff = target - now;
 
   if (diff <= 0){
-    // Countdown fertig -> Button zeigen
     cd.wrap.style.display = "none";
-    ticketBtnWrap.style.display = "flex";
-    ticketHint.textContent = "Tickets sind jetzt verfügbar.";
+    if(ticketBtnWrap) ticketBtnWrap.style.display = "flex";
+    if(ticketHint) ticketHint.textContent = "Tickets sind jetzt verfügbar.";
     return;
   }
 
@@ -1412,16 +1421,17 @@ function updateCountdown(){
   const mins  = Math.floor((s % 3600) / 60);
   const secs  = s % 60;
 
-  cd.days.textContent = days;
-  cd.hrs.textContent  = pad2(hours);
-  cd.mins.textContent = pad2(mins);
-  cd.secs.textContent = pad2(secs);
+  if(cd.days) cd.days.textContent = String(days);
+  if(cd.hrs)  cd.hrs.textContent  = pad2(hours);
+  if(cd.mins) cd.mins.textContent = pad2(mins);
+  if(cd.secs) cd.secs.textContent = pad2(secs);
 }
-
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-    // ===== Privacy banner (localStorage) =====
+/* =========================
+   Privacy banner (localStorage)
+   ========================= */
 const privacyBanner = document.getElementById("privacyBanner");
 const privacyOk = document.getElementById("privacyOk");
 
@@ -1433,26 +1443,32 @@ function showPrivacyBanner(){
 
 privacyOk?.addEventListener("click", () => {
   localStorage.setItem("privacy_ok", "1");
-  privacyBanner.style.display = "none";
+  if(privacyBanner) privacyBanner.style.display = "none";
 });
 
 // zeigen sobald Seite entsperrt ist
 setTimeout(showPrivacyBanner, 300);
 
-    document.querySelectorAll(".faqQuestion").forEach(btn=>{
+/* =========================
+   FAQ Accordion (nur eins offen)
+   ========================= */
+document.querySelectorAll(".faqQuestion").forEach(btn=>{
   btn.addEventListener("click", ()=>{
     const item = btn.parentElement;
 
     document.querySelectorAll(".faqItem").forEach(i=>{
       if(i !== item){
         i.classList.remove("active");
-        i.querySelector(".faqAnswer").style.maxHeight = null;
+        const a = i.querySelector(".faqAnswer");
+        if(a) a.style.maxHeight = null;
       }
     });
 
     item.classList.toggle("active");
 
     const answer = item.querySelector(".faqAnswer");
+    if(!answer) return;
+
     if(item.classList.contains("active")){
       answer.style.maxHeight = answer.scrollHeight + "px";
     } else {
@@ -1461,94 +1477,25 @@ setTimeout(showPrivacyBanner, 300);
   });
 });
 
-
-// ===== Smart Mail (Hover Text + Click Open + Fade) =====
+/* =========================
+   Smart Mail (Hover Text + Click Open + Fade)
+   - zeigt "info@…" im HTML
+   - beim Klick ersetzt es und öffnet Mailprogramm
+   ========================= */
 (function(){
   const user = "info";
   const domain = "tyke-life.ch";
   const email = user + "@" + domain;
 
   document.querySelectorAll(".mailSmart").forEach(el => {
-
     el.addEventListener("click", function(){
-
-      // Text ersetzen mit echter Mail
       this.textContent = email;
       this.classList.add("revealed");
-
-      // Mailprogramm öffnen
       window.location.href = "mailto:" + email;
     });
-
   });
 })();
-    
-// Wheel-bubbling: wenn ContentBand am Ende/Anfang ist, scroller weiter scrollen
-document.querySelectorAll(".contentBand").forEach(band => {
-  band.addEventListener("wheel", (e) => {
-    const atTop = band.scrollTop <= 0;
-    const atBottom = Math.ceil(band.scrollTop + band.clientHeight) >= band.scrollHeight;
-
-    if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
-      // innerer scroll am limit -> parent scroller bewegen
-      scroller.scrollBy({ top: e.deltaY, behavior: "auto" });
-      e.preventDefault();
-    }
-  }, { passive: false });
-});
-
-// ===== Scroll from inner content to next/prev section (snap-safe) =====
-(function(){
-  const bands = document.querySelectorAll(".contentBand");
-  let lastJump = 0;
-  const COOLDOWN_MS = 650; // verhindert Mehrfach-Sprünge (Trackpad)
-
-  function getCurrentSectionIndex(){
-    const top = scroller.scrollTop;
-    let bestIdx = 0;
-    let bestDist = Infinity;
-    sections.forEach((s, i) => {
-      const dist = Math.abs(s.offsetTop - top);
-      if(dist < bestDist){
-        bestDist = dist;
-        bestIdx = i;
-      }
-    });
-    return bestIdx;
-  }
-
-  function jumpTo(idx){
-    const now = Date.now();
-    if(now - lastJump < COOLDOWN_MS) return;
-    lastJump = now;
-
-    const target = sections[Math.max(0, Math.min(sections.length - 1, idx))];
-    if(target) target.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  bands.forEach(band => {
-    band.addEventListener("wheel", (e) => {
-      // Nur vertikale Wheel-Events
-      if (Math.abs(e.deltaY) < 2) return;
-
-      const atTop = band.scrollTop <= 0;
-      const atBottom = Math.ceil(band.scrollTop + band.clientHeight) >= band.scrollHeight;
-
-      // Wenn noch normal im Band gescrollt werden kann -> nichts tun
-      if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
-
-      // Jetzt sind wir am Ende/Anfang -> Sektion wechseln
-      const idx = getCurrentSectionIndex();
-      if (e.deltaY > 0) jumpTo(idx + 1);
-      else jumpTo(idx - 1);
-
-      e.preventDefault();
-    }, { passive: false });
-  });
-})();
-
-    
-  </script>
+</script>
   
 </body>
 </html>
