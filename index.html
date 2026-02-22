@@ -598,20 +598,13 @@ document.addEventListener("DOMContentLoaded", function(){
 navLinks.forEach(a => {
   a.addEventListener("click", (e) => {
     e.preventDefault();
-    e.stopImmediatePropagation();   // extra Sicherheit
-
     const href = a.getAttribute("href");
     const target = document.querySelector(href);
-
     if (target && scroller) {
-      const offsetTop = target.offsetTop;   // relativ zum scroller
       scroller.scrollTo({
-        top: offsetTop,
+        top: target.offsetTop,
         behavior: "smooth"
       });
-
-      // Debug: sag mir was in der Konsole steht
-      console.log("Nav-Klick auf:", href, "→ scrollTo", offsetTop);
     }
   });
 });
@@ -647,14 +640,20 @@ navLinks.forEach(a => {
     if(cur) applyActive(cur.id);
   }, 150);
 
-  nextBtn.addEventListener("click", () => {
-    const curIdx = sections.findIndex(s => s.getBoundingClientRect().top > -50);
-    if(modeTop){
-      document.getElementById("home").scrollIntoView({behavior:"smooth"});
-    } else {
-      sections[curIdx + 1]?.scrollIntoView({behavior:"smooth"});
-    }
-  });
+nextBtn.addEventListener("click", () => {
+  if (modeTop) {
+    scroller.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+  const curIdx = sections.findIndex(s => s.getBoundingClientRect().top > -50);
+  const nextSection = sections[curIdx + 1];
+  if (nextSection && scroller) {
+    scroller.scrollTo({
+      top: nextSection.offsetTop,
+      behavior: "smooth"
+    });
+  }
+});
 
   // ====================== LINEUP – Hover + Auto-Cycle ======================
   const djLinks = document.querySelectorAll(".djLink");
