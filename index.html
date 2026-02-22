@@ -1487,24 +1487,26 @@ setTimeout(showPrivacyBanner, 300);
 /* =========================
    FAQ Accordion (nur eins offen)
    ========================= */
-document.querySelectorAll(".faqQuestion").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    const item = btn.parentElement;
+document.querySelectorAll(".faqQuestion").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const item = btn.closest(".faqItem");
+    if (!item) return;
 
-    document.querySelectorAll(".faqItem").forEach(i=>{
-      if(i !== item){
+    // alle anderen schliessen
+    document.querySelectorAll(".faqItem").forEach(i => {
+      if (i !== item) {
         i.classList.remove("active");
         const a = i.querySelector(".faqAnswer");
-        if(a) a.style.maxHeight = null;
+        if (a) a.style.maxHeight = null;
       }
     });
 
+    // aktuelles togglen
     item.classList.toggle("active");
-
     const answer = item.querySelector(".faqAnswer");
-    if(!answer) return;
+    if (!answer) return;
 
-    if(item.classList.contains("active")){
+    if (item.classList.contains("active")) {
       answer.style.maxHeight = answer.scrollHeight + "px";
     } else {
       answer.style.maxHeight = null;
@@ -1514,13 +1516,9 @@ document.querySelectorAll(".faqQuestion").forEach(btn=>{
 
 /* =========================
    Smart Mail (Hover Text + Click Open + Fade)
-   - zeigt "info@…" im HTML
-   - beim Klick ersetzt es und öffnet Mailprogramm
    ========================= */
 (function(){
-  const user = "info";
-  const domain = "tyke-life.ch";
-  const email = user + "@" + domain;
+  const email = "info" + "@" + "tyke-life.ch";
 
   document.querySelectorAll(".mailSmart").forEach(el => {
     el.addEventListener("click", function(){
@@ -1530,6 +1528,9 @@ document.querySelectorAll(".faqQuestion").forEach(btn=>{
     });
   });
 })();
+
+/* ===== DOMContentLoaded ENDE (bei dir wichtig) ===== */
+}); 
 </script>
   
 </body>
