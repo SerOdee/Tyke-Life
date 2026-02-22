@@ -1497,19 +1497,55 @@ document.querySelectorAll(".contentBand").forEach(band => {
   }, { passive: false });
 });
 
-// ===== Inner-Scroll -> Outer-Scroll weiterreichen (damit es nach Infos weitergeht) =====
-document.querySelectorAll(".contentBand").forEach(band => {
-  band.addEventListener("wheel", (e) => {
-    const atTop = band.scrollTop <= 0;
-    const atBottom = Math.ceil(band.scrollTop + band.clientHeight) >= band.scrollHeight;
+// ===== Scroll from inner content to next/prev section (snap-safe) =====
+(function(){
+  const bands = document.querySelectorAll(".contentBand");
+  let lastJump = 0;
+  const COOLDOWN_MS = 650; // verhindert Mehrfach-Sprünge (Trackpad)
 
-    // Wenn innerer Bereich am Ende/Anfang ist -> outer scroller übernehmen
-    if ((e.deltaY > 0 && atBottom) || (e.deltaY < 0 && atTop)) {
-      scroller.scrollBy({ top: e.deltaY, behavior: "auto" });
+  function getCurrentSectionIndex(){
+    const top = scroller.scrollTop;
+    let bestIdx = 0;
+    let bestDist = Infinity;
+    sections.forEach((s, i) => {
+      const dist = Math.abs(s.offsetTop - top);
+      if(dist < bestDist){
+        bestDist = dist;
+        bestIdx = i;
+      }
+    });
+    return bestIdx;
+  }
+
+  function jumpTo(idx){
+    const now = Date.now();
+    if(now - lastJump < COOLDOWN_MS) return;
+    lastJump = now;
+
+    const target = sections[Math.max(0, Math.min(sections.length - 1, idx))];
+    if(target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  bands.forEach(band => {
+    band.addEventListener("wheel", (e) => {
+      // Nur vertikale Wheel-Events
+      if (Math.abs(e.deltaY) < 2) return;
+
+      const atTop = band.scrollTop <= 0;
+      const atBottom = Math.ceil(band.scrollTop + band.clientHeight) >= band.scrollHeight;
+
+      // Wenn noch normal im Band gescrollt werden kann -> nichts tun
+      if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
+
+      // Jetzt sind wir am Ende/Anfang -> Sektion wechseln
+      const idx = getCurrentSectionIndex();
+      if (e.deltaY > 0) jumpTo(idx + 1);
+      else jumpTo(idx - 1);
+
       e.preventDefault();
-    }
-  }, { passive: false });
-});
+    }, { passive: false });
+  });
+})();
 
     
   </script>
