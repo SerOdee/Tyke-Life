@@ -12,7 +12,6 @@ html, body{
   height: 100%;
   margin: 0;
   scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
   overflow-x: hidden;
 }
 
@@ -797,12 +796,11 @@ html{
 
 .scroller{
   height: 100vh;
-  overflow-y: scroll;              /* <<< statt auto: erzwingt Scroll-Container */
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
   position: relative;
-  touch-action: pan-y;             /* <<< wichtig für Trackpads / Touch */
 }
     
   </style>
@@ -821,20 +819,37 @@ html{
   </div>
 
   <div id="content">
-    <nav class="topnav" id="topnav" aria-label="Navigation">
-      <a href="#about">About</a>
-      <a href="#infos">Infos</a>
-      <a href="#lineup">Lineup</a>
-      <a href="#tickets">Tickets</a>
-      <a href="#impressionen">Impressionen</a>
-      <a href="#kontakt">Kontakt</a>
-    </nav>
+  <nav class="topnav" id="topnav" aria-label="Navigation">...</nav>
+  <button class="nextBtn" id="nextBtn" aria-label="Next section / Top">...</button>
 
-    <button class="nextBtn" id="nextBtn" aria-label="Next section / Top">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path id="nextPath" d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
+  <!-- <<< HIER NEU: SCROLLER START -->
+  <div id="scroller" class="scroller">
+
+    <!-- HOME -->
+    <section class="section" id="home"> ... </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about"> ... </section>
+
+    <!-- INFOS -->
+    <section class="section" id="infos"> ... </section>
+
+    <!-- LINEUP -->
+    <section class="section" id="lineup"> ... </section>
+
+    <!-- TICKETS -->
+    <section class="section" id="tickets"> ... </section>
+
+    <!-- IMPRESSIONEN -->
+    <section class="section" id="impressionen"> ... </section>
+
+    <!-- KONTAKT -->
+    <section class="section" id="kontakt"> ... </section>
+
+  </div>
+  <!-- <<< HIER NEU: SCROLLER ENDE -->
+
+</div>
 
 
       <!-- HOME -->
