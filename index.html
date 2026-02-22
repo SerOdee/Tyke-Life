@@ -393,10 +393,55 @@ a{color:inherit}
               <div class="infoRow"><span class="infoLabel">MUSIK</span><span class="infoValue">Techno</span></div>
             </div>
 
-            <div class="faq">
-              <!-- deine FAQ-Items hier (wie vorher) – unverändert -->
-              <div class="faqItem"><button class="faqQuestion">Anreise</button><div class="faqAnswer"><p>Informationen zur Anfahrt...</p></div></div>
-              <!-- ... alle anderen FAQ-Items einfach kopieren ... -->
+             <div class="faq">
+              <div class="faqItem">
+                <button class="faqQuestion">Anreise</button>
+                <div class="faqAnswer"><p>Informationen zur Anfahrt, Shuttlebus-Verbindungen sowie Parkmöglichkeiten folgen in Kürze. Eine detaillierte Wegbeschreibung wird ergänzt.</p></div>
+              </div>
+              <div class="faqItem">
+                <button class="faqQuestion">Abreise</button>
+                <div class="faqAnswer"><p>Taxi- und Ride-Sharing-Optionen sind in etwa 10 Gehminuten erreichbar. Weitere Details folgen.</p></div>
+              </div>
+              <div class="faqItem">
+                <button class="faqQuestion">Wetter</button>
+                <div class="faqAnswer"><p>Das Festival findet bei jeder Witterung statt. Bitte kleidet euch entsprechend.</p></div>
+              </div>
+              <div class="faqItem">
+                <button class="faqQuestion">Zahlungsmöglichkeiten</button>
+                <div class="faqAnswer"><p>Vor Ort ist ausschliesslich <strong>TWINT</strong> verfügbar.</p></div>
+              </div>
+              <div class="faqItem">
+                <button class="faqQuestion">Getränke & Essen</button>
+                <div class="faqAnswer"><p>Es stehen verschiedene Getränke- und Essensstände vor Ort bereit.</p></div>
+              </div>
+              <div class="faqItem">
+                <button class="faqQuestion">Tickets</button>
+                <div class="faqAnswer"><p>Details findet ihr unten bei <a href="#tickets">Tickets</a>. Es wird limitierte Early-Bird und reguläre Tickets geben.<br>⚠️⚠️ Es wird keine Abendkasse geben ⚠️⚠️</p></div>
+              </div>
+              <div class="faqItem">
+                <button class="faqQuestion">Fundsachen</button>
+                <div class="faqAnswer"><p>Bitte meldet euch unter <span class="mailSmart">info@tyke-life.ch</span>.</p></div>
+              </div>
+              <div class="faqItem">
+                <button class="faqQuestion">Abfall</button>
+                <div class="faqAnswer"><p>Bitte haltet das Gelände sauber. Recyclingstationen sind vorhanden.</p></div>
+              </div>
+              <div class="faqItem">
+                <button class="faqQuestion">Toiletten</button>
+                <div class="faqAnswer"><p>Direkt vor dem Eingang befinden sich ausreichend Toilettenanlagen.</p></div>
+              </div>
+              <div class="faqItem">
+                <button class="faqQuestion">Lautstärke & Gehörschutz</button>
+                <div class="faqAnswer"><p>Die Lautstärke wird phasenweise hoch sein. Wir empfehlen, euer Gehör zu schützen. Kostenlose Ohrstöpsel werden vor Ort erhältlich sein.</p></div>
+              </div>
+              <div class="faqItem">
+                <button class="faqQuestion">Nicht erlaubte Gegenstände</button>
+                <div class="faqAnswer"><p>Feuerwerk, Waffen, Drohnen, Glas, eigene Speisen & Getränke, grosse Schirme und gefährliche Gegenstände sind untersagt.</p></div>
+              </div>
+              <div class="faqItem">
+                <button class="faqQuestion">Helfen</button>
+                <div class="faqAnswer"><p>Interesse mitzuhelfen oder etwas beizutragen? <span class="mailSmart">info@tyke-life.ch</span>.</p></div>
+              </div>
             </div>
           </div>
         </div>
@@ -505,113 +550,198 @@ a{color:inherit}
     <button id="privacyOk" class="privacyBtn">OK</button>
   </div>
 
-  <script>
-    // === DEIN GANZER JS (leicht verbessert & sauber) ===
-    document.addEventListener("DOMContentLoaded", function(){
-      const PASSWORD = "Yves";
-      const COOKIE_NAME = "tyke_access";
-      const COOKIE_DAYS = 14;
+<script>
+document.addEventListener("DOMContentLoaded", function(){
 
-      // Gate
-      const gate = document.getElementById("gate");
-      const content = document.getElementById("content");
-      const err = document.getElementById("gateErr");
-      const pwInput = document.getElementById("pw");
-      const enterBtn = document.getElementById("enter");
+  // PASSWORT GATE
+  const PASSWORD = "Yves";
+  const COOKIE_NAME = "tyke_access";
+  const COOKIE_DAYS = 14;
+  const gate = document.getElementById("gate");
+  const content = document.getElementById("content");
+  const err = document.getElementById("gateErr");
+  const pwInput = document.getElementById("pw");
+  const enterBtn = document.getElementById("enter");
 
-      function setCookie(name, value, days){ /* ... dein alter Code ... */ }
-      function getCookie(name){ /* ... dein alter Code ... */ }
-      function unlock(){ gate.style.display="none"; content.style.display="block"; }
-      function lock(){ gate.style.display="flex"; content.style.display="none"; }
+  function setCookie(name, value, days){
+    const d = new Date(); d.setTime(d.getTime() + (days*24*60*60*1000));
+    document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + d.toUTCString() + "; path=/; SameSite=Lax";
+  }
+  function getCookie(name){
+    const needle = name + "=";
+    return document.cookie.split(";").map(c => c.trim()).find(c => c.startsWith(needle))?.slice(needle.length) || "";
+  }
+  function unlock(){ gate.style.display = "none"; content.style.display = "block"; }
+  function lock(){ gate.style.display = "flex"; content.style.display = "none"; }
 
-      if (decodeURIComponent(getCookie(COOKIE_NAME)) === "ok") unlock();
-      else lock();
+  if (decodeURIComponent(getCookie(COOKIE_NAME)) === "ok") unlock(); else lock();
 
-      enterBtn.addEventListener("click", () => {
-        if ((pwInput.value || "").trim() === PASSWORD) {
-          setCookie(COOKIE_NAME, "ok", COOKIE_DAYS);
-          unlock();
-        } else {
-          err.style.display = "block";
-          pwInput.select();
-        }
-      });
-      pwInput.addEventListener("keydown", e => { if(e.key==="Enter") enterBtn.click(); });
+  enterBtn.addEventListener("click", () => {
+    if ((pwInput.value || "").trim() === PASSWORD) {
+      setCookie(COOKIE_NAME, "ok", COOKIE_DAYS);
+      unlock();
+    } else {
+      err.style.display = "block";
+      pwInput.select();
+    }
+  });
+  pwInput.addEventListener("keydown", e => { if(e.key === "Enter") enterBtn.click(); });
 
-      // === SCROLL & NAV (jetzt 100% stabil) ===
-      const scroller = document.getElementById("scroller");
-      const topnav = document.getElementById("topnav");
-      const nextBtn = document.getElementById("nextBtn");
-      const nextPath = document.getElementById("nextPath");
-      const sections = Array.from(document.querySelectorAll(".section"));
-      const navLinks = Array.from(topnav.querySelectorAll("a"));
+  // ====================== SCROLL & NAV ======================
+  const scroller = document.getElementById("scroller");
+  const topnav = document.getElementById("topnav");
+  const nextBtn = document.getElementById("nextBtn");
+  const sections = Array.from(document.querySelectorAll(".section"));
+  const navLinks = Array.from(topnav.querySelectorAll("a"));
 
-      function setActiveNav(secId){
-        navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + secId));
-      }
+  function setActiveNav(id){
+    navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + id));
+  }
 
-      let modeTop = false;
-      function setNextMode(isTop){
-        modeTop = isTop;
-        nextPath.setAttribute("d", isTop ? "M6 15l6-6 6 6" : "M6 9l6 6 6-6");
-        nextBtn.setAttribute("aria-label", isTop ? "Top" : "Next section");
-        nextBtn.classList.add("show");
-      }
+  let modeTop = false;
+  function setNextMode(isTop){
+    modeTop = isTop;
+    nextBtn.querySelector("path").setAttribute("d", isTop ? "M6 15l6-6 6 6" : "M6 9l6 6 6-6");
+    nextBtn.classList.add("show");
+  }
 
-      function currentSectionByScroll(){
-        const top = scroller.scrollTop;
-        let best = sections[0], bestDist = Infinity;
-        sections.forEach(s => {
-          const dist = Math.abs(s.offsetTop - top);
-          if(dist < bestDist){ bestDist = dist; best = s; }
-        });
-        return best;
-      }
+  function applyActive(secId){
+    if(secId === "home") topnav.classList.remove("show");
+    else topnav.classList.add("show");
+    setActiveNav(secId);
+    const idx = sections.findIndex(s => s.id === secId);
+    setNextMode(idx === sections.length - 1);
+  }
 
-      function applyActive(secId){
-        if(!secId) return;
-        if(secId === "home") topnav.classList.remove("show");
-        else topnav.classList.add("show");
-        setActiveNav(secId);
+  const io = new IntersectionObserver(entries => {
+    const vis = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if(vis) applyActive(vis.target.id);
+  }, { root: scroller, threshold: [0.35, 0.65, 0.9] });
 
-        const idx = sections.findIndex(s => s.id === secId);
-        setNextMode(idx === sections.length - 1);
-      }
+  sections.forEach(s => io.observe(s));
 
-      // IntersectionObserver
-      const io = new IntersectionObserver(entries => {
-        const vis = entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
-        if(vis) applyActive(vis.target.id);
-      }, { root: scroller, threshold: [0.3, 0.6, 0.9] });
+  setTimeout(() => {
+    const cur = sections[Math.floor(scroller.scrollTop / window.innerHeight)];
+    if(cur) applyActive(cur.id);
+  }, 150);
 
-      sections.forEach(s => io.observe(s));
+  nextBtn.addEventListener("click", () => {
+    const curIdx = sections.findIndex(s => s.getBoundingClientRect().top > -50);
+    if(modeTop){
+      document.getElementById("home").scrollIntoView({behavior:"smooth"});
+    } else {
+      sections[curIdx + 1]?.scrollIntoView({behavior:"smooth"});
+    }
+  });
 
-      // Initial
-      setTimeout(() => {
-        const cur = currentSectionByScroll();
-        if(cur) applyActive(cur.id);
-      }, 100);
+  // ====================== LINEUP – Hover + Auto-Cycle ======================
+  const djLinks = document.querySelectorAll(".djLink");
+  const pics = document.querySelectorAll(".gallery .pic");
+  let autoIdx = 0;
+  let timer;
+  const order = ["Floostix.jpg","arearge.jpg","Livio.jpg","DJ4.jpg"];
 
-      nextBtn.addEventListener("click", () => {
-        const cur = currentSectionByScroll();
-        const idx = sections.findIndex(s => s.id === cur.id);
-        if(modeTop){
-          document.getElementById("home").scrollIntoView({behavior:"smooth", block:"start"});
-        } else {
-          const next = sections[idx + 1] || sections[0];
-          if(next) next.scrollIntoView({behavior:"smooth", block:"start"});
-        }
-      });
+  function activate(file){
+    pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
+  }
 
-      // Restliche Funktionen (Lineup, Countdown, FAQ, MailSmart, Privacy) – exakt wie vorher
-      // (kopiere einfach deine alten Funktionen hier rein – sie funktionieren jetzt)
+  function startAuto(){
+    timer = setInterval(() => {
+      autoIdx = (autoIdx + 1) % order.length;
+      activate(order[autoIdx]);
+    }, 2800);
+  }
 
-      // ... dein alter Code für Lineup, Countdown, FAQ, mailSmart, privacyBanner ...
-      // (ich habe sie nicht nochmal ausgeschrieben, damit es nicht zu lang wird – sie bleiben 1:1 gleich)
-
-      // Jahr setzen
-      document.getElementById("y").textContent = new Date().getFullYear();
+  djLinks.forEach(link => {
+    const file = link.dataset.img;
+    link.addEventListener("pointerenter", () => {
+      clearInterval(timer);
+      activate(file);
     });
-  </script>
+    link.addEventListener("pointerleave", () => startAuto());
+  });
+
+  activate(order[0]);
+  startAuto();
+
+  // ====================== TICKETS COUNTDOWN ======================
+  const TICKET_LAUNCH = "2026-03-01T18:00:00+01:00";
+  const cd = {
+    days: document.getElementById("cdDays"),
+    hrs: document.getElementById("cdHours"),
+    mins: document.getElementById("cdMins"),
+    secs: document.getElementById("cdSecs"),
+    wrap: document.getElementById("countdown"),
+    btnWrap: document.getElementById("ticketBtnWrap"),
+    hint: document.getElementById("ticketHint")
+  };
+
+  function updateCountdown(){
+    const target = new Date(TICKET_LAUNCH).getTime();
+    const diff = target - Date.now();
+    if(diff <= 0){
+      cd.wrap.style.display = "none";
+      cd.btnWrap.style.display = "flex";
+      cd.hint.textContent = "Tickets sind jetzt verfügbar!";
+      return;
+    }
+    const s = Math.floor(diff / 1000);
+    cd.days.textContent = Math.floor(s / 86400);
+    cd.hrs.textContent = String(Math.floor((s % 86400) / 3600)).padStart(2,"0");
+    cd.mins.textContent = String(Math.floor((s % 3600) / 60)).padStart(2,"0");
+    cd.secs.textContent = String(s % 60).padStart(2,"0");
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ====================== MAILSMART (jetzt klickbar!) ======================
+  const email = "info@tyke-life.ch";
+  document.querySelectorAll(".mailSmart").forEach(el => {
+    el.style.cursor = "pointer";
+    el.addEventListener("click", function(){
+      this.textContent = email;
+      this.classList.add("revealed");
+      window.location.href = "mailto:" + email;
+    });
+  });
+// ====================== FAQ ACCORDION ======================
+document.querySelectorAll(".faqQuestion").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const item = btn.closest(".faqItem");
+    if (!item) return;
+
+    // Alle anderen schliessen
+    document.querySelectorAll(".faqItem").forEach(i => {
+      if (i !== item) {
+        i.classList.remove("active");
+        const ans = i.querySelector(".faqAnswer");
+        if (ans) ans.style.maxHeight = null;
+      }
+    });
+
+    // Aktuelles togglen
+    item.classList.toggle("active");
+    const answer = item.querySelector(".faqAnswer");
+    if (!answer) return;
+
+    if (item.classList.contains("active")) {
+      answer.style.maxHeight = answer.scrollHeight + "px";
+    } else {
+      answer.style.maxHeight = null;
+    }
+  });
+});
+  document.getElementById("y").textContent = new Date().getFullYear();
+
+  const privacyOk = document.getElementById("privacyOk");
+  if(!localStorage.getItem("privacy_ok")){
+    document.getElementById("privacyBanner").style.display = "flex";
+  }
+  privacyOk.addEventListener("click", () => {
+    localStorage.setItem("privacy_ok", "1");
+    document.getElementById("privacyBanner").style.display = "none";
+  });
+});
+</script>
 </body>
 </html>
