@@ -1179,10 +1179,6 @@ html{
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
-  /* =========================
-     Passwortschutz (stabil)
-  ========================= */
-
   const PASSWORD = "Yves";
   const COOKIE_NAME = "tyke_access";
   const COOKIE_DAYS = 14;
@@ -1191,59 +1187,59 @@ document.addEventListener("DOMContentLoaded", function(){
   const content = document.getElementById("content");
   const err = document.getElementById("gateErr");
   const pwInput = document.getElementById("pw");
+  const enterBtn = document.getElementById("enter");
 
   function setCookie(name, value, days){
     const d = new Date();
     d.setTime(d.getTime() + (days*24*60*60*1000));
-    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
+    document.cookie =
+      name + "=" + encodeURIComponent(value) +
+      "; expires=" + d.toUTCString() +
+      "; path=/; SameSite=Lax";
   }
 
   function getCookie(name){
     const needle = name + "=";
     return document.cookie.split(";")
-      .map(c=>c.trim())
-      .find(c=>c.startsWith(needle))
+      .map(c => c.trim())
+      .find(c => c.startsWith(needle))
       ?.slice(needle.length) || "";
   }
 
   function unlock(){
-    if(gate) gate.style.display = "none";
-    if(content) content.style.display = "block";
+    gate.style.display = "none";
+    content.style.display = "block";
   }
 
   function lock(){
-    if(gate) gate.style.display = "flex";
-    if(content) content.style.display = "none";
+    gate.style.display = "flex";
+    content.style.display = "none";
   }
 
+  // Initial check
   if (decodeURIComponent(getCookie(COOKIE_NAME)) === "ok") {
     unlock();
   } else {
     lock();
   }
 
-  document.getElementById("enter")?.addEventListener("click", () => {
-    if (pwInput?.value === PASSWORD) {
+  // CLICK
+  enterBtn.addEventListener("click", function(){
+    if (pwInput.value === PASSWORD) {
       setCookie(COOKIE_NAME, "ok", COOKIE_DAYS);
       unlock();
     } else {
-      if(err) err.style.display = "block";
-      pwInput?.select();
+      err.style.display = "block";
+      pwInput.select();
     }
   });
 
-  pwInput?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") document.getElementById("enter")?.click();
+  // ENTER KEY
+  pwInput.addEventListener("keydown", function(e){
+    if (e.key === "Enter") {
+      enterBtn.click();
+    }
   });
-
-  document.getElementById("logout")?.addEventListener("click", (e) => {
-    e.preventDefault();
-    setCookie(COOKIE_NAME, "", -1);
-    location.reload();
-  });
-
-  const yearEl = document.getElementById("y");
-  if(yearEl) yearEl.textContent = new Date().getFullYear();
 
 
 /* =========================
