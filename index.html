@@ -110,25 +110,33 @@
 
     #content{display:none; position:relative; z-index: 1;}
 
-    /* ===== Scroll Container + Fullscreen Sections ===== */
-    .scroller{
-      height:100vh;
-      overflow-y:auto;
-      scroll-snap-type:y proximity;
-      position:relative;
-    }
-.section{
-  min-height:100vh;
-  scroll-snap-align: start;
-  display:flex;
-  align-items:stretch;
-  padding:0;
-  border-top:1px solid rgba(108,196,199,.35);
-  position:relative;        /* <<< GANZ WICHTIG */
-  overflow:hidden;          /* <<< verhindert Overlay-Fehler */
+/* ===== Scroll Container + Fullscreen Sections ===== */
+
+.scroller{
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y proximity;   /* weich, blockiert nicht */
+  scroll-behavior: smooth;
+  position: relative;
 }
 
-    .section:first-child{border-top:none}
+/* Jede Section */
+.section{
+  min-height: 100vh;               /* mindestens Bildschirmhöhe */
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;        /* wichtig bei langen Sektionen */
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+  border-top: 1px solid rgba(108,196,199,.35);
+  position: relative;
+  overflow: visible;               /* NICHT hidden -> verhindert Scroll-Block */
+}
+
+/* Erste Section ohne Linie */
+.section:first-child{
+  border-top: none;
+}
 
     /* ===== Watermarks ===== */
     .wm{
