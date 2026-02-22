@@ -420,7 +420,7 @@ a{color:inherit}
               </div>
               <div class="faqItem">
                 <button class="faqQuestion">Fundsachen</button>
-                <div class="faqAnswer"><p>Bitte meldet euch unter <span class="mailSmart">info@tyke-life.ch</span>.</p></div>
+                <div class="faqAnswer"><p>Bitte meldet euch unter <span class="mailSmart">info@…</span>.</p></div>
               </div>
               <div class="faqItem">
                 <button class="faqQuestion">Abfall</button>
@@ -440,7 +440,7 @@ a{color:inherit}
               </div>
               <div class="faqItem">
                 <button class="faqQuestion">Helfen</button>
-                <div class="faqAnswer"><p>Interesse mitzuhelfen oder etwas beizutragen? <span class="mailSmart">info@tyke-life.ch</span>.</p></div>
+                <div class="faqAnswer"><p>Interesse mitzuhelfen oder etwas beizutragen? <span class="mailSmart">info@…</span>.</p></div>
               </div>
             </div>
           </div>
@@ -741,6 +741,20 @@ document.querySelectorAll(".faqQuestion").forEach(btn => {
     localStorage.setItem("privacy_ok", "1");
     document.getElementById("privacyBanner").style.display = "none";
   });
+
+// ====================== SMART MAIL (verschleiert + klickbar) ======================
+const email = "info" + "@" + "tyke-life.ch";
+
+document.querySelectorAll(".mailSmart").forEach(el => {
+  el.style.cursor = "pointer";
+  el.addEventListener("click", function(){
+    this.textContent = email;           // wird erst beim Klick sichtbar
+    this.classList.add("revealed");
+    window.location.href = "mailto:" + email;
+  });
+});
+
+  
 });
 </script>
 </body>
