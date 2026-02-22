@@ -1177,69 +1177,75 @@ html{
 </div>
   
 <script>
-/* =========================
-   Tyke Life – Core Script (clean + stable)
-   ========================= */
+<script>
+document.addEventListener("DOMContentLoaded", function(){
 
-/* =========================
-   Passwortschutz (Cookie)
-   ========================= */
-const PASSWORD = "Yves";   // <<< HIER Passwort setzen
-const COOKIE_NAME = "tyke_access";
-const COOKIE_DAYS = 14;
+  /* =========================
+     Passwortschutz (stabil)
+  ========================= */
 
-const gate = document.getElementById("gate");
-const content = document.getElementById("content");
-const err = document.getElementById("gateErr");
-const pwInput = document.getElementById("pw");
+  const PASSWORD = "Yves";
+  const COOKIE_NAME = "tyke_access";
+  const COOKIE_DAYS = 14;
 
-function setCookie(name, value, days){
-  const d = new Date();
-  d.setTime(d.getTime() + (days*24*60*60*1000));
-  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
-}
-function getCookie(name){
-  const needle = name + "=";
-  return document.cookie.split(";").map(c=>c.trim()).find(c=>c.startsWith(needle))?.slice(needle.length) || "";
-}
-function unlock(){
-  gate.style.display = "none";
-  content.style.display = "block";
+  const gate = document.getElementById("gate");
+  const content = document.getElementById("content");
+  const err = document.getElementById("gateErr");
+  const pwInput = document.getElementById("pw");
 
-  // <<< FIX: scroller nach dem Anzeigen "refreshen"
-  setTimeout(() => {
-    const sc = document.getElementById("scroller");
-    if(sc) sc.scrollTop = sc.scrollTop; // reflow trigger
-  }, 0);
-}
-function lock(){
-  gate.style.display = "flex";
-  content.style.display = "none";
-}
+  function setCookie(name, value, days){
+    const d = new Date();
+    d.setTime(d.getTime() + (days*24*60*60*1000));
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
+  }
 
-if (decodeURIComponent(getCookie(COOKIE_NAME)) === "ok") unlock(); else lock();
+  function getCookie(name){
+    const needle = name + "=";
+    return document.cookie.split(";")
+      .map(c=>c.trim())
+      .find(c=>c.startsWith(needle))
+      ?.slice(needle.length) || "";
+  }
 
-document.getElementById("enter")?.addEventListener("click", () => {
-  if (pwInput?.value === PASSWORD) {
-    setCookie(COOKIE_NAME, "ok", COOKIE_DAYS);
+  function unlock(){
+    if(gate) gate.style.display = "none";
+    if(content) content.style.display = "block";
+  }
+
+  function lock(){
+    if(gate) gate.style.display = "flex";
+    if(content) content.style.display = "none";
+  }
+
+  if (decodeURIComponent(getCookie(COOKIE_NAME)) === "ok") {
     unlock();
   } else {
-    if(err) err.style.display = "block";
-    pwInput?.select();
+    lock();
   }
-});
-pwInput?.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") document.getElementById("enter")?.click();
-});
 
-document.getElementById("logout")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  setCookie(COOKIE_NAME, "", -1);
-  location.reload();
-});
+  document.getElementById("enter")?.addEventListener("click", () => {
+    if (pwInput?.value === PASSWORD) {
+      setCookie(COOKIE_NAME, "ok", COOKIE_DAYS);
+      unlock();
+    } else {
+      if(err) err.style.display = "block";
+      pwInput?.select();
+    }
+  });
 
-const yearEl = document.getElementById("y");
-if(yearEl) yearEl.textContent = new Date().getFullYear();
+  pwInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") document.getElementById("enter")?.click();
+  });
+
+  document.getElementById("logout")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    setCookie(COOKIE_NAME, "", -1);
+    location.reload();
+  });
+
+  const yearEl = document.getElementById("y");
+  if(yearEl) yearEl.textContent = new Date().getFullYear();
+
 
 /* =========================
    Scroll / Navigation (stabil)
