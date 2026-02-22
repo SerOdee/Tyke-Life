@@ -742,16 +742,6 @@ document.querySelectorAll(".faqQuestion").forEach(btn => {
     document.getElementById("privacyBanner").style.display = "none";
   });
 
-// ====================== SMART MAIL (verschleiert + klickbar) ======================
-const email = "info" + "@" + "tyke-life.ch";
-
-document.querySelectorAll(".mailSmart").forEach(el => {
-  el.style.cursor = "pointer";
-  el.addEventListener("click", function(){
-    this.textContent = email;           // wird erst beim Klick sichtbar
-    this.classList.add("revealed");
-    window.location.href = "mailto:" + email;
-  });
 });
 
   
