@@ -1223,23 +1223,27 @@ document.addEventListener("DOMContentLoaded", function(){
     lock();
   }
 
-  // CLICK
+// CLICK (null-safe)
+if (enterBtn) {
   enterBtn.addEventListener("click", function(){
-    if (pwInput.value === PASSWORD) {
+    const val = (pwInput?.value || "").trim();
+
+    if (val === PASSWORD) {
       setCookie(COOKIE_NAME, "ok", COOKIE_DAYS);
       unlock();
     } else {
-      err.style.display = "block";
-      pwInput.select();
+      if (err) err.style.display = "block";
+      pwInput?.select();
     }
   });
+}
 
-  // ENTER KEY
+// ENTER KEY (null-safe)
+if (pwInput) {
   pwInput.addEventListener("keydown", function(e){
-    if (e.key === "Enter") {
-      enterBtn.click();
-    }
+    if (e.key === "Enter") enterBtn?.click();
   });
+}
 
 
 /* =========================
