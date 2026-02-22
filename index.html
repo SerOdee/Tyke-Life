@@ -594,17 +594,24 @@ document.addEventListener("DOMContentLoaded", function(){
   const sections = Array.from(document.querySelectorAll(".section"));
   const navLinks = Array.from(topnav.querySelectorAll("a"));
 
-  // ====================== NAV-LINKS ANKLICKBAR ======================
+// ====================== NAV-LINKS ANKLICKBAR (FIX FÜR INNEREN SCROLLER) ======================
 navLinks.forEach(a => {
   a.addEventListener("click", (e) => {
-    e.preventDefault();                    // verhindert normalen Sprung
+    e.preventDefault();
+    e.stopImmediatePropagation();   // extra Sicherheit
+
     const href = a.getAttribute("href");
     const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
+
+    if (target && scroller) {
+      const offsetTop = target.offsetTop;   // relativ zum scroller
+      scroller.scrollTo({
+        top: offsetTop,
+        behavior: "smooth"
       });
+
+      // Debug: sag mir was in der Konsole steht
+      console.log("Nav-Klick auf:", href, "→ scrollTo", offsetTop);
     }
   });
 });
