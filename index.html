@@ -1496,6 +1496,22 @@ document.querySelectorAll(".contentBand").forEach(band => {
     }
   }, { passive: false });
 });
+
+// ===== Inner-Scroll -> Outer-Scroll weiterreichen (damit es nach Infos weitergeht) =====
+document.querySelectorAll(".contentBand").forEach(band => {
+  band.addEventListener("wheel", (e) => {
+    const atTop = band.scrollTop <= 0;
+    const atBottom = Math.ceil(band.scrollTop + band.clientHeight) >= band.scrollHeight;
+
+    // Wenn innerer Bereich am Ende/Anfang ist -> outer scroller übernehmen
+    if ((e.deltaY > 0 && atBottom) || (e.deltaY < 0 && atTop)) {
+      scroller.scrollBy({ top: e.deltaY, behavior: "auto" });
+      e.preventDefault();
+    }
+  }, { passive: false });
+});
+
+    
   </script>
   
 </body>
