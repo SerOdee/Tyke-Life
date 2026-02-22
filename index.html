@@ -114,12 +114,13 @@
     .scroller{
       height:100vh;
       overflow-y:auto;
-      scroll-snap-type:y mandatory;
+      scroll-snap-type:y proximity;
       position:relative;
     }
 .section{
   min-height:100vh;
-  scroll-snap-align:start;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal; /* wichtig */
   display:flex;
   align-items:stretch;
   padding:0;
