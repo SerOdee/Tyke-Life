@@ -594,6 +594,21 @@ document.addEventListener("DOMContentLoaded", function(){
   const sections = Array.from(document.querySelectorAll(".section"));
   const navLinks = Array.from(topnav.querySelectorAll("a"));
 
+  // ====================== NAV-LINKS ANKLICKBAR ======================
+navLinks.forEach(a => {
+  a.addEventListener("click", (e) => {
+    e.preventDefault();                    // verhindert normalen Sprung
+    const href = a.getAttribute("href");
+    const target = document.querySelector(href);
+    if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  });
+});
+  
   function setActiveNav(id){
     navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + id));
   }
