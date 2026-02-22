@@ -110,32 +110,68 @@
 
     #content{display:none; position:relative; z-index: 1;}
 
-/* ===== Scroll Container + Fullscreen Sections ===== */
+/* ===== Scroll Container + Fullscreen Sections (Snap wie vorher) ===== */
 
 .scroller{
   height: 100vh;
   overflow-y: auto;
-  scroll-snap-type: y proximity;   /* weich, blockiert nicht */
+  scroll-snap-type: y mandatory;   /* <<< wieder Sektion zu Sektion */
   scroll-behavior: smooth;
   position: relative;
 }
 
-/* Jede Section */
+/* Jede Sektion ist exakt 1 Screen hoch */
 .section{
-  min-height: 100vh;               /* mindestens Bildschirmhöhe */
+  height: 100vh;                  /* <<< FIX: immer 1 Screen */
   scroll-snap-align: start;
-  scroll-snap-stop: normal;        /* wichtig bei langen Sektionen */
+  scroll-snap-stop: always;
   display: flex;
   align-items: stretch;
   padding: 0;
   border-top: 1px solid rgba(108,196,199,.35);
   position: relative;
-  overflow: visible;               /* NICHT hidden -> verhindert Scroll-Block */
+  overflow: hidden;               /* <<< ok, weil Content intern scrollt */
 }
 
-/* Erste Section ohne Linie */
-.section:first-child{
-  border-top: none;
+.section:first-child{ border-top: none; }
+
+/* dein Inner-Layout muss auch 100% hoch sein */
+.secInner{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TitleBand bleibt fix */
+.titleBand{
+  flex: 0 0 var(--titleBandHeight);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding-top: var(--titleBandTopPadDesktop);
+  padding-left: var(--pad);
+  padding-right: var(--pad);
+}
+
+/* ContentBand wird der scrollbare Bereich innerhalb der Sektion */
+.contentBand{
+  flex: 1;
+  overflow-y: auto;                 /* <<< HIER scrollt FAQ/Text */
+  -webkit-overflow-scrolling: touch;
+  padding: var(--contentTopPadDesktop) 0 72px;
+}
+
+/* Mobile */
+@media (max-width: 560px){
+  .titleBand{
+    padding-top: var(--titleBandTopPadMobile);
+    height: 150px;
+    flex: 0 0 150px;
+  }
+  .contentBand{
+    padding: var(--contentTopPadMobile) 0 64px;
+  }
 }
 
     /* ===== Watermarks ===== */
@@ -1446,7 +1482,20 @@ setTimeout(showPrivacyBanner, 300);
 
   });
 })();
+    
+// Wheel-bubbling: wenn ContentBand am Ende/Anfang ist, scroller weiter scrollen
+document.querySelectorAll(".contentBand").forEach(band => {
+  band.addEventListener("wheel", (e) => {
+    const atTop = band.scrollTop <= 0;
+    const atBottom = Math.ceil(band.scrollTop + band.clientHeight) >= band.scrollHeight;
 
+    if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
+      // innerer scroll am limit -> parent scroller bewegen
+      scroller.scrollBy({ top: e.deltaY, behavior: "auto" });
+      e.preventDefault();
+    }
+  }, { passive: false });
+});
   </script>
   
 </body>
