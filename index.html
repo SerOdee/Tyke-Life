@@ -1180,6 +1180,12 @@ function getCookie(name){
 function unlock(){
   gate.style.display = "none";
   content.style.display = "block";
+
+  // <<< FIX: scroller nach dem Anzeigen "refreshen"
+  setTimeout(() => {
+    const sc = document.getElementById("scroller");
+    if(sc) sc.scrollTop = sc.scrollTop; // reflow trigger
+  }, 0);
 }
 function lock(){
   gate.style.display = "flex";
