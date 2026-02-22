@@ -794,6 +794,16 @@ html{
     #home, #home *{
   touch-action: pan-y;
 }
+
+.scroller{
+  height: 100vh;
+  overflow-y: scroll;              /* <<< statt auto: erzwingt Scroll-Container */
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  position: relative;
+  touch-action: pan-y;             /* <<< wichtig für Trackpads / Touch */
+}
     
   </style>
 </head>
