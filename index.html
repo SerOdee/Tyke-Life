@@ -168,11 +168,36 @@
     .topnav a.active{
       border-color:var(--stroke); background:rgba(238,192,31,.18);
     }
-    @media (max-width:720px){
-      .topnav{top:10px; max-width:calc(100vw-20px); overflow-x:auto; white-space:nowrap}
-      .topnav::-webkit-scrollbar{height:8px}
-      .topnav::-webkit-scrollbar-thumb{background:rgba(108,196,199,.45); border-radius:999px}
-    }
+    /* ====================== MOBILE MENÜ – kompakt + perfekt scrollbar ====================== */
+@media (max-width: 720px) {
+  .topnav {
+    top: 8px;
+    max-width: calc(100vw - 20px);
+    padding: 10px 14px;
+    font-size: 14.5px;           /* etwas kleiner */
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    scrollbar-width: none;       /* sauberer Look */
+  }
+  .topnav::-webkit-scrollbar { display: none; }
+
+  .topnav a {
+    padding: 7px 11px;
+    font-size: 14.5px;
+    white-space: nowrap;
+  }
+}
+
+/* Noch kleiner bei sehr schmalen Handys (iPhone SE etc.) */
+@media (max-width: 380px) {
+  .topnav a {
+    font-size: 13.5px;
+    padding: 6px 9px;
+  }
+}
 
     .nextBtn{
       position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
@@ -562,13 +587,20 @@
       nextBtn.classList.add("show");
     }
 
-    function applyActive(secId){
-      if(secId === "home") topnav.classList.remove("show");
-      else topnav.classList.add("show");
-      setActiveNav(secId);
-      const idx = sections.findIndex(s => s.id === secId);
-      setNextMode(idx === sections.length - 1);
-    }
+function applyActive(secId){
+  if(!secId) return;
+  
+  // Menü ab About sichtbar (nicht nur ab Infos)
+  if(secId === "home") {
+    topnav.classList.remove("show");
+  } else {
+    topnav.classList.add("show");
+  }
+
+  setActiveNav(secId);
+  const idx = sections.findIndex(s => s.id === secId);
+  setNextMode(idx === sections.length - 1);
+}
 
     const io = new IntersectionObserver(entries => {
       const vis = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
