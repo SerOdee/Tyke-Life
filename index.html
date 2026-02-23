@@ -97,10 +97,32 @@
       padding:var(--contentTopPadDesktop) 0 72px;
       display:block;
     }
-    @media (max-width:560px){
-      .titleBand{padding-top:var(--titleBandTopPadMobile); height:150px; flex:0 0 150px}
-      .contentBand{padding:var(--contentTopPadMobile) 0 64px}
-    }
+@media (max-width:560px){
+  .section {
+    height: auto !important;
+    min-height: 100dvh;
+    scroll-snap-stop: normal;   /* macht Scroll viel smoother */
+  }
+  .titleBand{
+    padding-top: 65px !important;
+    height: 155px; 
+    flex: 0 0 155px;
+  }
+  .contentBand{
+    padding: 35px 0 120px !important;
+  }
+  /* Lineup Gallery kleiner & smoother */
+  .gallery {
+    height: 335px !important;
+  }
+  /* About speziell noch etwas Luft */
+  #about .titleBand { 
+    padding-top: 55px !important; 
+  }
+  #about .contentBand { 
+    padding-top: 25px !important; 
+  }
+}
 
     /* ====================== WATERMARKS ====================== */
     .wm{position:absolute; inset:0; pointer-events:none; z-index:0; background-repeat:no-repeat; background-position:center}
