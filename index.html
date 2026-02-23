@@ -5,305 +5,278 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="Tyke Life Festival – About, Infos, Lineup, Tickets, Impressionen, Kontakt." />
   <title>Tyke Life</title>
-
-<style>
-/* ====================== ROOT & BASICS ====================== */
-:root{
-  --bg: #fcf8cd;
-  --text: #4a494a;
-  --accent: #eec01f;
-  --stroke: #6cc4c7;
-  --max: 980px;
-  --pad: 18px;
-  --homeLogoOffsetY: -120px;
-  --titleBandHeight: 250px;
-  --titleBandTopPadDesktop: 200px;
-  --titleBandTopPadMobile: 200px;
-  --contentTopPadDesktop: 250px;
-  --contentTopPadMobile: 180px;
-}
-
-@font-face{
-  font-family: "Abtos";
-  src: url("Abtos.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-*{box-sizing:border-box}
-html, body{
-  height:100dvh;
-  margin:0;
-  scroll-behavior:smooth;
-  overflow-x:hidden;
-}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:"Abtos", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  overflow:hidden;
-}
-a{color:inherit}
-.wrap{max-width:var(--max); margin:0 auto; padding:0 var(--pad); width:100%}
-
-/* ====================== PASSWORT-GATE ====================== */
-#gate{
-  position:relative; z-index:9999;
-  min-height:100dvh;
-  display:flex; align-items:center; justify-content:center;
-  padding:24px; background:var(--bg);
-}
-#gateBox{
-  width:100%; max-width:420px; padding:22px;
-  border:1px solid var(--stroke); border-radius:18px;
-  background:rgba(252,248,205,.75);
-}
-#gateBox h2{margin:0 0 10px; font-size:22px; letter-spacing:.6px; text-transform:uppercase; text-align:center; color:var(--stroke); font-weight:950}
-#gateBox p{margin:0 0 14px; color:rgba(74,73,74,.85); line-height:1.7; text-align:center}
-#gateBox input,#gateBox button{
-  width:100%; padding:12px 12px; border-radius:12px;
-  border:1px solid var(--stroke); background:rgba(252,248,205,.55);
-  color:var(--text); font:inherit; outline:none;
-}
-#gateBox button{margin-top:10px; background:rgba(238,192,31,.18); font-weight:950; letter-spacing:.6px; text-transform:uppercase; cursor:pointer}
-#gateErr{display:none; color:#b24a4a; font-size:13px; margin-top:10px; text-align:center}
-#content{display:none; position:relative; z-index:1}
-
-/* ====================== SCROLLER & SECTIONS ====================== */
-.scroller{
-  height:100dvh; overflow-y:auto; -webkit-overflow-scrolling:touch;
-  scroll-snap-type:y mandatory; scroll-behavior:smooth; position:relative;
-}
-.section{
-  height:100dvh;
-  scroll-snap-align:start;
-  scroll-snap-stop:always;
-  position:relative;
-  overflow:hidden;
-  border-top:1px solid rgba(108,196,199,.35);
-}
-.section:first-child{border-top:none}
-
-/* Inner Layout */
-.secInner{
-  width:100%; height:100%; display:flex; flex-direction:column;
-}
-
-/* TitleBand */
-.titleBand{
-  flex:0 0 var(--titleBandHeight);
-  display:flex; align-items:center; justify-content:center;
-  padding-top:var(--titleBandTopPadDesktop);
-  padding-left:var(--pad); padding-right:var(--pad);
-}
-
-/* ContentBand – HIER scrollt der Inhalt */
-.contentBand{
-  flex:1;
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  padding:var(--contentTopPadDesktop) 0 72px;
-  display:block;
-}
-
-/* Mobile Anpassungen */
-@media (max-width:560px){
-  .titleBand{
-    padding-top:var(--titleBandTopPadMobile);
-    height:150px; flex:0 0 150px;
-  }
-  .contentBand{padding:var(--contentTopPadMobile) 0 64px}
-}
-
-/* ====================== WATERMARKS ====================== */
-.wm{
-  position:absolute; inset:0; pointer-events:none; z-index:0;
-  background-repeat:no-repeat; background-position:center;
-}
-.wmHome{
-  background-image:url("TykeSun.png");
-  background-size:min(95vw,1100px); opacity:.12;
-}
-.section:not(#home)::before{
-  content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
-  background:url("watermark.png") center / 900px auto no-repeat;
-  opacity:.03;
-}
-@media (max-width:768px){
-  .section:not(#home)::before{background-size:75vw auto}
-}
-.layer{position:relative; z-index:1; width:100%}
-
-/* ====================== HOME ====================== */
-.homeCenter{
-  height:100dvh; display:flex; align-items:center; justify-content:center;
-}
-.logo{
-  max-width:min(80vw,900px); max-height:min(75dvh,650px);
-  opacity:0; animation:logoFade .85s ease-out forwards;
-  transform:translateY(var(--homeLogoOffsetY));
-}
-@keyframes logoFade{
-  from{opacity:0; transform:translateY(calc(var(--homeLogoOffsetY)+10px))}
-  to{opacity:1; transform:translateY(var(--homeLogoOffsetY))}
-}
-@media (min-width:1024px){
-  .logo{height:8vh; width:auto; max-height:none; max-width:none}
-}
-
-// TEMP FIX – Nav und Pfeil immer sichtbar + klickbar
-  topnav.classList.add("show");
-  nextBtn.classList.add("show");
-  console.log("✅ Nav + Pfeil forced show");
-
-  navLinks.forEach(a => {
-    a.style.pointerEvents = "auto";
-    a.addEventListener("click", (e) => {
-      e.preventDefault();
-      const href = a.getAttribute("href");
-      const target = document.querySelector(href);
-      if (target && scroller) {
-        scroller.scrollTo({
-          top: target.offsetTop,
-          behavior: "smooth"
-        });
-        console.log("Nav geklickt →", href);
-      }
-    });
-  });
-
-  nextBtn.addEventListener("click", () => {
-    if (modeTop) {
-      scroller.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      const curIdx = sections.findIndex(s => s.getBoundingClientRect().top > -50);
-      const nextSection = sections[curIdx + 1];
-      if (nextSection) {
-        scroller.scrollTo({
-          top: nextSection.offsetTop,
-          behavior: "smooth"
-        });
-      }
+  <style>
+    /* ====================== ROOT & BASICS ====================== */
+    :root{
+      --bg: #fcf8cd;
+      --text: #4a494a;
+      --accent: #eec01f;
+      --stroke: #6cc4c7;
+      --max: 980px;
+      --pad: 18px;
+      --homeLogoOffsetY: -120px;
+      --titleBandHeight: 250px;
+      --titleBandTopPadDesktop: 200px;
+      --titleBandTopPadMobile: 200px;
+      --contentTopPadDesktop: 250px;
+      --contentTopPadMobile: 180px;
     }
-    console.log("Pfeil geklickt");
-  });
+    @font-face{
+      font-family: "Abtos";
+      src: url("Abtos.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    *{box-sizing:border-box}
+    html, body{
+      height:100dvh;
+      margin:0;
+      scroll-behavior:smooth;
+      overflow-x:hidden;
+    }
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:"Abtos", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      overflow:hidden;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 var(--pad); width:100%}
 
-/* ====================== TITLE IMAGES ====================== */
-.titleImg{
-  display:block; max-width:min(560px,90vw); max-height:90px;
-  width:auto; height:auto;
-}
+    /* ====================== PASSWORT-GATE ====================== */
+    #gate{
+      position:relative; z-index:9999;
+      min-height:100dvh;
+      display:flex; align-items:center; justify-content:center;
+      padding:24px; background:var(--bg);
+    }
+    #gateBox{
+      width:100%; max-width:420px; padding:22px;
+      border:1px solid var(--stroke); border-radius:18px;
+      background:rgba(252,248,205,.75);
+    }
+    #gateBox h2{margin:0 0 10px; font-size:22px; letter-spacing:.6px; text-transform:uppercase; text-align:center; color:var(--stroke); font-weight:950}
+    #gateBox p{margin:0 0 14px; color:rgba(74,73,74,.85); line-height:1.7; text-align:center}
+    #gateBox input,#gateBox button{
+      width:100%; padding:12px 12px; border-radius:12px;
+      border:1px solid var(--stroke); background:rgba(252,248,205,.55);
+      color:var(--text); font:inherit; outline:none;
+    }
+    #gateBox button{margin-top:10px; background:rgba(238,192,31,.18); font-weight:950; letter-spacing:.6px; text-transform:uppercase; cursor:pointer}
+    #gateErr{display:none; color:#b24a4a; font-size:13px; margin-top:10px; text-align:center}
+    #content{display:none; position:relative; z-index:1}
 
-/* ====================== TEXT & LAYOUTS ====================== */
-.lead{
-  margin:0; max-width:72ch; line-height:1.85; font-size:16px;
-  color:rgba(74,73,74,.92);
-}
-.lead.center{margin-left:auto; margin-right:auto; text-align:center}
-.hl{color:var(--accent); font-weight:950}
+    /* ====================== SCROLLER & SECTIONS ====================== */
+    .scroller{
+      height:100dvh; overflow-y:auto; -webkit-overflow-scrolling:touch;
+      scroll-snap-type:y mandatory; scroll-behavior:smooth; position:relative;
+    }
+    .section{
+      height:100dvh;
+      scroll-snap-align:start;
+      scroll-snap-stop:always;
+      position:relative;
+      overflow:hidden;
+      border-top:1px solid rgba(108,196,199,.35);
+    }
+    .section:first-child{border-top:none}
+    .secInner{
+      width:100%; height:100%; display:flex; flex-direction:column;
+    }
+    .titleBand{
+      flex:0 0 var(--titleBandHeight);
+      display:flex; align-items:center; justify-content:center;
+      padding-top:var(--titleBandTopPadDesktop);
+      padding-left:var(--pad); padding-right:var(--pad);
+    }
+    .contentBand{
+      flex:1;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
+      padding:var(--contentTopPadDesktop) 0 72px;
+      display:block;
+    }
+    @media (max-width:560px){
+      .titleBand{padding-top:var(--titleBandTopPadMobile); height:150px; flex:0 0 150px}
+      .contentBand{padding:var(--contentTopPadMobile) 0 64px}
+    }
 
-.infosGrid{display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:center}
-@media (max-width:860px){.infosGrid{grid-template-columns:1fr}}
+    /* ====================== WATERMARKS ====================== */
+    .wm{position:absolute; inset:0; pointer-events:none; z-index:0; background-repeat:no-repeat; background-position:center}
+    .wmHome{background-image:url("TykeSun.png"); background-size:min(95vw,1100px); opacity:.12}
+    .section:not(#home)::before{
+      content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
+      background:url("watermark.png") center / 900px auto no-repeat;
+      opacity:.03;
+    }
+    @media (max-width:768px){.section:not(#home)::before{background-size:75vw auto}}
+    .layer{position:relative; z-index:1; width:100%}
 
-.lineupGrid{display:grid; grid-template-columns:1fr 1.15fr; gap:24px; align-items:center}
-@media (max-width:820px){.lineupGrid{grid-template-columns:1fr}}
+    /* ====================== HOME ====================== */
+    .homeCenter{height:100dvh; display:flex; align-items:center; justify-content:center}
+    .logo{
+      max-width:min(80vw,900px); max-height:min(75dvh,650px);
+      opacity:0; animation:logoFade .85s ease-out forwards;
+      transform:translateY(var(--homeLogoOffsetY));
+    }
+    @keyframes logoFade{
+      from{opacity:0; transform:translateY(calc(var(--homeLogoOffsetY)+10px))}
+      to{opacity:1; transform:translateY(var(--homeLogoOffsetY))}
+    }
+    @media (min-width:1024px){.logo{height:8vh; width:auto; max-height:none; max-width:none}}
 
-.djList{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px}
-.djLink{padding:6px 0; border-bottom:1px solid transparent; cursor:pointer}
-.djLink:hover{border-bottom-color:var(--stroke)}
-.djName{font-weight:950; font-size:clamp(18px,2.2vw,26px); letter-spacing:.6px; text-transform:uppercase}
+    /* ====================== NAV & NEXT ====================== */
+    .topnav{
+      position:fixed; left:50%; top:14px; transform:translateX(-50%);
+      z-index:6000; display:flex; gap:10px; align-items:center;
+      padding:16px 20px; background:rgba(252,248,205,.78);
+      backdrop-filter:blur(4px); border:1px solid var(--stroke);
+      border-radius:14px; opacity:0; pointer-events:none;
+      transition:opacity .18s ease;
+    }
+    .topnav.show{opacity:1; pointer-events:auto}
+    .topnav a{
+      text-decoration:none; font-weight:950; letter-spacing:.4px;
+      text-transform:uppercase; font-size:16px; padding:8px 10px;
+      border-radius:12px; border:1px solid transparent;
+      transition:all .12s ease; white-space:nowrap;
+    }
+    .topnav a:hover{border-color:var(--stroke); transform:translateY(-1px)}
+    .topnav a.active{
+      border-color:var(--stroke); background:rgba(238,192,31,.18);
+    }
+    @media (max-width:720px){
+      .topnav{top:10px; max-width:calc(100vw-20px); overflow-x:auto; white-space:nowrap}
+      .topnav::-webkit-scrollbar{height:8px}
+      .topnav::-webkit-scrollbar-thumb{background:rgba(108,196,199,.45); border-radius:999px}
+    }
 
-.gallery{position:relative; height:min(60dvh,500px); min-height:320px; z-index:1}
-.pic{
-  position:absolute; width:54%; max-width:380px; aspect-ratio:4/5;
-  object-fit:cover; border-radius:16px; border:1px solid var(--stroke);
-  box-shadow:0 18px 50px rgba(74,73,74,.18); opacity:.88;
-  filter:saturate(.98) contrast(1.02) brightness(.98);
-  transition:all .25s ease; z-index:1; pointer-events:none;
-}
-.pic.p1{left:3%; top:12%; transform:rotate(-6deg)}
-.pic.p2{left:32%; top:2%; transform:rotate(4deg)}
-.pic.p3{left:18%; top:30%; transform:rotate(-2deg)}
-.pic.p4{left:46%; top:26%; transform:rotate(7deg)}
-.pic.active{z-index:10; opacity:1; filter:saturate(1.06) contrast(1.08) brightness(1.04); transform:rotate(0deg) scale(1.03)}
-@media (max-width:820px){.gallery{height:420px} .pic{width:58%}}
+    .nextBtn{
+      position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
+      z-index:6000; width:40px; height:40px; border-radius:999px;
+      border:1px solid var(--stroke); background:rgba(252,248,205,.82);
+      display:grid; place-items:center; cursor:pointer;
+      opacity:0; pointer-events:none; transition:all .18s ease;
+    }
+    .nextBtn.show{opacity:1; pointer-events:auto}
+    .nextBtn:hover{transform:translateX(-50%) translateY(-1px); background:rgba(238,192,31,.18)}
+    .nextBtn svg{width:18px; height:18px}
 
-.btnrow{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
-.btn{
-  display:inline-flex; padding:12px 14px; border:1px solid var(--stroke);
-  border-radius:14px; text-decoration:none; font-weight:950;
-  letter-spacing:.6px; text-transform:uppercase;
-  background:rgba(252,248,205,.55); transition:.12s ease;
-}
-.btn:hover{transform:translateY(-1px)}
-.btn.primary{background:rgba(238,192,31,.18)}
+    /* ====================== TITLE IMAGES ====================== */
+    .titleImg{
+      display:block; max-width:min(560px,90vw); max-height:90px;
+      width:auto; height:auto;
+    }
 
-.fine{margin-top:14px; color:rgba(74,73,74,.70); font-size:13px; line-height:1.7; text-align:center}
+    /* ====================== TEXT & LAYOUT ====================== */
+    .lead{margin:0; max-width:72ch; line-height:1.85; font-size:16px; color:rgba(74,73,74,.92)}
+    .lead.center{margin-left:auto; margin-right:auto; text-align:center}
+    .hl{color:var(--accent); font-weight:950}
 
-.aboutGrid{display:flex; align-items:center; justify-content:space-between; gap:40px}
-.aboutText{max-width:500px}
-.aboutImage{flex:1; display:flex; justify-content:center}
-.aboutImage img{width:100%; max-width:450px; height:auto; border-radius:18px; border:1px solid var(--stroke); background:rgba(252,248,205,.6)}
-@media (max-width:860px){
-  .aboutGrid{flex-direction:column; text-align:center}
-  .aboutImage{margin-top:20px}
-}
+    .aboutGrid{display:flex; align-items:center; justify-content:space-between; gap:40px}
+    .aboutText{max-width:500px}
+    .aboutImage{flex:1; display:flex; justify-content:center}
+    .aboutImage img{width:100%; max-width:450px; height:auto; border-radius:18px; border:1px solid var(--stroke); background:rgba(252,248,205,.6)}
+    @media (max-width:860px){
+      .aboutGrid{flex-direction:column; text-align:center}
+      .aboutImage{margin-top:20px}
+    }
 
-.countdown{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:14px}
-.cdBox{min-width:92px; padding:12px; border:1px solid var(--stroke); border-radius:14px; background:rgba(252,248,205,.55); text-align:center}
-.cdNum{font-weight:950; font-size:26px; letter-spacing:.5px}
-.cdLbl{margin-top:4px; font-size:12px; text-transform:uppercase; letter-spacing:.6px; color:rgba(74,73,74,.75)}
-@media (max-width:560px){.cdBox{min-width:78px} .cdNum{font-size:22px}}
+    .infoCore{max-width:620px; margin:50px auto 90px}
+    .infoRow{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:18px 0; border-bottom:1px solid var(--stroke);
+      font-size:19px; font-weight:950; letter-spacing:.7px;
+    }
 
-.infoCore{max-width:600px; margin:0 auto 60px auto}
-.infoRow{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--stroke); font-weight:950; letter-spacing:.6px}
+    .faq{max-width:680px; margin:40px auto 0}
+    .faqItem{border-bottom:1px solid var(--stroke)}
+    .faqQuestion{
+      width:100%; background:none; border:none; padding:22px 0 20px;
+      text-align:left; font:inherit; font-size:19px; font-weight:950;
+      letter-spacing:.6px; cursor:pointer; position:relative;
+    }
+    .faqQuestion::after{
+      content:"+"; position:absolute; right:4px; top:19px;
+      font-size:32px; color:var(--accent); transition:transform .35s ease;
+    }
+    .faqItem.active .faqQuestion::after{transform:rotate(45deg)}
+    .faqAnswer{max-height:0; overflow:hidden; transition:max-height .45s ease}
+    .faqAnswer p{padding:0 0 26px 0; line-height:1.75; font-size:16.5px}
 
-.faq{max-width:720px; margin:0 auto}
-.faqItem{border-bottom:1px solid var(--stroke)}
-.faqQuestion{
-  width:100%; background:none; border:none; padding:18px 0;
-  text-align:left; font:inherit; font-weight:950; letter-spacing:.6px;
-  cursor:pointer; position:relative; color:var(--text);
-  appearance:none;
-}
-.faqQuestion::after{content:"+"; position:absolute; right:0; color:#eec01f; transition:transform .3s ease}
-.faqItem.active .faqQuestion::after{transform:rotate(45deg)}
-.faqAnswer{max-height:0; overflow:hidden; transition:max-height .4s ease}
-.faqAnswer p{padding-bottom:18px; line-height:1.8}
+    .lineupGrid{display:grid; grid-template-columns:1fr 1.15fr; gap:24px; align-items:center}
+    @media (max-width:820px){.lineupGrid{grid-template-columns:1fr}}
+    .djList{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px}
+    .djLink{padding:6px 0; border-bottom:1px solid transparent; cursor:pointer}
+    .djLink:hover{border-bottom-color:var(--stroke)}
+    .djName{font-weight:950; font-size:clamp(18px,2.2vw,26px); letter-spacing:.6px; text-transform:uppercase}
+    .gallery{position:relative; height:min(60dvh,500px); min-height:320px; z-index:1}
+    .pic{
+      position:absolute; width:54%; max-width:380px; aspect-ratio:4/5;
+      object-fit:cover; border-radius:16px; border:1px solid var(--stroke);
+      box-shadow:0 18px 50px rgba(74,73,74,.18); opacity:.88;
+      filter:saturate(.98) contrast(1.02) brightness(.98);
+      transition:all .25s ease; z-index:1; pointer-events:none;
+    }
+    .pic.p1{left:3%; top:12%; transform:rotate(-6deg)}
+    .pic.p2{left:32%; top:2%; transform:rotate(4deg)}
+    .pic.p3{left:18%; top:30%; transform:rotate(-2deg)}
+    .pic.p4{left:46%; top:26%; transform:rotate(7deg)}
+    .pic.active{z-index:10; opacity:1; filter:saturate(1.06) contrast(1.08) brightness(1.04); transform:rotate(0deg) scale(1.03)}
+    @media (max-width:820px){.gallery{height:420px} .pic{width:58%}}
 
-.contactBlock{text-align:center; margin-bottom:40px}
-.contactLabel{font-weight:950; letter-spacing:.6px; margin-bottom:8px}
-.contactMail a{font-size:18px; text-decoration:none; border-bottom:1px solid var(--stroke); padding-bottom:4px}
-.contactFooter{text-align:center}
+    .countdown{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin:30px 0 20px}
+    .cdBox{
+      width:88px; padding:14px 8px 10px;
+      border:2px solid var(--stroke); border-radius:18px;
+      background:rgba(252,248,205,.6); text-align:center;
+      box-shadow:0 8px 20px rgba(108,196,199,.1);
+    }
+    .cdNum{font-size:32px; font-weight:950; letter-spacing:.8px; line-height:1}
+    .cdLbl{margin-top:6px; font-size:11px; font-weight:950; letter-spacing:1.2px; text-transform:uppercase; color:var(--stroke)}
 
-.mailSmart{
-  cursor:pointer; position:relative; border-bottom:1px solid var(--stroke);
-  transition:color .3s ease, border-color .3s ease;
-}
-.mailSmart:hover{color:#6cc4c7; border-color:#6cc4c7}
-.mailSmart.revealed{animation:mailFade .35s ease forwards}
-@keyframes mailFade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:translateY(0)}}
+    .btnrow{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+    .btn{
+      display:inline-flex; padding:12px 14px; border:1px solid var(--stroke);
+      border-radius:14px; text-decoration:none; font-weight:950;
+      letter-spacing:.6px; text-transform:uppercase;
+      background:rgba(252,248,205,.55); transition:.12s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:rgba(238,192,31,.18)}
 
-.privacyBanner{
-  position:fixed; left:12px; right:12px; bottom:12px; z-index:9999;
-  display:none; align-items:center; justify-content:space-between; gap:12px;
-  padding:10px 12px; border:1px solid var(--stroke); border-radius:14px;
-  background:rgba(252,248,205,.92); backdrop-filter:blur(6px);
-  box-shadow:0 10px 30px rgba(74,73,74,.12); font-size:12px; line-height:1.4;
-}
-.privacyBtn{
-  border:1px solid var(--stroke); border-radius:12px; padding:8px 10px;
-  background:rgba(238,192,31,.18); font:inherit; font-weight:950;
-  letter-spacing:.4px; text-transform:uppercase; cursor:pointer;
-  white-space:nowrap;
-}
+    .fine{margin-top:14px; color:rgba(74,73,74,.70); font-size:13px; line-height:1.7; text-align:center}
 
-.logoutLink{text-decoration:none; border-bottom:1px solid var(--stroke)}
-</style>
+    .contactBlock{text-align:center; margin-bottom:40px}
+    .contactLabel{font-weight:950; letter-spacing:.6px; margin-bottom:8px}
+    .contactMail a{font-size:18px; text-decoration:none; border-bottom:1px solid var(--stroke); padding-bottom:4px}
+
+    .mailSmart{
+      cursor:pointer; position:relative; border-bottom:1px solid var(--stroke);
+      transition:color .3s ease, border-color .3s ease;
+    }
+    .mailSmart:hover{color:#6cc4c7; border-color:#6cc4c7}
+    .mailSmart.revealed{animation:mailFade .35s ease forwards}
+    @keyframes mailFade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:translateY(0)}}
+
+    .privacyBanner{
+      position:fixed; left:12px; right:12px; bottom:12px; z-index:9999;
+      display:none; align-items:center; justify-content:space-between; gap:12px;
+      padding:10px 12px; border:1px solid var(--stroke); border-radius:14px;
+      background:rgba(252,248,205,.92); backdrop-filter:blur(6px);
+      box-shadow:0 10px 30px rgba(74,73,74,.12); font-size:12px; line-height:1.4;
+    }
+    .privacyBtn{
+      border:1px solid var(--stroke); border-radius:12px; padding:8px 10px;
+      background:rgba(238,192,31,.18); font:inherit; font-weight:950;
+      letter-spacing:.4px; text-transform:uppercase; cursor:pointer;
+      white-space:nowrap;
+    }
+  </style>
 </head>
-
 <body>
+
   <!-- PASSWORT GATE -->
   <div id="gate">
     <div id="gateBox">
@@ -315,7 +288,7 @@ a{color:inherit}
     </div>
   </div>
 
-  <!-- TOP NAV & NEXT BUTTON – jetzt AUSSERHALB von #content (wichtig!) -->
+  <!-- NAV & NEXT BUTTON (fixed, außerhalb von content) -->
   <nav class="topnav" id="topnav" aria-label="Navigation">
     <a href="#home">Home</a>
     <a href="#about">About</a>
@@ -352,21 +325,145 @@ a{color:inherit}
             <div class="wrap">
               <div class="aboutGrid">
                 <div class="aboutText">
-                  <p class="lead">… (dein About-Text unverändert)</p>
+                  <p class="lead">
+                    Das Tyke Life Festival findet am 18. Juli statt – an Yves’ Geburtstag.<br><br>
+                    Wir feiern nicht nur in Erinnerung, sondern in allem, was er verkörperte: authentisch, empathisch, immer nah bei den Menschen; kreativ und chaotisch, voller Ideen und überraschender Wendungen; exzessiv, lebendig, intensiv, grenzenlos.<br><br>
+                    «Tyke Life» war seine Art zu leben – zwischen Musik, Kunst und Begegnung, immer auf der Suche nach Verbindung, innen wie aussen. Wie Yves selbst einmal schrieb:<br><br>
+                    <em>During the last decade artistic expression through drawing and painting has always been and still is interlocked with my own inner process of growth. Throughout this process I more and more came to the realization that I really want to extract and communicate spiritual visions through artistic expression…</em><br><br>
+                    Kunst war für ihn kein Produkt, sondern Ausdruck seines inneren Prozesses – genau darum geht es an diesem Tag: mit Freunden zusammenzukommen, zu tanzen, zu lachen, sich zu erinnern – und das Leben zu feiern.<br><br>
+                    Kein Abschied <br>
+                    Ein Geburtstag<br><br>
+                    Tyke lives where we meet
+                  </p>
                 </div>
-                <div class="aboutImage"><img src="AboutYves.png" alt="Yves"></div>
+                <div class="aboutImage">
+                  <img src="AboutYves.png" alt="Yves">
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Alle anderen Sections (Infos, Lineup, Tickets, Impressionen, Kontakt) bleiben genau gleich wie bei dir – nur die FAQ und MailSmart sind schon korrekt -->
+      <!-- INFOS -->
+      <section class="section" id="infos">
+        <div class="secInner layer">
+          <div class="titleBand"><img class="titleImg" src="Infos.png" alt="Infos"></div>
+          <div class="contentBand">
+            <div class="wrap">
+              <div class="infoCore">
+                <div class="infoRow"><span class="infoLabel">START</span><span class="infoValue">14:00</span></div>
+                <div class="infoRow"><span class="infoLabel">ENDE</span><span class="infoValue">22:00</span></div>
+                <div class="infoRow"><span class="infoLabel">DATUM</span><span class="infoValue">18.07.2026</span></div>
+                <div class="infoRow"><span class="infoLabel">ORT</span><span class="infoValue">Eglisau</span></div>
+                <div class="infoRow"><span class="infoLabel">MUSIK</span><span class="infoValue">Techno</span></div>
+              </div>
+              <div class="faq">
+                <div class="faqItem"><button class="faqQuestion">Anreise</button><div class="faqAnswer"><p>Informationen zur Anfahrt, Shuttlebus-Verbindungen sowie Parkmöglichkeiten folgen in Kürze. Eine detaillierte Wegbeschreibung wird ergänzt.</p></div></div>
+                <div class="faqItem"><button class="faqQuestion">Abreise</button><div class="faqAnswer"><p>Taxi- und Ride-Sharing-Optionen sind in etwa 10 Gehminuten erreichbar. Weitere Details folgen.</p></div></div>
+                <div class="faqItem"><button class="faqQuestion">Wetter</button><div class="faqAnswer"><p>Das Festival findet bei jeder Witterung statt. Bitte kleidet euch entsprechend.</p></div></div>
+                <div class="faqItem"><button class="faqQuestion">Zahlungsmöglichkeiten</button><div class="faqAnswer"><p>Vor Ort ist ausschliesslich <strong>TWINT</strong> verfügbar.</p></div></div>
+                <div class="faqItem"><button class="faqQuestion">Getränke & Essen</button><div class="faqAnswer"><p>Es stehen verschiedene Getränke- und Essensstände vor Ort bereit.</p></div></div>
+                <div class="faqItem"><button class="faqQuestion">Tickets</button><div class="faqAnswer"><p>Details findet ihr unten bei <a href="#tickets">Tickets</a>. Es wird limitierte Early-Bird und reguläre Tickets geben.<br>⚠️⚠️ Es wird keine Abendkasse geben ⚠️⚠️</p></div></div>
+                <div class="faqItem"><button class="faqQuestion">Fundsachen</button><div class="faqAnswer"><p>Bitte meldet euch unter <span class="mailSmart">info@…</span>.</p></div></div>
+                <div class="faqItem"><button class="faqQuestion">Abfall</button><div class="faqAnswer"><p>Bitte haltet das Gelände sauber. Recyclingstationen sind vorhanden.</p></div></div>
+                <div class="faqItem"><button class="faqQuestion">Toiletten</button><div class="faqAnswer"><p>Direkt vor dem Eingang befinden sich ausreichend Toilettenanlagen.</p></div></div>
+                <div class="faqItem"><button class="faqQuestion">Lautstärke & Gehörschutz</button><div class="faqAnswer"><p>Die Lautstärke wird phasenweise hoch sein. Wir empfehlen, euer Gehör zu schützen. Kostenlose Ohrstöpsel werden vor Ort erhältlich sein.</p></div></div>
+                <div class="faqItem"><button class="faqQuestion">Nicht erlaubte Gegenstände</button><div class="faqAnswer"><p>Feuerwerk, Waffen, Drohnen, Glas, eigene Speisen & Getränke, grosse Schirme und gefährliche Gegenstände sind untersagt.</p></div></div>
+                <div class="faqItem"><button class="faqQuestion">Helfen</button><div class="faqAnswer"><p>Interesse mitzuhelfen oder etwas beizutragen? <span class="mailSmart">info@…</span>.</p></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    </div> <!-- Ende #scroller -->
-  </div> <!-- Ende #content -->
+      <!-- LINEUP -->
+      <section class="section" id="lineup">
+        <div class="secInner layer">
+          <div class="titleBand"><img class="titleImg" src="Lineup.png" alt="Lineup"></div>
+          <div class="contentBand">
+            <div class="wrap">
+              <div class="lineupGrid">
+                <ul class="djList" aria-label="DJs">
+                  <li><a class="djLink" href="#lineup" data-img="Floostix.jpg"><span class="djName">DJ FLOOSTIX</span></a></li>
+                  <li><a class="djLink" href="#lineup" data-img="arearge.jpg"><span class="djName">ARE:AGE</span></a></li>
+                  <li><a class="djLink" href="#lineup" data-img="Livio.jpg"><span class="djName">LIVIO</span></a></li>
+                  <li><a class="djLink" href="#lineup" data-img="DJ4.jpg"><span class="djName">MORE TBA</span></a></li>
+                </ul>
+                <div class="gallery" aria-label="DJ Bilder">
+                  <img class="pic p1 active" src="Floostix.jpg" data-file="Floostix.jpg" alt="DJ Floostix">
+                  <img class="pic p2" src="arearge.jpg" data-file="arearge.jpg" alt="are:age">
+                  <img class="pic p3" src="Livio.jpg" data-file="Livio.jpg" alt="Livio">
+                  <img class="pic p4" src="DJ4.jpg" data-file="DJ4.jpg" alt="DJ">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-  <!-- Privacy Banner (unverändert) -->
+      <!-- TICKETS -->
+      <section class="section" id="tickets">
+        <div class="secInner layer">
+          <div class="titleBand"><img class="titleImg" src="Tickets.png" alt="Tickets"></div>
+          <div class="contentBand">
+            <div class="wrap">
+              <p class="lead center"><span class="hl">Early Bird</span> Vorverkauf startet in:</p>
+              <div id="countdown" class="countdown" aria-live="polite">
+                <div class="cdBox"><div class="cdNum" id="cdDays">--</div><div class="cdLbl">Tage</div></div>
+                <div class="cdBox"><div class="cdNum" id="cdHours">--</div><div class="cdLbl">Std</div></div>
+                <div class="cdBox"><div class="cdNum" id="cdMins">--</div><div class="cdLbl">Min</div></div>
+                <div class="cdBox"><div class="cdNum" id="cdSecs">--</div><div class="cdLbl">Sek</div></div>
+              </div>
+              <div id="ticketBtnWrap" class="btnrow" style="margin-top:16px; display:none;">
+                <a class="btn primary" id="ticketLink" href="https://example.com" target="_blank" rel="noopener">TICKET LINK</a>
+              </div>
+              <p class="fine" id="ticketHint">be ready, Tickets are limited!<br>*time might change ;-)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- IMPRESSIONEN -->
+      <section class="section" id="impressionen">
+        <div class="secInner layer">
+          <div class="titleBand"><img class="titleImg" src="Impressionen.png" alt="Impressionen"></div>
+          <div class="contentBand">
+            <div class="wrap">
+              <p class="lead center">Alle Impressionen und wichtige Updates findest du auf Instagram.</p>
+              <div class="btnrow" style="margin-top:16px;">
+                <a class="btn primary" href="https://www.instagram.com/tyke.life.festival/" target="_blank" rel="noopener">INSTAGRAM</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KONTAKT -->
+      <section class="section" id="kontakt">
+        <div class="secInner layer">
+          <div class="titleBand"><img class="titleImg" src="Kontakt.png" alt="Kontakt"></div>
+          <div class="contentBand">
+            <div class="wrap center">
+              <div class="contactBlock">
+                <p class="contactLabel">Kontakt</p>
+                <p class="contactMail">
+                  <span class="mailSmart">info@…</span>
+                </p>
+              </div>
+              <div class="contactFooter">
+                <p class="fine">© <span id="y"></span> Tyke Life</p>
+                <p class="fine"><a href="#" id="logout" class="logoutLink">Logout</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Privacy Banner -->
   <div id="privacyBanner" class="privacyBanner" role="dialog" aria-live="polite">
     <div class="privacyText">
       Wir nutzen anonymes Analytics (Cloudflare Web Analytics), um Besucherzahlen zu verstehen.
@@ -375,10 +472,9 @@ a{color:inherit}
     <button id="privacyOk" class="privacyBtn">OK</button>
   </div>
 
-  <!-- SAUBERER SCRIPT (kopiere komplett) -->
   <script>
   document.addEventListener("DOMContentLoaded", function(){
-    // Passwort-Gate (unverändert)
+    // PASSWORT GATE
     const PASSWORD = "Yves";
     const COOKIE_NAME = "tyke_access";
     const COOKIE_DAYS = 14;
@@ -412,7 +508,7 @@ a{color:inherit}
     });
     pwInput.addEventListener("keydown", e => { if(e.key === "Enter") enterBtn.click(); });
 
-    // ====================== SCROLL & NAV (JETZT 100% STABIL) ======================
+    // SCROLL & NAV
     const scroller = document.getElementById("scroller");
     const topnav = document.getElementById("topnav");
     const nextBtn = document.getElementById("nextBtn");
@@ -465,142 +561,100 @@ a{color:inherit}
       }
     });
 
-  function setActiveNav(id){
-    navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + id));
-  }
+    // LINEUP
+    const djLinks = document.querySelectorAll(".djLink");
+    const pics = document.querySelectorAll(".gallery .pic");
+    let autoIdx = 0;
+    let timer;
+    const order = ["Floostix.jpg","arearge.jpg","Livio.jpg","DJ4.jpg"];
 
-  let modeTop = false;
-  function setNextMode(isTop){
-    modeTop = isTop;
-    nextBtn.querySelector("path").setAttribute("d", isTop ? "M6 15l6-6 6 6" : "M6 9l6 6 6-6");
-    nextBtn.classList.add("show");
-  }
-
-  function applyActive(secId){
-    if(secId === "home") topnav.classList.remove("show");
-    else topnav.classList.add("show");
-    setActiveNav(secId);
-    const idx = sections.findIndex(s => s.id === secId);
-    setNextMode(idx === sections.length - 1);
-  }
-
-  const io = new IntersectionObserver(entries => {
-    const vis = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-    if(vis) applyActive(vis.target.id);
-  }, { root: scroller, threshold: [0.4, 0.7, 0.95] });
-
-  sections.forEach(s => io.observe(s));
-
-  // Initial state
-  setTimeout(() => {
-    applyActive("home");
-  }, 100);
-
-  // NEXT BUTTON
-  nextBtn.addEventListener("click", () => {
-    if (modeTop) {
-      scroller.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      const curIdx = sections.findIndex(s => s.getBoundingClientRect().top > -100);
-      const nextSection = sections[curIdx + 1];
-      if (nextSection) scroller.scrollTo({ top: nextSection.offsetTop, behavior: "smooth" });
+    function activate(file){
+      pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
     }
-  });
-
-  // ====================== LINEUP ======================
-  const djLinks = document.querySelectorAll(".djLink");
-  const pics = document.querySelectorAll(".gallery .pic");
-  let autoIdx = 0;
-  let timer;
-  const order = ["Floostix.jpg","arearge.jpg","Livio.jpg","DJ4.jpg"];
-
-  function activate(file){
-    pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
-  }
-  function startAuto(){
-    timer = setInterval(() => {
-      autoIdx = (autoIdx + 1) % order.length;
-      activate(order[autoIdx]);
-    }, 2800);
-  }
-  djLinks.forEach(link => {
-    const file = link.dataset.img;
-    link.addEventListener("pointerenter", () => { clearInterval(timer); activate(file); });
-    link.addEventListener("pointerleave", startAuto);
-  });
-  activate(order[0]);
-  startAuto();
-
-  // ====================== TICKETS COUNTDOWN ======================
-  const TICKET_LAUNCH = "2026-03-01T18:00:00+01:00";
-  const cd = {
-    days: document.getElementById("cdDays"),
-    hrs: document.getElementById("cdHours"),
-    mins: document.getElementById("cdMins"),
-    secs: document.getElementById("cdSecs"),
-    wrap: document.getElementById("countdown"),
-    btnWrap: document.getElementById("ticketBtnWrap"),
-    hint: document.getElementById("ticketHint")
-  };
-  function updateCountdown(){
-    const target = new Date(TICKET_LAUNCH).getTime();
-    const diff = target - Date.now();
-    if(diff <= 0){
-      cd.wrap.style.display = "none";
-      cd.btnWrap.style.display = "flex";
-      cd.hint.textContent = "Tickets sind jetzt verfügbar!";
-      return;
+    function startAuto(){
+      timer = setInterval(() => {
+        autoIdx = (autoIdx + 1) % order.length;
+        activate(order[autoIdx]);
+      }, 2800);
     }
-    const s = Math.floor(diff / 1000);
-    cd.days.textContent = Math.floor(s / 86400);
-    cd.hrs.textContent = String(Math.floor((s % 86400) / 3600)).padStart(2,"0");
-    cd.mins.textContent = String(Math.floor((s % 3600) / 60)).padStart(2,"0");
-    cd.secs.textContent = String(s % 60).padStart(2,"0");
-  }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-
-  // ====================== MAILSMART ======================
-  const email = "info@tyke-life.ch";
-  document.querySelectorAll(".mailSmart").forEach(el => {
-    el.style.cursor = "pointer";
-    el.addEventListener("click", function(){
-      this.textContent = email;
-      this.classList.add("revealed");
-      window.location.href = "mailto:" + email;
+    djLinks.forEach(link => {
+      const file = link.dataset.img;
+      link.addEventListener("pointerenter", () => { clearInterval(timer); activate(file); });
+      link.addEventListener("pointerleave", startAuto);
     });
-  });
+    activate(order[0]);
+    startAuto();
 
-  // ====================== FAQ ======================
-  document.querySelectorAll(".faqQuestion").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const item = btn.closest(".faqItem");
-      if (!item) return;
-      document.querySelectorAll(".faqItem").forEach(i => {
-        if (i !== item) {
-          i.classList.remove("active");
-          const ans = i.querySelector(".faqAnswer");
-          if (ans) ans.style.maxHeight = null;
-        }
+    // TICKETS COUNTDOWN
+    const TICKET_LAUNCH = "2026-03-01T18:00:00+01:00";
+    const cd = {
+      days: document.getElementById("cdDays"),
+      hrs: document.getElementById("cdHours"),
+      mins: document.getElementById("cdMins"),
+      secs: document.getElementById("cdSecs"),
+      wrap: document.getElementById("countdown"),
+      btnWrap: document.getElementById("ticketBtnWrap"),
+      hint: document.getElementById("ticketHint")
+    };
+    function updateCountdown(){
+      const target = new Date(TICKET_LAUNCH).getTime();
+      const diff = target - Date.now();
+      if(diff <= 0){
+        cd.wrap.style.display = "none";
+        cd.btnWrap.style.display = "flex";
+        cd.hint.textContent = "Tickets sind jetzt verfügbar!";
+        return;
+      }
+      const s = Math.floor(diff / 1000);
+      cd.days.textContent = Math.floor(s / 86400);
+      cd.hrs.textContent = String(Math.floor((s % 86400) / 3600)).padStart(2,"0");
+      cd.mins.textContent = String(Math.floor((s % 3600) / 60)).padStart(2,"0");
+      cd.secs.textContent = String(s % 60).padStart(2,"0");
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // MAILSMART
+    const email = "info@tyke-life.ch";
+    document.querySelectorAll(".mailSmart").forEach(el => {
+      el.style.cursor = "pointer";
+      el.addEventListener("click", function(){
+        this.textContent = email;
+        this.classList.add("revealed");
+        window.location.href = "mailto:" + email;
       });
-      item.classList.toggle("active");
-      const answer = item.querySelector(".faqAnswer");
-      if (answer) answer.style.maxHeight = item.classList.contains("active") ? answer.scrollHeight + "px" : null;
+    });
+
+    // FAQ
+    document.querySelectorAll(".faqQuestion").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const item = btn.closest(".faqItem");
+        if (!item) return;
+        document.querySelectorAll(".faqItem").forEach(i => {
+          if (i !== item) {
+            i.classList.remove("active");
+            const ans = i.querySelector(".faqAnswer");
+            if (ans) ans.style.maxHeight = null;
+          }
+        });
+        item.classList.toggle("active");
+        const answer = item.querySelector(".faqAnswer");
+        if (answer) answer.style.maxHeight = item.classList.contains("active") ? answer.scrollHeight + "px" : null;
+      });
+    });
+
+    // REST
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    const privacyOk = document.getElementById("privacyOk");
+    if(!localStorage.getItem("privacy_ok")){
+      document.getElementById("privacyBanner").style.display = "flex";
+    }
+    privacyOk.addEventListener("click", () => {
+      localStorage.setItem("privacy_ok", "1");
+      document.getElementById("privacyBanner").style.display = "none";
     });
   });
-
-  // ====================== REST ======================
-  document.getElementById("y").textContent = new Date().getFullYear();
-
-  const privacyOk = document.getElementById("privacyOk");
-  if(!localStorage.getItem("privacy_ok")){
-    document.getElementById("privacyBanner").style.display = "flex";
-  }
-  privacyOk.addEventListener("click", () => {
-    localStorage.setItem("privacy_ok", "1");
-    document.getElementById("privacyBanner").style.display = "none";
-  });
-});
-</script>
+  </script>
 </body>
 </html>
