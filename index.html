@@ -763,9 +763,44 @@ document.querySelectorAll(".faqQuestion").forEach(btn => {
     document.getElementById("privacyBanner").style.display = "none";
   });
 
-});
+  // TEMP FIX – Nav und Pfeil immer sichtbar + klickbar
+  topnav.classList.add("show");
+  nextBtn.classList.add("show");
+  console.log("✅ Nav + Pfeil forced show");
 
+  navLinks.forEach(a => {
+    a.style.pointerEvents = "auto";
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const href = a.getAttribute("href");
+      const target = document.querySelector(href);
+      if (target && scroller) {
+        scroller.scrollTo({
+          top: target.offsetTop,
+          behavior: "smooth"
+        });
+        console.log("Nav geklickt →", href);
+      }
+    });
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (modeTop) {
+      scroller.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const curIdx = sections.findIndex(s => s.getBoundingClientRect().top > -50);
+      const nextSection = sections[curIdx + 1];
+      if (nextSection) {
+        scroller.scrollTo({
+          top: nextSection.offsetTop,
+          behavior: "smooth"
+        });
+      }
+    }
+    console.log("Pfeil geklickt");
+  });
   
+});
 
 </script>
 </body>
