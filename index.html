@@ -594,21 +594,17 @@ document.addEventListener("DOMContentLoaded", function(){
   const sections = Array.from(document.querySelectorAll(".section"));
   const navLinks = Array.from(topnav.querySelectorAll("a"));
 
-// ====================== NAV-LINKS ANKLICKBAR (FIX FÜR INNEREN SCROLLER) ======================
-navLinks.forEach(a => {
-  a.addEventListener("click", (e) => {
-    e.preventDefault();
-    const href = a.getAttribute("href");
-    const target = document.querySelector(href);
-    if (target && scroller) {
-      scroller.scrollTo({
-        top: target.offsetTop,
-        behavior: "smooth"
-      });
-    }
+  // NAV-LINKS (jetzt 100% stabil)
+  navLinks.forEach(a => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute("href"));
+      if (target && scroller) {
+        scroller.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+      }
+    });
   });
-});
-  
+
   function setActiveNav(id){
     navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + id));
   }
@@ -631,31 +627,27 @@ navLinks.forEach(a => {
   const io = new IntersectionObserver(entries => {
     const vis = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
     if(vis) applyActive(vis.target.id);
-  }, { root: scroller, threshold: [0.35, 0.65, 0.9] });
+  }, { root: scroller, threshold: [0.4, 0.7, 0.95] });
 
   sections.forEach(s => io.observe(s));
 
+  // Initial state
   setTimeout(() => {
-    const cur = sections[Math.floor(scroller.scrollTop / window.innerHeight)];
-    if(cur) applyActive(cur.id);
-  }, 150);
+    applyActive("home");
+  }, 100);
 
-nextBtn.addEventListener("click", () => {
-  if (modeTop) {
-    scroller.scrollTo({ top: 0, behavior: "smooth" });
-    return;
-  }
-  const curIdx = sections.findIndex(s => s.getBoundingClientRect().top > -50);
-  const nextSection = sections[curIdx + 1];
-  if (nextSection && scroller) {
-    scroller.scrollTo({
-      top: nextSection.offsetTop,
-      behavior: "smooth"
-    });
-  }
-});
+  // NEXT BUTTON
+  nextBtn.addEventListener("click", () => {
+    if (modeTop) {
+      scroller.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const curIdx = sections.findIndex(s => s.getBoundingClientRect().top > -100);
+      const nextSection = sections[curIdx + 1];
+      if (nextSection) scroller.scrollTo({ top: nextSection.offsetTop, behavior: "smooth" });
+    }
+  });
 
-  // ====================== LINEUP – Hover + Auto-Cycle ======================
+  // ====================== LINEUP ======================
   const djLinks = document.querySelectorAll(".djLink");
   const pics = document.querySelectorAll(".gallery .pic");
   let autoIdx = 0;
@@ -665,23 +657,17 @@ nextBtn.addEventListener("click", () => {
   function activate(file){
     pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
   }
-
   function startAuto(){
     timer = setInterval(() => {
       autoIdx = (autoIdx + 1) % order.length;
       activate(order[autoIdx]);
     }, 2800);
   }
-
   djLinks.forEach(link => {
     const file = link.dataset.img;
-    link.addEventListener("pointerenter", () => {
-      clearInterval(timer);
-      activate(file);
-    });
-    link.addEventListener("pointerleave", () => startAuto());
+    link.addEventListener("pointerenter", () => { clearInterval(timer); activate(file); });
+    link.addEventListener("pointerleave", startAuto);
   });
-
   activate(order[0]);
   startAuto();
 
@@ -696,7 +682,6 @@ nextBtn.addEventListener("click", () => {
     btnWrap: document.getElementById("ticketBtnWrap"),
     hint: document.getElementById("ticketHint")
   };
-
   function updateCountdown(){
     const target = new Date(TICKET_LAUNCH).getTime();
     const diff = target - Date.now();
@@ -715,7 +700,7 @@ nextBtn.addEventListener("click", () => {
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  // ====================== MAILSMART (jetzt klickbar!) ======================
+  // ====================== MAILSMART ======================
   const email = "info@tyke-life.ch";
   document.querySelectorAll(".mailSmart").forEach(el => {
     el.style.cursor = "pointer";
@@ -725,33 +710,26 @@ nextBtn.addEventListener("click", () => {
       window.location.href = "mailto:" + email;
     });
   });
-// ====================== FAQ ACCORDION ======================
-document.querySelectorAll(".faqQuestion").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const item = btn.closest(".faqItem");
-    if (!item) return;
 
-    // Alle anderen schliessen
-    document.querySelectorAll(".faqItem").forEach(i => {
-      if (i !== item) {
-        i.classList.remove("active");
-        const ans = i.querySelector(".faqAnswer");
-        if (ans) ans.style.maxHeight = null;
-      }
+  // ====================== FAQ ======================
+  document.querySelectorAll(".faqQuestion").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = btn.closest(".faqItem");
+      if (!item) return;
+      document.querySelectorAll(".faqItem").forEach(i => {
+        if (i !== item) {
+          i.classList.remove("active");
+          const ans = i.querySelector(".faqAnswer");
+          if (ans) ans.style.maxHeight = null;
+        }
+      });
+      item.classList.toggle("active");
+      const answer = item.querySelector(".faqAnswer");
+      if (answer) answer.style.maxHeight = item.classList.contains("active") ? answer.scrollHeight + "px" : null;
     });
-
-    // Aktuelles togglen
-    item.classList.toggle("active");
-    const answer = item.querySelector(".faqAnswer");
-    if (!answer) return;
-
-    if (item.classList.contains("active")) {
-      answer.style.maxHeight = answer.scrollHeight + "px";
-    } else {
-      answer.style.maxHeight = null;
-    }
   });
-});
+
+  // ====================== REST ======================
   document.getElementById("y").textContent = new Date().getFullYear();
 
   const privacyOk = document.getElementById("privacyOk");
@@ -762,46 +740,7 @@ document.querySelectorAll(".faqQuestion").forEach(btn => {
     localStorage.setItem("privacy_ok", "1");
     document.getElementById("privacyBanner").style.display = "none";
   });
-
-  // TEMP FIX – Nav und Pfeil immer sichtbar + klickbar
-  topnav.classList.add("show");
-  nextBtn.classList.add("show");
-  console.log("✅ Nav + Pfeil forced show");
-
-  navLinks.forEach(a => {
-    a.style.pointerEvents = "auto";
-    a.addEventListener("click", (e) => {
-      e.preventDefault();
-      const href = a.getAttribute("href");
-      const target = document.querySelector(href);
-      if (target && scroller) {
-        scroller.scrollTo({
-          top: target.offsetTop,
-          behavior: "smooth"
-        });
-        console.log("Nav geklickt →", href);
-      }
-    });
-  });
-
-  nextBtn.addEventListener("click", () => {
-    if (modeTop) {
-      scroller.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      const curIdx = sections.findIndex(s => s.getBoundingClientRect().top > -50);
-      const nextSection = sections[curIdx + 1];
-      if (nextSection) {
-        scroller.scrollTo({
-          top: nextSection.offsetTop,
-          behavior: "smooth"
-        });
-      }
-    }
-    console.log("Pfeil geklickt");
-  });
-  
 });
-
 </script>
 </body>
 </html>
