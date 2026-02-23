@@ -587,10 +587,28 @@
       nextBtn.classList.add("show");
     }
 
+    // ====================== AUTO HORIZONTAL SCROLL ZUM AKTIVEN LINK ======================
+function autoScrollToActiveLink(secId){
+  const activeLink = topnav.querySelector(`a[href="#${secId}"]`);
+  if (!activeLink) return;
+
+  const navRect = topnav.getBoundingClientRect();
+  const linkRect = activeLink.getBoundingClientRect();
+
+  const currentScroll = topnav.scrollLeft;
+  const targetScroll = currentScroll + (linkRect.left - navRect.left) 
+                       - (navRect.width / 2) + (linkRect.width / 2);
+
+  topnav.scrollTo({
+    left: Math.max(0, targetScroll),
+    behavior: "smooth"
+  });
+}
+    
 function applyActive(secId){
-  if(!secId) return;
-  
-  // Menü ab About sichtbar (nicht nur ab Infos)
+  if(!secId || !topnav) return;
+
+  // Menü ab "about" (Über uns) sichtbar
   if(secId === "home") {
     topnav.classList.remove("show");
   } else {
@@ -600,6 +618,9 @@ function applyActive(secId){
   setActiveNav(secId);
   const idx = sections.findIndex(s => s.id === secId);
   setNextMode(idx === sections.length - 1);
+
+  // Neuer Auto-Scroll (siehe Punkt 2)
+  autoScrollToActiveLink(secId);
 }
 
     const io = new IntersectionObserver(entries => {
