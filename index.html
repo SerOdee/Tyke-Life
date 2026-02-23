@@ -152,42 +152,42 @@ a{color:inherit}
   .logo{height:8vh; width:auto; max-height:none; max-width:none}
 }
 
-/* ====================== NAV & BUTTONS ====================== */
-.topnav{
-  position:fixed; left:50%; top:14px; transform:translateX(-50%);
-  z-index:6000; display:flex; gap:10px; align-items:center;
-  padding:16px 20px; background:rgba(252,248,205,.78);
-  backdrop-filter:blur(4px); border:1px solid var(--stroke);
-  border-radius:14px; opacity:0; pointer-events:none;
-  transition:opacity .18s ease;
-}
-.topnav.show{opacity:1; pointer-events:auto}
-.topnav a{
-  text-decoration:none; font-weight:950; letter-spacing:.4px;
-  text-transform:uppercase; font-size:16px; padding:8px 10px;
-  border-radius:12px; border:1px solid transparent;
-  transition:all .12s ease; white-space:nowrap;
-}
-.topnav a:hover{border-color:var(--stroke); transform:translateY(-1px)}
-.topnav a.active{
-  border-color:var(--stroke); background:rgba(238,192,31,.18);
-}
-@media (max-width:720px){
-  .topnav{top:10px; max-width:calc(100vw-20px); overflow-x:auto; white-space:nowrap}
-  .topnav::-webkit-scrollbar{height:8px}
-  .topnav::-webkit-scrollbar-thumb{background:rgba(108,196,199,.45); border-radius:999px}
-}
+// TEMP FIX – Nav und Pfeil immer sichtbar + klickbar
+  topnav.classList.add("show");
+  nextBtn.classList.add("show");
+  console.log("✅ Nav + Pfeil forced show");
 
-.nextBtn{
-  position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
-  z-index:6000; width:40px; height:40px; border-radius:999px;
-  border:1px solid var(--stroke); background:rgba(252,248,205,.82);
-  display:grid; place-items:center; cursor:pointer;
-  opacity:0; pointer-events:none; transition:all .18s ease;
-}
-.nextBtn.show{opacity:1; pointer-events:auto}
-.nextBtn:hover{transform:translateX(-50%) translateY(-1px); background:rgba(238,192,31,.18)}
-.nextBtn svg{width:18px; height:18px}
+  navLinks.forEach(a => {
+    a.style.pointerEvents = "auto";
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const href = a.getAttribute("href");
+      const target = document.querySelector(href);
+      if (target && scroller) {
+        scroller.scrollTo({
+          top: target.offsetTop,
+          behavior: "smooth"
+        });
+        console.log("Nav geklickt →", href);
+      }
+    });
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (modeTop) {
+      scroller.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const curIdx = sections.findIndex(s => s.getBoundingClientRect().top > -50);
+      const nextSection = sections[curIdx + 1];
+      if (nextSection) {
+        scroller.scrollTo({
+          top: nextSection.offsetTop,
+          behavior: "smooth"
+        });
+      }
+    }
+    console.log("Pfeil geklickt");
+  });
 
 /* ====================== TITLE IMAGES ====================== */
 .titleImg{
