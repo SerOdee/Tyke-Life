@@ -325,6 +325,41 @@
     .faqQuestion {
       color: var(--text) !important;
     }
+
+/* ====================== SCROLLBAR VISUELL AUSBLENDEN ====================== */
+/* Nur den inneren Scrollbalken (.contentBand) verstecken – äußerer bleibt normal */
+
+.contentBand {
+  -ms-overflow-style: none;          /* Internet Explorer + Edge */
+  scrollbar-width: none;             /* Firefox */
+}
+
+.contentBand::-webkit-scrollbar {
+  display: none;                     /* Chrome, Safari, Edge, Opera */
+}
+
+/* Optional: Nur auf Desktop ausblenden (auf Mobile bleibt er sichtbar) */
+@media (min-width: 561px) {
+  .contentBand {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .contentBand::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+    /* Haupt-Scrollbar etwas dezenter */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(108,196,199,.45);
+  border-radius: 20px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
     
   </style>
 </head>
