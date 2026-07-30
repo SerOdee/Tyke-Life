@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Tyke Life Festival – About, Infos, Lineup, Tickets, Impressionen, Kontakt." />
+  <meta name="description" content="Tyke Life Festival - Danke, Impressionen und Foto-Upload." />
   <title>Tyke Life</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.css">
   <style>
     /* ====================== ROOT & BASICS ====================== */
     :root{
@@ -70,12 +71,12 @@
     /* ====================== SCROLLER & SECTIONS ====================== */
     .scroller{
       height:100dvh; overflow-y:auto; -webkit-overflow-scrolling:touch;
-      scroll-snap-type:y mandatory; scroll-behavior:smooth; position:relative;
+      scroll-snap-type:y proximity; scroll-behavior:smooth; position:relative;
     }
     .section{
       height:100dvh;
       scroll-snap-align:start;
-      scroll-snap-stop:always;
+      scroll-snap-stop:normal;
       position:relative;
       overflow:hidden;
       border-top:1px solid rgba(108,196,199,.35);
@@ -298,6 +299,9 @@
     .contactBlock{text-align:center; margin-bottom:40px}
     .contactLabel{font-weight:950; letter-spacing:.6px; margin-bottom:8px}
     .contactMail a{font-size:18px; text-decoration:none; border-bottom:1px solid var(--stroke); padding-bottom:4px}
+    .contactSocial{margin-top:14px}
+    .contactSocial a{font-size:18px; text-decoration:none; border-bottom:1px solid var(--stroke); padding-bottom:4px}
+    .contactSocial a:hover{color:#6cc4c7; border-color:#6cc4c7}
 
     .mailSmart{
       cursor:pointer; position:relative; border-bottom:1px solid var(--stroke);
@@ -371,7 +375,316 @@
     padding-top: 55px !important;    /* Mobile – hier kannst du spielen */
   }
 }
-    
+    /* ====================== POST-EVENT RUECKBLICK & GALERIE ====================== */
+    .textTitle{
+      margin:0;
+      color:var(--stroke);
+      font-size:clamp(34px,8vw,88px);
+      font-weight:950;
+      letter-spacing:.8px;
+      line-height:.95;
+      text-transform:uppercase;
+      text-align:center;
+    }
+    .reviewText{
+      max-width:720px;
+      margin:0 auto;
+      text-align:center;
+    }
+    .reviewText .lead{font-size:18px}
+    .galleryIntro{margin-bottom:18px}
+    .photoGrid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:14px;
+      margin-top:20px;
+    }
+    .photoTile{
+      display:block;
+      width:100%;
+      padding:0;
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      overflow:hidden;
+      background:rgba(252,248,205,.62);
+      cursor:pointer;
+      text-align:left;
+      color:var(--text);
+      box-shadow:0 10px 28px rgba(74,73,74,.10);
+      transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+    .photoTile:hover,
+    .photoTile:focus-visible{
+      transform:translateY(-2px);
+      box-shadow:0 16px 34px rgba(74,73,74,.14);
+      border-color:var(--accent);
+      outline:none;
+    }
+    .photoTile img{
+      display:block;
+      width:100%;
+      aspect-ratio:1 / 1;
+      object-fit:cover;
+      background:rgba(108,196,199,.16);
+    }
+    .thoughtTile{
+      aspect-ratio:1 / 1;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:10px;
+      padding:clamp(14px, 1.8vw, 22px);
+      cursor:default;
+      overflow:auto;
+      scrollbar-width:thin;
+    }
+    .thoughtTile:hover{
+      transform:none;
+      box-shadow:0 10px 28px rgba(74,73,74,.10);
+      border-color:var(--stroke);
+    }
+    .thoughtTileKicker{
+      color:var(--accent);
+      font-size:12px;
+      font-weight:950;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+    }
+    .thoughtTileText{
+      color:var(--text);
+      font-size:clamp(15px, 1.25vw, 18px);
+      font-weight:850;
+      line-height:1.55;
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+    }    .photoCredit{
+      border-top:1px solid var(--stroke);
+      padding:8px 10px 9px;
+      font-size:12px;
+      line-height:1.35;
+      color:rgba(74,73,74,.82);
+    }
+    .photoCredit strong{
+      display:block;
+      color:var(--text);
+      font-weight:950;
+      letter-spacing:.35px;
+      text-transform:uppercase;
+      font-size:11px;
+    }
+    .emptyGallery{
+      margin-top:18px;
+      padding:18px;
+      border:1px dashed var(--stroke);
+      border-radius:18px;
+      text-align:center;
+      color:rgba(74,73,74,.76);
+      background:rgba(252,248,205,.45);
+    }
+    .uploadForm{
+      max-width:680px;
+      margin:0 auto;
+      display:grid;
+      gap:14px;
+    }
+    .uploadRow{
+      display:grid;
+      gap:7px;
+      font-weight:950;
+      letter-spacing:.45px;
+      text-transform:uppercase;
+      font-size:13px;
+    }
+    .uploadRow input,
+    .uploadRow textarea{
+      width:100%;
+      padding:12px 12px;
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      background:rgba(252,248,205,.62);
+      color:var(--text);
+      font:inherit;
+      text-transform:none;
+      letter-spacing:0;
+      outline:none;
+    }
+    .uploadRow input:focus,
+    .uploadRow textarea:focus{
+      border-color:var(--stroke);
+      box-shadow:0 0 0 2px rgba(108,196,199,.14);
+    }
+    .uploadRow textarea{min-height:120px; resize:vertical; line-height:1.6}
+    .uploadActions{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:4px}
+    .uploadStatus{min-height:1.7em}
+    @media (max-width:760px), (pointer:coarse){
+      .photoGrid{grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px}
+    }
+    .pswp{
+      --pswp-bg: rgba(10,10,10,.96);
+      --pswp-placeholder-bg: #10100f;
+      --pswp-root-z-index: 10000;
+      --pswp-icon-color: #4a494a;
+      --pswp-icon-color-secondary: #fcf8cd;
+      --pswp-icon-stroke-color: #6cc4c7;
+      --pswp-icon-stroke-width: 1px;
+      --pswp-error-text-color: #fcf8cd;
+      font-family: "Abtos", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    .pswp__button{
+      width:48px;
+      height:48px;
+      margin:8px;
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      background:rgba(252,248,205,.90) !important;
+      opacity:1 !important;
+    }
+    .pswp__button:hover{background:var(--bg) !important}
+    .pswp__button--arrow{
+      width:48px;
+      height:48px;
+      margin:0 14px;
+      background:rgba(252,248,205,.88) !important;
+    }
+    .pswp__button--arrow .pswp__icn,
+    .pswp__button--close .pswp__icn{
+      left:50%;
+      top:50%;
+      transform:translate(-50%, -50%);
+    }
+    .pswp__counter{display:none}
+    .pswp__button--zoom{display:none !important}
+    .pswp__custom-caption{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:1;
+      padding:42px 18px calc(16px + env(safe-area-inset-bottom));
+      background:linear-gradient(180deg, rgba(10,10,10,0), rgba(10,10,10,.78));
+      color:var(--bg);
+      text-align:center;
+      font-weight:950;
+      letter-spacing:.35px;
+      pointer-events:none;
+    }
+    .pswp__custom-caption a{
+      color:inherit;
+      text-decoration:underline;
+      text-underline-offset:3px;
+      pointer-events:auto;
+    }
+    @media (max-width:760px), (pointer:coarse){
+      .pswp__button--arrow{display:none !important}
+      .pswp__button--close{
+        width:50px;
+        height:50px;
+        margin-top:calc(10px + env(safe-area-inset-top));
+        margin-right:calc(10px + env(safe-area-inset-right));
+      }
+    }
+    @media (orientation:landscape) and (pointer:coarse){
+      .pswp__custom-caption{display:none}
+    }
+    @media (max-width:420px){
+      .photoGrid{grid-template-columns:1fr}
+    }
+    /* ====================== IMPRESSIONEN FULL-WIDTH GROUPED GALLERY ====================== */
+    #impressionen{
+      height:auto;
+      min-height:100dvh;
+      overflow:visible;
+      scroll-snap-stop:normal;
+    }
+    #impressionen .secInner{
+      display:block;
+      height:auto;
+      min-height:100dvh;
+      overflow:visible;
+    }
+    #impressionen .titleBand{
+      min-height: var(--titleBandHeight);
+      height:auto;
+      padding-top: var(--titleBandTopPadDesktop);
+    }
+    #impressionen .contentBand{
+      display:block;
+      overflow:visible;
+      padding: 24px 0 96px;
+    }
+    #impressionen .contentBand .wrap{
+      max-width:none;
+      padding-left: clamp(10px, 2vw, 28px);
+      padding-right: clamp(10px, 2vw, 28px);
+    }
+    #impressionen .galleryIntro{
+      max-width:760px;
+      margin-left:auto;
+      margin-right:auto;
+      margin-bottom:22px;
+    }
+    #photoGrid.photoGrid{
+      display:block;
+      width:100%;
+      margin-top:22px;
+    }
+    .photoGroup{
+      width:100%;
+      margin-top:24px;
+    }
+    .photoGroup.withDivider{
+      border-top:1px solid var(--stroke);
+      padding-top:28px;
+      margin-top:34px;
+    }
+    .photoGroupCredit{
+      margin:0 0 12px;
+      color:rgba(74,73,74,.72);
+      font-size:13px;
+      font-weight:950;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+    }
+    .photoGroupCredit strong{
+      color:var(--text);
+    }
+    .photoGroupCredit a,
+    .pswp__custom-caption a{
+      color:inherit;
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+    .photoGroupGrid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(clamp(138px, 16vw, 260px), 1fr));
+      gap: clamp(8px, 1.15vw, 16px);
+      width:100%;
+    }
+    .photoGroupGrid .photoTile{
+      margin:0;
+      width:100%;
+    }
+    .photoGroupGrid .photoTile img{
+      aspect-ratio:1 / 1;
+      width:100%;
+      height:auto;
+    }
+    @media (max-width: 760px){
+      #impressionen .titleBand{
+        padding-top: var(--titleBandTopPadMobile);
+      }
+      #impressionen .contentBand{
+        padding: 20px 0 76px;
+      }
+      .photoGroupGrid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 340px){
+      .photoGroupGrid{
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -390,11 +703,10 @@
   <!-- NAV & NEXT BUTTON (fixed, außerhalb von content) -->
   <nav class="topnav" id="topnav" aria-label="Navigation">
     <a href="#home">Home</a>
-    <a href="#about">About</a>
-    <a href="#infos">Infos</a>
-    <a href="#lineup">Lineup</a>
-    <a href="#tickets">Tickets</a>
+    <a href="#rueckblick">Danke</a>
     <a href="#impressionen">Impressionen</a>
+    <a href="#upload">Upload</a>
+    <a href="#about">About</a>
     <a href="#kontakt">Kontakt</a>
   </nav>
 
@@ -416,6 +728,77 @@
         </div>
       </section>
 
+      <!-- RUECKBLICK -->
+      <section class="section" id="rueckblick">
+        <div class="secInner layer">
+          <div class="titleBand"><img class="titleImg" src="Danke.png" alt="Danke"></div>
+          <div class="contentBand">
+            <div class="wrap">
+              <div class="reviewText">
+                <p class="lead center">
+                  Als Traum von Yves geboren. Als Wirklichkeit voller Geschichten, Begegnungen und Verbundenheit erlebt. Als Erinnerung, die uns für immer begleiten wird.<br><br>
+                  Am 18. Juli haben wir diesen Traum für ihn und mit ihm in unseren Herzen verwirklicht. Es wurde getanzt, gelacht, geweint, umarmt und erinnert. Obwohl dieser Tag auch emotional schwer war, war die Stimmung geprägt von positiver Energie, Dankbarkeit und echter Verbundenheit. Genau so haben wir es uns für Yves und für uns gewünscht.<br><br>
+                  Im Namen des gesamten OK möchten wir uns von Herzen bei allen bedanken, die dieses Festival möglich gemacht haben: bei allen Helferinnen und Helfern, den DJs und allen, die mit ihrer Zeit, ihrem Engagement und ihrer Energie dazu beigetragen haben, diesen besonderen Tag entstehen zu lassen. Ein besonderer Dank gilt Yves’ Familie dafür, dass sie diesen speziellen Tag mit uns geteilt hat.<br><br>
+                  Für einen Tag wurde Tyke-Life wieder spürbar – authentisch, empathisch, kreativ und voller Leben. Dass so viele Menschen zusammengekommen sind, um Yves’ Traum gemeinsam Wirklichkeit werden zu lassen, war für uns das schönste Geschenk.<br><br>
+                  Tyke lives where we meet<br><br>
+                  Auf bald
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- IMPRESSIONEN -->
+      <section class="section" id="impressionen">
+        <div class="secInner layer">
+          <div class="titleBand"><img class="titleImg" src="Impressionen.png" alt="Impressionen"></div>
+          <div class="contentBand">
+            <div class="wrap">
+              <p class="lead center galleryIntro">Deine Perspektive fehlt noch? Teile deine Fotos und Gedanken weiter unten im Upload-Bereich mit uns.</p>
+              <div id="photoGrid" class="photoGrid" aria-live="polite"></div>
+              <div id="emptyGallery" class="emptyGallery" hidden>Noch keine Bilder geladen.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- UPLOAD -->
+      <section class="section" id="upload">
+        <div class="secInner layer">
+          <div class="titleBand"><img class="titleImg" src="Upload.png" alt="Upload"></div>
+          <div class="contentBand">
+            <div class="wrap">
+              <p class="lead center" style="margin-bottom:18px;">
+                Teile deine Fotos und Gedanken vom Tyke Life Festival. Dein Name/Credit wird bei den Bildern angezeigt; deine E-Mail-Adresse bleibt privat.
+              </p>
+              <form id="uploadForm" class="uploadForm">
+                <label class="uploadRow">
+                  Name / Credit
+                  <input id="uploadName" name="name" autocomplete="name" placeholder="Foto-Credit" required>
+                </label>
+                <label class="uploadRow">
+                  E-Mail
+                  <input id="uploadEmail" name="email" type="email" autocomplete="email" placeholder="deine@email.ch" required>
+                </label>
+                <label class="uploadRow">
+                  Gedanken (optional)
+                  <textarea id="uploadThoughts" name="thoughts" maxlength="700" placeholder="Was möchtest du zum Tag teilen?"></textarea>
+                </label>
+                <label class="uploadRow">
+                  Fotos
+                  <input id="uploadPhotos" name="photos" type="file" accept="image/*" multiple required>
+                </label>
+                <div class="uploadActions">
+                  <button class="btn primary" type="submit">Fotos hochladen</button>
+                </div>
+                <p id="uploadStatus" class="fine uploadStatus"></p>
+                <p class="fine">Die Bilder werden vor dem Upload automatisch komprimiert. Maximal 50 Bilder pro Upload.</p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
       <!-- ABOUT -->
       <section class="section" id="about">
         <div class="secInner layer">
@@ -444,6 +827,7 @@
         </div>
       </section>
 
+<<<<<<< Updated upstream
       <!-- INFOS -->
       <section class="section" id="infos">
         <div class="secInner layer">
@@ -547,6 +931,8 @@
         </div>
       </section>
 
+=======
+>>>>>>> Stashed changes
       <!-- KONTAKT -->
       <section class="section" id="kontakt">
         <div class="secInner layer">
@@ -557,6 +943,9 @@
                 <p class="contactLabel">Kontakt</p>
                 <p class="contactMail">
                   <span class="mailSmart">info@…</span>
+                </p>
+                <p class="contactSocial">
+                  <a href="https://www.instagram.com/tyke.life.festival/" target="_blank" rel="noopener">Instagram</a>
                 </p>
               </div>
               <div class="contactFooter">
@@ -570,7 +959,6 @@
 
     </div>
   </div>
-
   <!-- Privacy Banner -->
   <div id="privacyBanner" class="privacyBanner" role="dialog" aria-live="polite">
     <div class="privacyText">
@@ -628,6 +1016,7 @@
         e.preventDefault();
         const target = document.querySelector(a.getAttribute("href"));
         if (target && scroller) scroller.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+        autoScrollToActiveLink(target?.id, "smooth");
       });
     });
 
@@ -643,112 +1032,483 @@
     }
 
     // ====================== AUTO HORIZONTAL SCROLL ZUM AKTIVEN LINK ======================
-function autoScrollToActiveLink(secId){
-  const activeLink = topnav.querySelector(`a[href="#${secId}"]`);
-  if (!activeLink) return;
+    function autoScrollToActiveLink(secId, behavior = "smooth"){
+      const activeLink = topnav?.querySelector(`a[href="#${secId}"]`);
+      if (!activeLink || !topnav) return;
 
-  const navRect = topnav.getBoundingClientRect();
-  const linkRect = activeLink.getBoundingClientRect();
+      const centerActiveLink = () => {
+        const targetScroll = activeLink.offsetLeft - (topnav.clientWidth - activeLink.offsetWidth) / 2;
+        const maxScroll = Math.max(0, topnav.scrollWidth - topnav.clientWidth);
+        topnav.scrollTo({
+          left: Math.max(0, Math.min(maxScroll, targetScroll)),
+          behavior
+        });
+      };
 
-  const currentScroll = topnav.scrollLeft;
-  const targetScroll = currentScroll + (linkRect.left - navRect.left) 
-                       - (navRect.width / 2) + (linkRect.width / 2);
+      requestAnimationFrame(centerActiveLink);
+      window.setTimeout(centerActiveLink, 120);
+    }
 
-  topnav.scrollTo({
-    left: Math.max(0, targetScroll),
-    behavior: "smooth"
-  });
-}
-    
-function applyActive(secId){
-  if(!secId || !topnav) return;
+    let activeSectionId = "";
+    let activeScrollRaf = 0;
 
-  // Menü ab "about" (Über uns) sichtbar
-  if(secId === "home") {
-    topnav.classList.remove("show");
-  } else {
-    topnav.classList.add("show");
-  }
+    function applyActive(secId){
+      if(!secId || !topnav || secId === activeSectionId) return;
+      activeSectionId = secId;
 
-  setActiveNav(secId);
-  const idx = sections.findIndex(s => s.id === secId);
-  setNextMode(idx === sections.length - 1);
+      if(secId === "home") topnav.classList.remove("show");
+      else topnav.classList.add("show");
 
-  // Neuer Auto-Scroll (siehe Punkt 2)
-  autoScrollToActiveLink(secId);
-}
+      setActiveNav(secId);
+      const idx = sections.findIndex(s => s.id === secId);
+      setNextMode(idx === sections.length - 1);
 
-    const io = new IntersectionObserver(entries => {
-      const vis = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if(vis) applyActive(vis.target.id);
-    }, { root: scroller, threshold: [0.4, 0.7, 0.95] });
+      const behavior = window.matchMedia("(pointer: coarse)").matches ? "auto" : "smooth";
+      autoScrollToActiveLink(secId, behavior);
+    }
 
-    sections.forEach(s => io.observe(s));
+    function sectionIdFromScroll(){
+      if(!scroller || !sections.length) return "home";
+      const probe = scroller.scrollTop + Math.min(scroller.clientHeight * .34, 260);
+      let current = sections[0].id;
+      for(const section of sections){
+        if(section.offsetTop <= probe) current = section.id;
+        else break;
+      }
+      return current;
+    }
 
-    setTimeout(() => applyActive("home"), 150);
+    function scheduleActiveFromScroll(){
+      if(activeScrollRaf) return;
+      activeScrollRaf = requestAnimationFrame(() => {
+        activeScrollRaf = 0;
+        applyActive(sectionIdFromScroll());
+      });
+    }
 
-    nextBtn.addEventListener("click", () => {
+    scroller?.addEventListener("scroll", scheduleActiveFromScroll, { passive:true });
+    window.addEventListener("resize", () => {
+      activeSectionId = "";
+      applyActive(sectionIdFromScroll());
+      autoScrollToActiveLink(sectionIdFromScroll(), "auto");
+    });
+
+    setTimeout(() => applyActive(sectionIdFromScroll()), 150);
+
+    nextBtn?.addEventListener("click", () => {
+      if(!scroller) return;
       if (modeTop) {
         scroller.scrollTo({ top: 0, behavior: "smooth" });
       } else {
-        const curIdx = sections.findIndex(s => s.getBoundingClientRect().top > -100);
-        const nextSection = sections[curIdx + 1];
+        const curIdx = sections.findIndex(s => s.id === sectionIdFromScroll());
+        const nextSection = sections[Math.min(curIdx + 1, sections.length - 1)];
         if (nextSection) scroller.scrollTo({ top: nextSection.offsetTop, behavior: "smooth" });
       }
     });
 
-    // LINEUP
-    const djLinks = document.querySelectorAll(".djLink");
-    const pics = document.querySelectorAll(".gallery .pic");
-    let autoIdx = 0;
-    let timer;
-    const order = ["Floostix.jpg","arearge.jpg","Livio.jpg","DJ4.jpg"];
+    // GALERIE & UPLOAD
+    const UPLOAD_API_BASE = "https://tyke-life-upload.seryodermatt.workers.dev";
+    const UPLOAD_MAX_FILES = 50;
+    const UPLOAD_MAX_FILE_SIZE = 5 * 1024 * 1024;
+    const UPLOAD_MAX_TOTAL_SIZE = 90 * 1024 * 1024;
+    const IMAGE_MAX_EDGE = 2200;
+    const IMAGE_QUALITY = 0.82;
+    const isUploadApiConfigured = () => !UPLOAD_API_BASE.includes("YOUR_WORKERS_SUBDOMAIN");
+    const photoGrid = document.getElementById("photoGrid");
+    const emptyGallery = document.getElementById("emptyGallery");
+    const uploadForm = document.getElementById("uploadForm");
+    const uploadStatus = document.getElementById("uploadStatus");
+    let galleryItems = [];
+    let activePhotoSwipe = null;
+    let photoswipeModulePromise = null;
+    const imageSizeCache = new Map();
 
-    function activate(file){
-      pics.forEach(p => p.classList.toggle("active", p.dataset.file === file));
+    function encodePath(file){
+      return String(file).split("/").map(part => encodeURIComponent(part)).join("/");
     }
-    function startAuto(){
-      timer = setInterval(() => {
-        autoIdx = (autoIdx + 1) % order.length;
-        activate(order[autoIdx]);
-      }, 2800);
+    function photoSrc(item){ return item.url || item.src; }
+    function photoThumb(item){ return item.thumb || item.thumbnail || photoSrc(item); }
+    function photoCredit(item){ return item.credit || item.name || item.email || "Tyke Life"; }
+    function isThoughtItem(item){ return item && item.type === "thought"; }
+    function isPhotoItem(item){ return item && !isThoughtItem(item) && !!photoSrc(item); }
+    function isDominikCredit(credit){
+      const normalized = String(credit || "").trim().toLowerCase().replace(/\s+/g, " ");
+      return normalized === "dominik baur" || normalized === "dominik bauer" || normalized === "domink bauer";
     }
-    djLinks.forEach(link => {
-      const file = link.dataset.img;
-      link.addEventListener("pointerenter", () => { clearInterval(timer); activate(file); });
-      link.addEventListener("pointerleave", startAuto);
-    });
-    activate(order[0]);
-    startAuto();
+    function appendCreditName(container, credit){
+      if(isDominikCredit(credit)){
+        const link = document.createElement("a");
+        link.href = "https://www.dominikbaur.com/";
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = credit;
+        container.appendChild(link);
+      }else{
+        container.appendChild(document.createTextNode(credit));
+      }
+    }
+    function setCreditLine(container, credit){
+      container.textContent = "";
+      container.appendChild(document.createTextNode("Fotos by: "));
+      appendCreditName(container, credit);
+    }
+    function normalizePhotoIndex(idx, direction = 1){
+      if(!galleryItems.length) return -1;
+      const step = direction >= 0 ? 1 : -1;
+      let current = (idx + galleryItems.length) % galleryItems.length;
+      for(let i = 0; i < galleryItems.length; i++){
+        if(isPhotoItem(galleryItems[current])) return current;
+        current = (current + step + galleryItems.length) % galleryItems.length;
+      }
+      return -1;
+    }
+    function buildUploadedItems(photos){
+      const uploads = [];
+      const byUpload = new Map();
+      photos.forEach(photo => {
+        const key = photo.uploadId || [photo.credit || "", photo.uploadedAt || "", photo.thought || ""].join("|");
+        if(!byUpload.has(key)){
+          const upload = {
+            key,
+            credit: photo.credit || "Tyke Life",
+            uploadedAt: photo.uploadedAt || "",
+            thought: String(photo.thought || "").trim(),
+            photos: []
+          };
+          byUpload.set(key, upload);
+          uploads.push(upload);
+        }
+        byUpload.get(key).photos.push({ ...photo, type:"photo" });
+      });
+      uploads.sort((a,b) => String(b.uploadedAt || "").localeCompare(String(a.uploadedAt || "")));
+      return uploads.flatMap(upload => {
+        const entries = [...upload.photos];
+        if(upload.thought){
+          entries.push({
+            type:"thought",
+            credit: upload.credit,
+            uploadedAt: upload.uploadedAt,
+            thought: upload.thought
+          });
+        }
+        return entries;
+      });
+    }
+    function renderGallery(){
+      if(!photoGrid) return;
+      photoGrid.innerHTML = "";
+      if(emptyGallery) emptyGallery.hidden = galleryItems.length > 0;
 
-    // TICKETS COUNTDOWN
-    const TICKET_LAUNCH = "2026-03-29T12:00:00+02:00";
-    const cd = {
-      days: document.getElementById("cdDays"),
-      hrs: document.getElementById("cdHours"),
-      mins: document.getElementById("cdMins"),
-      secs: document.getElementById("cdSecs"),
-      wrap: document.getElementById("countdown"),
-      btnWrap: document.getElementById("ticketBtnWrap"),
-      hint: document.getElementById("ticketHint")
-    };
-    function updateCountdown(){
-      const target = new Date(TICKET_LAUNCH).getTime();
-      const diff = target - Date.now();
-      if(diff <= 0){
-        cd.wrap.style.display = "none";
-        cd.btnWrap.style.display = "flex";
-        cd.hint.textContent = "Tickets sind jetzt verfügbar!";
+      const groups = [];
+      const byCredit = new Map();
+
+      galleryItems.forEach((item, idx) => {
+        const credit = photoCredit(item);
+        if(!byCredit.has(credit)){
+          const group = { credit, entries: [] };
+          byCredit.set(credit, group);
+          groups.push(group);
+        }
+        byCredit.get(credit).entries.push({ item, idx });
+      });
+
+      groups.forEach((group, groupIndex) => {
+        const groupEl = document.createElement("section");
+        groupEl.className = "photoGroup" + (groupIndex > 0 ? " withDivider" : "");
+        groupEl.setAttribute("aria-label", "Fotos by " + group.credit);
+
+        const creditEl = document.createElement("div");
+        creditEl.className = "photoGroupCredit";
+        const label = document.createElement("strong");
+        label.textContent = "Fotos by: ";
+        creditEl.appendChild(label);
+        appendCreditName(creditEl, group.credit);
+
+        const gridEl = document.createElement("div");
+        gridEl.className = "photoGroupGrid";
+
+        group.entries.forEach(({ item, idx }) => {
+          if(isThoughtItem(item)){
+            const note = document.createElement("div");
+            note.className = "photoTile thoughtTile";
+            note.setAttribute("role", "note");
+            note.setAttribute("aria-label", "Gedanken von " + group.credit);
+
+            const kicker = document.createElement("div");
+            kicker.className = "thoughtTileKicker";
+            kicker.textContent = "Gedanken";
+
+            const text = document.createElement("div");
+            text.className = "thoughtTileText";
+            text.textContent = item.thought;
+
+            note.appendChild(kicker);
+            note.appendChild(text);
+            gridEl.appendChild(note);
+            return;
+          }
+
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "photoTile";
+          button.setAttribute("aria-label", "Bild öffnen: Fotos by " + group.credit);
+
+          const img = document.createElement("img");
+          img.src = photoThumb(item);
+          img.alt = "Foto vom Tyke Life Festival, Fotos by " + group.credit;
+          img.loading = "lazy";
+          img.decoding = "async";
+
+          button.appendChild(img);
+          button.addEventListener("click", () => openLightbox(idx));
+          gridEl.appendChild(button);
+        });
+
+        groupEl.appendChild(creditEl);
+        groupEl.appendChild(gridEl);
+        photoGrid.appendChild(groupEl);
+      });
+    }
+    async function loadGallery(){
+      const staticItems = [];
+      try{
+        const res = await fetch("impressionen/manifest.json", { cache: "no-store" });
+        if(res.ok){
+          const files = await res.json();
+          files.forEach(item => {
+            if(typeof item === "string"){
+              staticItems.push({ type:"photo", src: "impressionen/" + encodePath(item), thumb: "impressionen/" + encodePath(item), credit: "Dominik Baur" });
+            }else if(item && item.src){
+              staticItems.push({
+                src: "impressionen/" + encodePath(item.src),
+                thumb: "impressionen/" + encodePath(item.thumb || item.src),
+                credit: item.credit || "Dominik Baur"
+              });
+            }
+          });
+        }
+      }catch(err){ console.warn("Static gallery manifest not loaded", err); }
+
+      let uploadedItems = [];
+      if(isUploadApiConfigured()){
+        try{
+          const res = await fetch(UPLOAD_API_BASE + "/photos", { cache: "no-store" });
+          if(res.ok){
+            const data = await res.json();
+            uploadedItems = buildUploadedItems(Array.isArray(data.photos) ? data.photos : []);
+          }
+        }catch(err){ console.warn("Uploaded gallery not loaded", err); }
+      }
+
+      galleryItems = [...staticItems, ...uploadedItems];
+      renderGallery();
+      window.setTimeout(warmAllPhotoSizes, 500);
+    }
+
+    function escapeHtml(value){
+      return String(value || "").replace(/[&<>"]/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;" }[char]));
+    }
+    function creditCaptionHTML(credit){
+      const safeCredit = escapeHtml(credit || "Tyke Life");
+      if(isDominikCredit(credit)){
+        return `Fotos by: <a href="https://www.dominikbaur.com/" target="_blank" rel="noopener">${safeCredit}</a>`;
+      }
+      return `Fotos by: ${safeCredit}`;
+    }
+    function getPhotoSlides(){
+      const slides = [];
+      galleryItems.forEach((item, itemIndex) => {
+        if(!isPhotoItem(item)) return;
+        const src = photoSrc(item);
+        const cached = imageSizeCache.get(src);
+        const width = Number(item.width || item.w || cached?.width || 2000);
+        const height = Number(item.height || item.h || cached?.height || 1333);
+        const credit = photoCredit(item);
+        slides.push({
+          src,
+          msrc: photoThumb(item),
+          width,
+          height,
+          alt: "Foto vom Tyke Life Festival - Fotos by " + credit,
+          captionHTML: creditCaptionHTML(credit),
+          itemIndex
+        });
+      });
+      return slides;
+    }
+    function loadPhotoSize(src){
+      if(imageSizeCache.has(src)) return Promise.resolve(imageSizeCache.get(src));
+      return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => {
+          const size = { width: img.naturalWidth || img.width || 2000, height: img.naturalHeight || img.height || 1333 };
+          imageSizeCache.set(src, size);
+          resolve(size);
+        };
+        img.onerror = () => {
+          const fallback = { width: 2000, height: 1333 };
+          imageSizeCache.set(src, fallback);
+          resolve(fallback);
+        };
+        img.src = src;
+      });
+    }
+    async function warmNearbyPhotoSizes(slideIndex){
+      const slides = getPhotoSlides();
+      const targets = [slideIndex - 1, slideIndex, slideIndex + 1]
+        .filter(index => index >= 0 && index < slides.length)
+        .map(index => loadPhotoSize(slides[index].src));
+      await Promise.all(targets);
+    }
+    function warmAllPhotoSizes(){
+      const slides = getPhotoSlides();
+      let index = 0;
+      const run = () => {
+        const batch = slides.slice(index, index + 4);
+        index += batch.length;
+        batch.forEach(slide => loadPhotoSize(slide.src));
+        if(index < slides.length) window.setTimeout(run, 250);
+      };
+      run();
+    }
+    async function loadPhotoSwipeModule(){
+      if(!photoswipeModulePromise){
+        photoswipeModulePromise = import("https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.js");
+      }
+      return photoswipeModulePromise;
+    }
+    async function openLightbox(itemIndex){
+      const initialSlides = getPhotoSlides();
+      let slideIndex = initialSlides.findIndex(slide => slide.itemIndex === itemIndex);
+      if(slideIndex < 0) return;
+      await warmNearbyPhotoSizes(slideIndex);
+      const slides = getPhotoSlides();
+      slideIndex = slides.findIndex(slide => slide.itemIndex === itemIndex);
+      const PhotoSwipe = (await loadPhotoSwipeModule()).default;
+      if(activePhotoSwipe) activePhotoSwipe.close();
+      activePhotoSwipe = new PhotoSwipe({
+        dataSource: slides,
+        index: slideIndex,
+        bgOpacity: .96,
+        showHideAnimationType: "fade",
+        arrowKeys: true,
+        wheelToZoom: true,
+        pinchToClose: true,
+        closeOnVerticalDrag: true,
+        paddingFn: () => ({ top: 10, bottom: 62, left: 0, right: 0 })
+      });
+      activePhotoSwipe.on("uiRegister", () => {
+        activePhotoSwipe.ui.registerElement({
+          name: "custom-caption",
+          order: 9,
+          isButton: false,
+          appendTo: "root",
+          html: "",
+          onInit: (el, pswp) => {
+            const update = () => {
+              el.innerHTML = pswp.currSlide?.data?.captionHTML || "";
+            };
+            pswp.on("change", update);
+            update();
+          }
+        });
+      });
+      activePhotoSwipe.on("destroy", () => { activePhotoSwipe = null; });
+      activePhotoSwipe.init();
+    }
+function formatBytes(bytes){
+      if(!Number.isFinite(bytes) || bytes <= 0) return "0 MB";
+      return (bytes / (1024 * 1024)).toFixed(bytes >= 10 * 1024 * 1024 ? 0 : 1) + " MB";
+    }
+    function fileBaseName(name){
+      return String(name || "foto").replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || "foto";
+    }
+    function loadImageFile(file){
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Ein Bild konnte nicht gelesen werden.")); };
+        img.src = url;
+      });
+    }
+    async function compressImageFile(file, index, total, onProgress){
+      if(!file.type || !file.type.startsWith("image/")) throw new Error("Bitte nur Bilddateien hochladen.");
+      onProgress(`Komprimiere Bild ${index + 1}/${total}...`);
+      const img = await loadImageFile(file);
+      const sourceWidth = img.naturalWidth || img.width;
+      const sourceHeight = img.naturalHeight || img.height;
+      if(!sourceWidth || !sourceHeight) throw new Error("Ein Bild konnte nicht gelesen werden.");
+      const scale = Math.min(1, IMAGE_MAX_EDGE / Math.max(sourceWidth, sourceHeight));
+      const width = Math.max(1, Math.round(sourceWidth * scale));
+      const height = Math.max(1, Math.round(sourceHeight * scale));
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d", { alpha: false });
+      ctx.fillStyle = "#fcf8cd";
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(img, 0, 0, width, height);
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", IMAGE_QUALITY));
+      if(!blob) throw new Error("Ein Bild konnte nicht komprimiert werden.");
+      const compressedName = fileBaseName(file.name) + ".jpg";
+      return new File([blob], compressedName, { type: "image/jpeg", lastModified: file.lastModified || Date.now() });
+    }
+    async function prepareCompressedFiles(files, onProgress){
+      const compressed = [];
+      let totalSize = 0;
+      for(let i = 0; i < files.length; i++){
+        const file = await compressImageFile(files[i], i, files.length, onProgress);
+        if(file.size > UPLOAD_MAX_FILE_SIZE) throw new Error(`${file.name} ist nach der Komprimierung noch zu gross.`);
+        totalSize += file.size;
+        if(totalSize > UPLOAD_MAX_TOTAL_SIZE) throw new Error("Der Upload ist trotz Komprimierung zu gross. Bitte in zwei Teilen hochladen.");
+        compressed.push(file);
+      }
+      return compressed;
+    }
+
+    uploadForm?.addEventListener("submit", async e => {
+      e.preventDefault();
+      if(!uploadStatus) return;
+      if(!isUploadApiConfigured()){
+        uploadStatus.textContent = "Upload-Backend ist noch nicht verbunden. Nach dem Cloudflare-Deploy ersetze ich hier die Worker-URL.";
         return;
       }
-      const s = Math.floor(diff / 1000);
-      cd.days.textContent = Math.floor(s / 86400);
-      cd.hrs.textContent = String(Math.floor((s % 86400) / 3600)).padStart(2,"0");
-      cd.mins.textContent = String(Math.floor((s % 3600) / 60)).padStart(2,"0");
-      cd.secs.textContent = String(s % 60).padStart(2,"0");
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+      const creditInput = document.getElementById("uploadName");
+      const creditValue = (creditInput?.value || "").trim();
+      if(!creditValue){ uploadStatus.textContent = "Bitte gib einen Namen/Credit an."; creditInput?.focus(); return; }
+      const files = Array.from(document.getElementById("uploadPhotos")?.files || []);
+      if(files.length === 0){ uploadStatus.textContent = "Bitte wähle mindestens ein Foto aus."; return; }
+      if(files.length > UPLOAD_MAX_FILES){ uploadStatus.textContent = `Bitte maximal ${UPLOAD_MAX_FILES} Fotos pro Upload auswählen.`; return; }
+
+      const originalTotal = files.reduce((sum, file) => sum + (file.size || 0), 0);
+      let compressedFiles = [];
+      try{
+        compressedFiles = await prepareCompressedFiles(files, message => { uploadStatus.textContent = message; });
+      }catch(err){
+        uploadStatus.textContent = err.message || "Komprimierung fehlgeschlagen.";
+        return;
+      }
+      const compressedTotal = compressedFiles.reduce((sum, file) => sum + (file.size || 0), 0);
+      const formData = new FormData();
+      formData.append("name", creditValue);
+      formData.append("email", document.getElementById("uploadEmail")?.value || "");
+      formData.append("thoughts", document.getElementById("uploadThoughts")?.value || "");
+      compressedFiles.forEach(file => formData.append("photos", file, file.name));
+      uploadStatus.textContent = `Upload läuft... (${formatBytes(originalTotal)} -> ${formatBytes(compressedTotal)})`;
+      try{
+        const res = await fetch(UPLOAD_API_BASE + "/upload", { method:"POST", body:formData });
+        const data = await res.json().catch(() => ({}));
+        if(!res.ok) throw new Error(data.error || "Upload fehlgeschlagen.");
+        uploadStatus.textContent = data.emailSent === false ? "Fotos hochgeladen. Hinweis: E-Mail-Benachrichtigung ist noch nicht konfiguriert." : "Danke! Fotos hochgeladen und Benachrichtigung verschickt.";
+        uploadForm.reset();
+        await loadGallery();
+      }catch(err){
+        uploadStatus.textContent = err.message || "Upload fehlgeschlagen.";
+      }
+    });
+
+    loadGallery();
 
     // MAILSMART
     const email = "info@tyke-life.ch";
@@ -780,13 +1540,13 @@ function applyActive(secId){
     });
 
     // REST
-    document.getElementById("y").textContent = new Date().getFullYear();
+    const yearTarget = document.getElementById("y"); if(yearTarget) yearTarget.textContent = new Date().getFullYear();
 
     const privacyOk = document.getElementById("privacyOk");
     if(!localStorage.getItem("privacy_ok")){
       document.getElementById("privacyBanner").style.display = "flex";
     }
-    privacyOk.addEventListener("click", () => {
+    privacyOk?.addEventListener("click", () => {
       localStorage.setItem("privacy_ok", "1");
       document.getElementById("privacyBanner").style.display = "none";
     });

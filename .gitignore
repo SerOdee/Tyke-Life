@@ -1,0 +1,7 @@
+
+# Keep full-size source photos local; publish optimized gallery files only.
+impressionen/Fotos/*
+!impressionen/Fotos/web/
+!impressionen/Fotos/thumbs/
+!impressionen/Fotos/web/**
+!impressionen/Fotos/thumbs/**

@@ -1,6 +1,410 @@
-﻿[
-    "bild3.png",
-    "Screenshot 2026-02-10 203321.png",
-    "tnwrn 3.png",
-    "vrw 4.jpg"
+[
+  {
+    "src": "Fotos/web/tyke-life-001.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-001.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6262_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-002.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-002.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6263_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-003.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-003.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6265_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-004.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-004.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6267_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-005.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-005.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6270_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-006.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-006.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6275_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-007.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-007.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6279_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-008.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-008.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6281_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-009.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-009.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6283_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-010.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-010.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6284_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-011.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-011.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6287_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-012.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-012.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6289_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-013.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-013.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6305_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-014.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-014.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6310_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-015.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-015.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6313_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-016.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-016.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6326_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-017.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-017.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6329_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-018.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-018.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6332_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-019.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-019.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6338_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-020.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-020.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6341_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-021.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-021.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6342_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-022.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-022.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6345_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-023.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-023.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6346_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-024.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-024.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6348_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-025.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-025.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6352_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-026.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-026.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6353_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-027.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-027.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6355_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-028.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-028.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6356_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-029.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-029.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6357_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-030.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-030.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6362_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-031.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-031.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6364_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-032.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-032.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6367_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-033.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-033.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6370_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-034.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-034.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6371_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-035.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-035.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6372_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-036.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-036.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6376_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-037.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-037.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6380_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-038.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-038.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6381_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-039.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-039.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6383_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-040.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-040.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6387_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-041.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-041.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6388_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-042.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-042.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6391_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-043.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-043.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6392_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-044.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-044.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6403_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-045.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-045.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6405_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-046.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-046.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6412_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-047.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-047.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6413_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-048.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-048.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6415_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-049.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-049.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6416_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-050.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-050.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6417_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-051.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-051.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6418_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-052.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-052.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6419_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-053.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-053.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6422_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-054.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-054.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6423_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-055.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-055.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6427_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-056.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-056.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6429_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-057.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-057.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6433_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-058.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-058.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6435_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-059.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-059.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6437_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-060.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-060.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6439_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-061.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-061.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6440_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-062.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-062.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6445_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-063.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-063.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6448_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-064.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-064.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6451_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-065.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-065.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6452_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-066.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-066.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6454_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-067.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-067.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6462_bearbeitet_full.jpg"
+  },
+  {
+    "src": "Fotos/web/tyke-life-068.jpg",
+    "thumb": "Fotos/thumbs/tyke-life-068.jpg",
+    "credit": "Dominik Baur",
+    "original": "_M5A6465_bearbeitet_full.jpg"
+  }
 ]

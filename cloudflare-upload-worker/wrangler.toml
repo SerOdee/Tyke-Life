@@ -1,0 +1,12 @@
+name = "tyke-life-upload"
+main = "worker.js"
+compatibility_date = "2026-07-01"
+
+[vars]
+MAIL_TO = "info@tyke-life.ch"
+MAIL_FROM = "Tyke Life Upload <uploads@tyke-life.ch>"
+ALLOWED_ORIGINS = "https://tyke-life.ch,https://www.tyke-life.ch,http://localhost:8000,http://127.0.0.1:8000"
+
+[[r2_buckets]]
+binding = "PHOTOS"
+bucket_name = "tyke-life-photos"
