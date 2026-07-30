@@ -253,37 +253,6 @@
     .faqAnswer{max-height:0; overflow:hidden; transition:max-height .45s ease}
     .faqAnswer p{padding:0 0 26px 0; line-height:1.75; font-size:16.5px}
 
-    .lineupGrid{display:grid; grid-template-columns:1fr 1.15fr; gap:24px; align-items:center}
-    @media (max-width:820px){.lineupGrid{grid-template-columns:1fr}}
-    .djList{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px}
-    .djLink{padding:6px 0; border-bottom:1px solid transparent; cursor:pointer}
-    .djLink:hover{border-bottom-color:var(--stroke)}
-    .djName{font-weight:950; font-size:clamp(18px,2.2vw,26px); letter-spacing:.6px; text-transform:uppercase}
-    .gallery{position:relative; height:min(60dvh,500px); min-height:320px; z-index:1}
-    .pic{
-      position:absolute; width:54%; max-width:380px; aspect-ratio:4/5;
-      object-fit:cover; border-radius:16px; border:1px solid var(--stroke);
-      box-shadow:0 18px 50px rgba(74,73,74,.18); opacity:.88;
-      filter:saturate(.98) contrast(1.02) brightness(.98);
-      transition:all .25s ease; z-index:1; pointer-events:none;
-    }
-    .pic.p1{left:3%; top:12%; transform:rotate(-6deg)}
-    .pic.p2{left:32%; top:2%; transform:rotate(4deg)}
-    .pic.p3{left:18%; top:30%; transform:rotate(-2deg)}
-    .pic.p4{left:46%; top:26%; transform:rotate(7deg)}
-    .pic.active{z-index:10; opacity:1; filter:saturate(1.06) contrast(1.08) brightness(1.04); transform:rotate(0deg) scale(1.03)}
-    @media (max-width:820px){.gallery{height:420px} .pic{width:58%}}
-
-    .countdown{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin:30px 0 20px}
-    .cdBox{
-      width:88px; padding:14px 8px 10px;
-      border:2px solid var(--stroke); border-radius:18px;
-      background:rgba(252,248,205,.6); text-align:center;
-      box-shadow:0 8px 20px rgba(108,196,199,.1);
-    }
-    .cdNum{font-size:32px; font-weight:950; letter-spacing:.8px; line-height:1}
-    .cdLbl{margin-top:6px; font-size:11px; font-weight:950; letter-spacing:1.2px; text-transform:uppercase; color:var(--stroke)}
-
     .btnrow{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
     .btn{
       display:inline-flex; padding:12px 14px; border:1px solid var(--stroke);
@@ -541,12 +510,28 @@
     }
     .pswp__button:hover{background:var(--bg) !important}
     .pswp__button--arrow{
-      width:48px;
-      height:48px;
-      margin:0 14px;
-      background:rgba(252,248,205,.88) !important;
+      position:relative;
+      width:58px;
+      height:58px;
+      margin:0 28px;
+      background:rgba(252,248,205,.96) !important;
+      border-color:rgba(108,196,199,.95);
+      box-shadow:0 12px 34px rgba(0,0,0,.46), 0 0 0 2px rgba(108,196,199,.28);
     }
-    .pswp__button--arrow .pswp__icn,
+    .pswp__button--arrow .pswp__icn{display:none !important}
+    .pswp__button--arrow::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:16px;
+      height:16px;
+      border-top:4px solid var(--text);
+      border-right:4px solid var(--text);
+      filter:drop-shadow(0 1px 1px rgba(252,248,205,.35));
+    }
+    .pswp__button--arrow--prev::after{transform:translate(-35%, -50%) rotate(-135deg)}
+    .pswp__button--arrow--next::after{transform:translate(-65%, -50%) rotate(45deg)}
     .pswp__button--close .pswp__icn{
       left:50%;
       top:50%;
@@ -827,113 +812,7 @@
         </div>
       </section>
 
-<<<<<<< Updated upstream
-      <!-- INFOS -->
-      <section class="section" id="infos">
-        <div class="secInner layer">
-          <div class="titleBand"><img class="titleImg" src="Infos.png" alt="Infos"></div>
-          <div class="contentBand">
-            <div class="wrap">
-              <div class="infoCore">
-                <div class="infoRow"><span class="infoLabel">START</span><span class="infoValue">14:00</span></div>
-                <div class="infoRow"><span class="infoLabel">ENDE</span><span class="infoValue">22:00</span></div>
-                <div class="infoRow"><span class="infoLabel">DATUM</span><span class="infoValue">18.07.2026</span></div>
-                <div class="infoRow"><span class="infoLabel">ORT</span><span class="infoValue">Eglisau</span></div>
-                <div class="infoRow"><span class="infoLabel">MUSIK</span><span class="infoValue">Elektronische Musik</span></div>
-              </div>
-              <div class="faq">
-                <div class="faqItem"><button class="faqQuestion">Anreise</button><div class="faqAnswer"><p>
-                Wir empfehlen, wenn möglich <strong>ohne</strong> Auto anzureisen. Das Festival ist "gut" zu Fuss oder mit dem Velo erreichbar.
-                <br><br>
-                Für eine bequeme Anreise steht ein Shuttlebus ab Bahnhof Eglisau zur Verfügung:
-                <br><br>
-                <strong>Erste Fahrt:</strong> 13:15 Uhr<br>
-                Danach im 30-Minuten-Takt bis 16:45 Uhr (letzte Fahrt).
-                <br><br>
-                Wenn du mit dem Auto anreist, nutze bitte ausschliesslich die offiziellen Parkmöglichkeiten beim Bahnhof Eglisau oder an der Bahnhofstrasse&nbsp;2.
-                </p></div></div>
-                <div class="faqItem"><button class="faqQuestion">Abreise</button><div class="faqAnswer"><p>Taxi- und Ride-Sharing-Optionen sind in etwa 10 Gehminuten erreichbar. Weitere Details folgen.</p></div></div>
-                <div class="faqItem"><button class="faqQuestion">Wetter</button><div class="faqAnswer"><p>Das Festival findet bei jeder Witterung statt. Bitte kleidet euch entsprechend.</p></div></div>
-                <div class="faqItem"><button class="faqQuestion">Zahlungsmöglichkeiten</button><div class="faqAnswer"><p>Vor Ort ist ausschliesslich <strong>bargeldloses</strong> Bezahlen möglich.</p></div></div>
-                <div class="faqItem"><button class="faqQuestion">Getränke & Essen</button><div class="faqAnswer"><p>Es stehen verschiedene Getränke- und Essensstände vor Ort bereit.</p></div></div>
-                <div class="faqItem"><button class="faqQuestion">Tickets</button><div class="faqAnswer"><p>Details findet ihr unten bei <a href="#tickets">Tickets</a> <br>⚠️⚠️ Es wird keine Abendkasse geben ⚠️⚠️</p></div></div>
-                <div class="faqItem"><button class="faqQuestion">Fundsachen</button><div class="faqAnswer"><p>Bitte meldet euch unter <span class="mailSmart">info@…</span>.</p></div></div>
-                <div class="faqItem"><button class="faqQuestion">Abfall</button><div class="faqAnswer"><p>Bitte haltet das Gelände sauber. Recyclingstationen sind vorhanden.</p></div></div>
-                <div class="faqItem"><button class="faqQuestion">Toiletten</button><div class="faqAnswer"><p>Direkt vor dem Eingang befinden sich ausreichend Toilettenanlagen.</p></div></div>
-                <div class="faqItem"><button class="faqQuestion">Lautstärke & Gehörschutz</button><div class="faqAnswer"><p>Die Lautstärke wird phasenweise hoch sein. Wir empfehlen, euer Gehör zu schützen. Kostenlose Ohrstöpsel werden vor Ort erhältlich sein.</p></div></div>
-                <div class="faqItem"><button class="faqQuestion">Nicht erlaubte Gegenstände</button><div class="faqAnswer"><p>Feuerwerk, Waffen, Drohnen, Glas, eigene Speisen & Getränke, grosse Schirme und gefährliche Gegenstände sind untersagt.</p></div></div>
-                <div class="faqItem"><button class="faqQuestion">Helfen/Spenden</button><div class="faqAnswer"><p>Interesse mitzuhelfen oder etwas beizutragen? <span class="mailSmart">info@…</span>.<br><br><strong>Spende via QR-Rechnung:</strong><br><a href="QR Spende.pdf" class="btn primary" download="QR Spende.pdf" style="margin-top:12px;">↓ pdf herunterladen</a></p></div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- LINEUP -->
-      <section class="section" id="lineup">
-        <div class="secInner layer">
-          <div class="titleBand"><img class="titleImg" src="Lineup.png" alt="Lineup"></div>
-          <div class="contentBand">
-            <div class="wrap">
-              <div class="lineupGrid">
-                <ul class="djList" aria-label="DJs">
-                  <li><a class="djLink" href="#lineup" data-img="Floostix.png"><span class="djName">DJ FLOOSTIX</span></a></li>
-                  <li><a class="djLink" href="#lineup" data-img="arearge.jpg"><span class="djName">ARE:AGE</span></a></li>
-                  <li><a class="djLink" href="#lineup" data-img="Livio.jpg"><span class="djName">LIVIO</span></a></li>
-                  <li><a class="djLink" href="#lineup" data-img="Luki.png"><span class="djName">Night Talk</span></a></li>
-                </ul>
-                <div class="gallery" aria-label="DJ Bilder">
-                  <img class="pic p1 active" src="Floostix.png" data-file="Floostix.png" alt="DJ Floostix">
-                  <img class="pic p2" src="arearge.jpg" data-file="arearge.jpg" alt="are:age">
-                  <img class="pic p3" src="Livio.jpg" data-file="Livio.jpg" alt="Livio">
-                  <img class="pic p4" src="Luki.png" data-file="Luki.png" alt="Night Talk">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TICKETS -->
-      <section class="section" id="tickets">
-        <div class="secInner layer">
-          <div class="titleBand"><img class="titleImg" src="Tickets.png" alt="Tickets"></div>
-          <div class="contentBand">
-            <div class="wrap">
-              <p class="lead center"><span class="hl"></span> Verkauf gestartet, check it out:</p>
-              <div id="countdown" class="countdown" aria-live="polite">
-                <div class="cdBox"><div class="cdNum" id="cdDays">--</div><div class="cdLbl">Tage</div></div>
-                <div class="cdBox"><div class="cdNum" id="cdHours">--</div><div class="cdLbl">Std</div></div>
-                <div class="cdBox"><div class="cdNum" id="cdMins">--</div><div class="cdLbl">Min</div></div>
-                <div class="cdBox"><div class="cdNum" id="cdSecs">--</div><div class="cdLbl">Sek</div></div>
-              </div>
-              <div id="ticketBtnWrap" class="btnrow" style="margin-top:16px; display:none;">
-                <a class="btn primary" id="ticketLink" href="https://eventfrog.ch/de/p/festivals/electronic/tyke-life-festival-7426245816287789225.html" target="_blank" rel="noopener">TICKET KAUFEN</a>
-              </div>
-              <p class="fine" id="ticketHint">be ready, Tickets are limited!<br> </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- IMPRESSIONEN -->
-      <section class="section" id="impressionen">
-        <div class="secInner layer">
-          <div class="titleBand"><img class="titleImg" src="Impressionen.png" alt="Impressionen"></div>
-          <div class="contentBand">
-            <div class="wrap">
-              <p class="lead center">Alle Impressionen und wichtige Updates findest du auf Instagram.</p>
-              <div class="btnrow" style="margin-top:16px;">
-                <a class="btn primary" href="https://www.instagram.com/tyke.life.festival/" target="_blank" rel="noopener">INSTAGRAM</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-=======
->>>>>>> Stashed changes
-      <!-- KONTAKT -->
+<!-- KONTAKT -->
       <section class="section" id="kontakt">
         <div class="secInner layer">
           <div class="titleBand"><img class="titleImg" src="Kontakt.png" alt="Kontakt"></div>
