@@ -510,13 +510,24 @@
     }
     .pswp__button:hover{background:var(--bg) !important}
     .pswp__button--arrow{
-      position:relative;
+      position:fixed !important;
+      top:50% !important;
       width:58px;
       height:58px;
-      margin:0 28px;
+      margin:0 !important;
+      transform:translateY(-50%);
       background:rgba(252,248,205,.96) !important;
       border-color:rgba(108,196,199,.95);
       box-shadow:0 12px 34px rgba(0,0,0,.46), 0 0 0 2px rgba(108,196,199,.28);
+      z-index:10020;
+    }
+    .pswp__button--arrow--prev{
+      left:clamp(22px, 3vw, 54px) !important;
+      right:auto !important;
+    }
+    .pswp__button--arrow--next{
+      right:clamp(22px, 3vw, 54px) !important;
+      left:auto !important;
     }
     .pswp__button--arrow .pswp__icn{display:none !important}
     .pswp__button--arrow::after{
