@@ -412,10 +412,12 @@
     .photoTile img{
       display:block;
       width:100%;
-      aspect-ratio:1 / 1;
+      height:100%;
       object-fit:cover;
+      object-position:center;
       background:rgba(108,196,199,.16);
     }
+    .photoTile:not(.thoughtTile){aspect-ratio:1 / 1}
     .thoughtTile{
       aspect-ratio:1 / 1;
       display:flex;
@@ -678,9 +680,8 @@
       width:100%;
     }
     .photoGroupGrid .photoTile img{
-      aspect-ratio:1 / 1;
       width:100%;
-      height:auto;
+      height:100%;
     }
     @media (max-width: 760px){
       #impressionen .titleBand{
@@ -1195,10 +1196,21 @@
           button.setAttribute("aria-label", "Bild öffnen: Fotos by " + group.credit);
 
           const img = document.createElement("img");
+          const fullSrc = photoSrc(item);
+          const rememberSize = () => {
+            if(fullSrc && img.naturalWidth > 0 && img.naturalHeight > 0){
+              imageSizeCache.set(fullSrc, {
+                width: img.naturalWidth,
+                height: img.naturalHeight
+              });
+            }
+          };
+          img.addEventListener("load", rememberSize, { once:true });
           img.src = photoThumb(item);
           img.alt = "Foto vom Tyke Life Festival, Fotos by " + group.credit;
           img.loading = "lazy";
           img.decoding = "async";
+          if(img.complete) rememberSize();
 
           button.appendChild(img);
           button.addEventListener("click", () => openLightbox(idx));
@@ -1301,13 +1313,13 @@
         img.src = src;
       });
     }
-    async function warmNearbyPhotoSizes(slideIndex){
-      const slides = getPhotoSlides();
-      const targets = [slideIndex - 1, slideIndex, slideIndex + 1]
-        .filter(index => index >= 0 && index < slides.length)
-        .filter(index => slides[index].dimensionsUnknown)
-        .map(index => loadPhotoSize(slides[index].msrc || slides[index].src, slides[index].src));
-      await Promise.all(targets);
+    async function resolveUnknownPhotoSizes(slides){
+      const unknownSlides = slides.filter(slide => slide.dimensionsUnknown);
+      const batchSize = 6;
+      for(let index = 0; index < unknownSlides.length; index += batchSize){
+        const batch = unknownSlides.slice(index, index + batchSize);
+        await Promise.all(batch.map(slide => loadPhotoSize(slide.msrc || slide.src, slide.src)));
+      }
     }
     async function loadPhotoSwipeModule(){
       if(!photoswipeModulePromise){
@@ -1319,9 +1331,9 @@
       const initialSlides = getPhotoSlides();
       let slideIndex = initialSlides.findIndex(slide => slide.itemIndex === itemIndex);
       if(slideIndex < 0) return;
-      if(initialSlides[slideIndex].dimensionsUnknown){
-        await loadPhotoSize(initialSlides[slideIndex].msrc || initialSlides[slideIndex].src, initialSlides[slideIndex].src);
-      }
+      // PhotoSwipe needs the real dimensions before it builds the slide track.
+      // Otherwise older uploads without metadata can be stretched into 3:2.
+      await resolveUnknownPhotoSizes(initialSlides);
       const slides = getPhotoSlides();
       slideIndex = slides.findIndex(slide => slide.itemIndex === itemIndex);
       const PhotoSwipe = (await loadPhotoSwipeModule()).default;
@@ -1356,7 +1368,6 @@
       });
       activePhotoSwipe.on("destroy", () => { activePhotoSwipe = null; });
       activePhotoSwipe.init();
-      warmNearbyPhotoSizes(slideIndex).catch(() => {});
     }
 function formatBytes(bytes){
       if(!Number.isFinite(bytes) || bytes <= 0) return "0 MB";
