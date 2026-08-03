@@ -2,7 +2,16 @@ const MAX_FILES = 50;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const MAX_TOTAL_SIZE = 90 * 1024 * 1024;
 const MAX_THOUGHT_LENGTH = 700;
+const MAX_NAME_LENGTH = 120;
+const MAX_EMAIL_LENGTH = 254;
 const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+
+function allowedOrigins(env) {
+  return (env.ALLOWED_ORIGINS || "https://tyke-life.ch,https://www.tyke-life.ch")
+    .split(",")
+    .map(value => value.trim())
+    .filter(Boolean);
+}
 
 function json(data, status = 200, headers = {}) {
   return new Response(JSON.stringify(data), {
@@ -13,10 +22,7 @@ function json(data, status = 200, headers = {}) {
 
 function corsHeaders(request, env) {
   const origin = request.headers.get("origin") || "";
-  const allowed = (env.ALLOWED_ORIGINS || "https://tyke-life.ch,https://www.tyke-life.ch")
-    .split(",")
-    .map(v => v.trim())
-    .filter(Boolean);
+  const allowed = allowedOrigins(env);
   const allowOrigin = allowed.includes(origin) ? origin : allowed[0] || "*";
   return {
     "access-control-allow-origin": allowOrigin,
@@ -24,6 +30,11 @@ function corsHeaders(request, env) {
     "access-control-allow-headers": "content-type",
     "vary": "origin"
   };
+}
+
+function isAllowedBrowserOrigin(request, env) {
+  const origin = request.headers.get("origin");
+  return !origin || allowedOrigins(env).includes(origin);
 }
 
 function sanitizeName(value, fallback = "foto") {
@@ -56,7 +67,9 @@ async function listPhotos(request, env) {
         credit: meta.credit || "Tyke Life",
         uploadId: meta.uploadId || "",
         thought: meta.thought || "",
-        uploadedAt: meta.uploadedAt
+        uploadedAt: meta.uploadedAt,
+        width: Number(meta.width || 0),
+        height: Number(meta.height || 0)
       });
     } catch (_) {}
   }
@@ -133,9 +146,16 @@ async function handleUpload(request, env) {
   const credit = name;
   const thought = String(form.get("thoughts") || "").trim().replace(/\r\n/g, "\n").slice(0, MAX_THOUGHT_LENGTH);
   const files = form.getAll("photos").filter(file => file && typeof file === "object" && "arrayBuffer" in file);
+  let dimensions = [];
+  try {
+    const parsed = JSON.parse(String(form.get("dimensions") || "[]"));
+    if (Array.isArray(parsed)) dimensions = parsed;
+  } catch (_) {}
 
   if (!name) return json({ error: "Bitte einen Namen/Credit angeben." }, 400, cors);
+  if (name.length > MAX_NAME_LENGTH) return json({ error: "Der Name/Credit ist zu lang." }, 400, cors);
   if (!email || !email.includes("@")) return json({ error: "Bitte eine gültige E-Mail angeben." }, 400, cors);
+  if (email.length > MAX_EMAIL_LENGTH) return json({ error: "Die E-Mail-Adresse ist zu lang." }, 400, cors);
   if (!files.length) return json({ error: "Bitte mindestens ein Foto auswählen." }, 400, cors);
   if (files.length > MAX_FILES) return json({ error: `Bitte maximal ${MAX_FILES} Fotos pro Upload.` }, 400, cors);
 
@@ -151,15 +171,18 @@ async function handleUpload(request, env) {
   const uploadedAt = new Date().toISOString();
   const saved = [];
 
-  for (const file of files) {
+  for (let index = 0; index < files.length; index++) {
+    const file = files[index];
     const id = crypto.randomUUID();
     const originalName = sanitizeName(file.name || "foto");
+    const width = Math.max(0, Math.min(12000, Math.round(Number(dimensions[index]?.width || 0))));
+    const height = Math.max(0, Math.min(12000, Math.round(Number(dimensions[index]?.height || 0))));
     const key = `photos/${uploadedAt.slice(0,10)}/${uploadId}/${id}-${originalName.replace(/\.[^.]+$/, "")}.${extForType(file.type)}`;
     await env.PHOTOS.put(key, file.stream(), {
       httpMetadata: { contentType: file.type },
       customMetadata: { uploadId, credit, email, originalName, thought: thought.slice(0, 1000) }
     });
-    const meta = { id, uploadId, key, credit, email, thought, originalName, size: file.size, contentType: file.type, uploadedAt };
+    const meta = { id, uploadId, key, credit, email, thought, originalName, size: file.size, contentType: file.type, uploadedAt, width, height };
     await env.PHOTOS.put(`metadata/${id}.json`, JSON.stringify(meta), {
       httpMetadata: { contentType: "application/json; charset=utf-8" }
     });
@@ -173,7 +196,9 @@ async function handleUpload(request, env) {
     credit: meta.credit,
     uploadId: meta.uploadId,
     thought: meta.thought || "",
-    uploadedAt: meta.uploadedAt
+    uploadedAt: meta.uploadedAt,
+    width: meta.width,
+    height: meta.height
   })) }, 200, cors);
 }
 
@@ -185,7 +210,12 @@ export default {
     if (request.method === "OPTIONS") return new Response(null, { headers: cors });
     if (request.method === "GET" && url.pathname === "/photos") return listPhotos(request, env);
     if (request.method === "GET" && url.pathname.startsWith("/photo/")) return servePhoto(request, env, url.pathname);
-    if (request.method === "POST" && url.pathname === "/upload") return handleUpload(request, env);
+    if (request.method === "POST" && url.pathname === "/upload") {
+      if (!isAllowedBrowserOrigin(request, env)) return json({ error: "Origin not allowed" }, 403, cors);
+      const contentLength = Number(request.headers.get("content-length") || 0);
+      if (contentLength > MAX_TOTAL_SIZE + (2 * 1024 * 1024)) return json({ error: "Der Upload ist zu gross." }, 413, cors);
+      return handleUpload(request, env);
+    }
 
     return json({ ok: true, service: "tyke-life-upload" }, 200, cors);
   }

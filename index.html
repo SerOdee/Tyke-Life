@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="description" content="Tyke Life Festival - Danke, Impressionen und Foto-Upload." />
   <title>Tyke Life</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.css">
@@ -22,16 +22,10 @@
       --contentTopPadDesktop: 50px;
       --contentTopPadMobile: 50px;
     }
-    @font-face{
-      font-family: "Abtos";
-      src: url("Abtos.woff2") format("woff2");
-      font-weight: 100 900;
-      font-style: normal;
-      font-display: swap;
-    }
     *{box-sizing:border-box}
     html, body{
-      height:100dvh;
+      height:100%;
+      min-height:100%;
       margin:0;
       scroll-behavior:smooth;
       overflow-x:hidden;
@@ -39,7 +33,7 @@
     body{
       background:var(--bg);
       color:var(--text);
-      font-family:"Abtos", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      font-family:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       overflow:hidden;
     }
     a{color:inherit}
@@ -70,11 +64,13 @@
 
     /* ====================== SCROLLER & SECTIONS ====================== */
     .scroller{
-      height:100dvh; overflow-y:auto; -webkit-overflow-scrolling:touch;
+      height:100vh; height:100dvh;
+      overflow-y:auto; -webkit-overflow-scrolling:touch;
+      overscroll-behavior-y:contain;
       scroll-snap-type:y proximity; scroll-behavior:smooth; position:relative;
     }
     .section{
-      height:100dvh;
+      height:100vh; height:100dvh;
       scroll-snap-align:start;
       scroll-snap-stop:normal;
       position:relative;
@@ -98,9 +94,31 @@
       padding:var(--contentTopPadDesktop) 0 72px;
       display:block;
     }
-@media (max-width:560px){
+    @media (max-width:760px), (pointer:coarse){
+      .scroller{
+        scroll-snap-type:none;
+        overscroll-behavior-y:auto;
+      }
+      .section{
+        height:auto !important;
+        min-height:100vh;
+        min-height:100dvh;
+        overflow:visible;
+      }
+      .secInner{
+        height:auto;
+        min-height:100vh;
+        min-height:100dvh;
+      }
+      .contentBand{
+        overflow:visible;
+        -webkit-overflow-scrolling:auto;
+      }
+    }
+    @media (max-width:560px){
   .section {
     height: auto !important;
+    min-height: 100vh;
     min-height: 100dvh;
     scroll-snap-stop: normal;   /* macht Scroll viel smoother */
   }
@@ -111,10 +129,6 @@
   }
   .contentBand{
     padding: 35px 0 120px !important;
-  }
-  /* Lineup Gallery kleiner & smoother */
-  .gallery {
-    height: 335px !important;
   }
   /* About speziell noch etwas Luft */
   #about .titleBand { 
@@ -137,7 +151,7 @@
     .layer{position:relative; z-index:1; width:100%}
 
     /* ====================== HOME ====================== */
-    .homeCenter{height:100dvh; display:flex; align-items:center; justify-content:center}
+    .homeCenter{height:100vh; height:100dvh; display:flex; align-items:center; justify-content:center}
     .logo{
       max-width:min(80vw,900px); max-height:min(75dvh,650px);
       opacity:0; animation:logoFade .85s ease-out forwards;
@@ -151,7 +165,7 @@
 
     /* ====================== NAV & NEXT ====================== */
     .topnav{
-      position:fixed; left:50%; top:14px; transform:translateX(-50%);
+      position:fixed; left:50%; top:calc(14px + env(safe-area-inset-top)); transform:translateX(-50%);
       z-index:6000; display:flex; gap:10px; align-items:center;
       padding:16px 20px; background:rgba(252,248,205,.78);
       backdrop-filter:blur(4px); border:1px solid var(--stroke);
@@ -172,8 +186,9 @@
     /* ====================== MOBILE MENÜ – kompakt + perfekt scrollbar ====================== */
 @media (max-width: 720px) {
   .topnav {
-    top: 8px;
+    top: calc(8px + env(safe-area-inset-top));
     max-width: calc(100vw - 20px);
+    max-width: calc(100dvw - 20px);
     padding: 10px 14px;
     font-size: 14.5px;           /* etwas kleiner */
     gap: 6px;
@@ -182,6 +197,8 @@
     -webkit-overflow-scrolling: touch;
     white-space: nowrap;
     scrollbar-width: none;       /* sauberer Look */
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
   }
   .topnav::-webkit-scrollbar { display: none; }
 
@@ -201,7 +218,7 @@
 }
 
     .nextBtn{
-      position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
+      position:fixed; left:50%; bottom:max(16px, calc(10px + env(safe-area-inset-bottom))); transform:translateX(-50%);
       z-index:6000; width:40px; height:40px; border-radius:999px;
       border:1px solid var(--stroke); background:rgba(252,248,205,.82);
       display:grid; place-items:center; cursor:pointer;
@@ -225,6 +242,7 @@
     .aboutGrid{display:flex; align-items:center; justify-content:space-between; gap:40px}
     .aboutText{max-width:500px}
     .aboutImage{flex:1; display:flex; justify-content:center}
+    .aboutImage picture{display:block; width:100%; max-width:450px}
     .aboutImage img{width:100%; max-width:450px; height:auto; border-radius:18px; border:1px solid var(--stroke); background:rgba(252,248,205,.6)}
     @media (max-width:860px){
       .aboutGrid{flex-direction:column; text-align:center}
@@ -256,12 +274,14 @@
     .btnrow{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
     .btn{
       display:inline-flex; padding:12px 14px; border:1px solid var(--stroke);
+      min-height:44px; align-items:center; justify-content:center;
       border-radius:14px; text-decoration:none; font-weight:950;
       letter-spacing:.6px; text-transform:uppercase;
       background:rgba(252,248,205,.55); transition:.12s ease;
     }
     .btn:hover{transform:translateY(-1px)}
     .btn.primary{background:rgba(238,192,31,.18)}
+    .btn:disabled{cursor:wait; opacity:.62; transform:none}
 
     .fine{margin-top:14px; color:rgba(74,73,74,.70); font-size:13px; line-height:1.7; text-align:center}
 
@@ -281,7 +301,7 @@
     @keyframes mailFade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:translateY(0)}}
 
     .privacyBanner{
-      position:fixed; left:12px; right:12px; bottom:12px; z-index:9999;
+      position:fixed; left:12px; right:12px; bottom:max(12px, env(safe-area-inset-bottom)); z-index:9999;
       display:none; align-items:center; justify-content:space-between; gap:12px;
       padding:10px 12px; border:1px solid var(--stroke); border-radius:14px;
       background:rgba(252,248,205,.92); backdrop-filter:blur(6px);
@@ -467,6 +487,7 @@
       background:rgba(252,248,205,.62);
       color:var(--text);
       font:inherit;
+      font-size:16px;
       text-transform:none;
       letter-spacing:0;
       outline:none;
@@ -477,10 +498,12 @@
       box-shadow:0 0 0 2px rgba(108,196,199,.14);
     }
     .uploadRow textarea{min-height:120px; resize:vertical; line-height:1.6}
+    .uploadRow input{min-height:48px}
     .uploadActions{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:4px}
     .uploadStatus{min-height:1.7em}
     @media (max-width:760px), (pointer:coarse){
       .photoGrid{grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px}
+      .nextBtn{display:none}
     }
     .pswp{
       --pswp-bg: rgba(10,10,10,.96);
@@ -491,7 +514,7 @@
       --pswp-icon-stroke-color: #6cc4c7;
       --pswp-icon-stroke-width: 1px;
       --pswp-error-text-color: #fcf8cd;
-      font-family: "Abtos", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      font-family:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     .pswp__button{
       width:48px;
@@ -675,6 +698,14 @@
         grid-template-columns: 1fr;
       }
     }
+    @media (prefers-reduced-motion:reduce){
+      html, .scroller{scroll-behavior:auto}
+      *, *::before, *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -782,7 +813,7 @@
                 <div class="uploadActions">
                   <button class="btn primary" type="submit">Fotos hochladen</button>
                 </div>
-                <p id="uploadStatus" class="fine uploadStatus"></p>
+                <p id="uploadStatus" class="fine uploadStatus" role="status" aria-live="polite"></p>
                 <p class="fine">Die Bilder werden vor dem Upload automatisch komprimiert. Maximal 50 Bilder pro Upload.</p>
               </form>
             </div>
@@ -809,7 +840,10 @@
                   </p>
                 </div>
                 <div class="aboutImage">
-                  <img src="AboutYves.png" alt="Yves">
+                  <picture>
+                    <source srcset="AboutYves.webp" type="image/webp">
+                    <img src="AboutYves.png" alt="Yves" width="1100" height="1689" loading="lazy" decoding="async">
+                  </picture>
                 </div>
               </div>
             </div>
@@ -895,12 +929,34 @@
     const sections = Array.from(document.querySelectorAll(".section"));
     const navLinks = Array.from(topnav.querySelectorAll("a"));
 
+    function sectionScrollBehavior(targetTop){
+      const isTouch = window.matchMedia("(pointer:coarse)").matches || window.innerWidth <= 760;
+      const isLongJump = Math.abs((scroller?.scrollTop || 0) - targetTop) > (scroller?.clientHeight || 0) * 1.25;
+      return isTouch && isLongJump ? "auto" : "smooth";
+    }
+
+    function scrollScrollerTo(top, behavior){
+      if(!scroller) return;
+      if(behavior === "auto"){
+        const previousBehavior = scroller.style.scrollBehavior;
+        scroller.style.scrollBehavior = "auto";
+        scroller.scrollTop = top;
+        scroller.style.scrollBehavior = previousBehavior;
+        return;
+      }
+      scroller.scrollTo({ top, behavior:"smooth" });
+    }
+
     navLinks.forEach(a => {
       a.addEventListener("click", (e) => {
         e.preventDefault();
         const target = document.querySelector(a.getAttribute("href"));
-        if (target && scroller) scroller.scrollTo({ top: target.offsetTop, behavior: "smooth" });
-        autoScrollToActiveLink(target?.id, "smooth");
+        if (target && scroller) {
+          const behavior = sectionScrollBehavior(target.offsetTop);
+          scrollScrollerTo(target.offsetTop, behavior);
+          applyActive(target.id);
+          autoScrollToActiveLink(target.id, behavior);
+        }
       });
     });
 
@@ -982,11 +1038,11 @@
     nextBtn?.addEventListener("click", () => {
       if(!scroller) return;
       if (modeTop) {
-        scroller.scrollTo({ top: 0, behavior: "smooth" });
+        scrollScrollerTo(0, sectionScrollBehavior(0));
       } else {
         const curIdx = sections.findIndex(s => s.id === sectionIdFromScroll());
         const nextSection = sections[Math.min(curIdx + 1, sections.length - 1)];
-        if (nextSection) scroller.scrollTo({ top: nextSection.offsetTop, behavior: "smooth" });
+        if (nextSection) scrollScrollerTo(nextSection.offsetTop, sectionScrollBehavior(nextSection.offsetTop));
       }
     });
 
@@ -1002,6 +1058,7 @@
     const emptyGallery = document.getElementById("emptyGallery");
     const uploadForm = document.getElementById("uploadForm");
     const uploadStatus = document.getElementById("uploadStatus");
+    const uploadSubmitButton = uploadForm?.querySelector('button[type="submit"]');
     let galleryItems = [];
     let activePhotoSwipe = null;
     let photoswipeModulePromise = null;
@@ -1012,7 +1069,7 @@
     }
     function photoSrc(item){ return item.url || item.src; }
     function photoThumb(item){ return item.thumb || item.thumbnail || photoSrc(item); }
-    function photoCredit(item){ return item.credit || item.name || item.email || "Tyke Life"; }
+    function photoCredit(item){ return item.credit || item.name || "Tyke Life"; }
     function isThoughtItem(item){ return item && item.type === "thought"; }
     function isPhotoItem(item){ return item && !isThoughtItem(item) && !!photoSrc(item); }
     function isDominikCredit(credit){
@@ -1170,7 +1227,9 @@
                 thumb: "impressionen/" + encodePath(item.thumb || item.src),
                 credit,
                 groupKey: "static-" + credit,
-                groupOrder: 0
+                groupOrder: 0,
+                width: Number(item.width || 0),
+                height: Number(item.height || 0)
               });
             }
           });
@@ -1190,7 +1249,6 @@
 
       galleryItems = [...staticItems, ...uploadedItems];
       renderGallery();
-      window.setTimeout(warmAllPhotoSizes, 500);
     }
     function escapeHtml(value){
       return String(value || "").replace(/[&<>"]/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;" }[char]));
@@ -1208,14 +1266,17 @@
         if(!isPhotoItem(item)) return;
         const src = photoSrc(item);
         const cached = imageSizeCache.get(src);
-        const width = Number(item.width || item.w || cached?.width || 2000);
-        const height = Number(item.height || item.h || cached?.height || 1333);
+        const knownWidth = Number(item.width || item.w || cached?.width || 0);
+        const knownHeight = Number(item.height || item.h || cached?.height || 0);
+        const width = knownWidth || 2000;
+        const height = knownHeight || 1333;
         const credit = photoCredit(item);
         slides.push({
           src,
           msrc: photoThumb(item),
           width,
           height,
+          dimensionsUnknown: !knownWidth || !knownHeight,
           alt: "Foto vom Tyke Life Festival - Fotos by " + credit,
           captionHTML: creditCaptionHTML(credit),
           itemIndex
@@ -1223,18 +1284,18 @@
       });
       return slides;
     }
-    function loadPhotoSize(src){
-      if(imageSizeCache.has(src)) return Promise.resolve(imageSizeCache.get(src));
+    function loadPhotoSize(src, cacheKey = src){
+      if(imageSizeCache.has(cacheKey)) return Promise.resolve(imageSizeCache.get(cacheKey));
       return new Promise(resolve => {
         const img = new Image();
         img.onload = () => {
           const size = { width: img.naturalWidth || img.width || 2000, height: img.naturalHeight || img.height || 1333 };
-          imageSizeCache.set(src, size);
+          imageSizeCache.set(cacheKey, size);
           resolve(size);
         };
         img.onerror = () => {
           const fallback = { width: 2000, height: 1333 };
-          imageSizeCache.set(src, fallback);
+          imageSizeCache.set(cacheKey, fallback);
           resolve(fallback);
         };
         img.src = src;
@@ -1244,19 +1305,9 @@
       const slides = getPhotoSlides();
       const targets = [slideIndex - 1, slideIndex, slideIndex + 1]
         .filter(index => index >= 0 && index < slides.length)
-        .map(index => loadPhotoSize(slides[index].src));
+        .filter(index => slides[index].dimensionsUnknown)
+        .map(index => loadPhotoSize(slides[index].msrc || slides[index].src, slides[index].src));
       await Promise.all(targets);
-    }
-    function warmAllPhotoSizes(){
-      const slides = getPhotoSlides();
-      let index = 0;
-      const run = () => {
-        const batch = slides.slice(index, index + 4);
-        index += batch.length;
-        batch.forEach(slide => loadPhotoSize(slide.src));
-        if(index < slides.length) window.setTimeout(run, 250);
-      };
-      run();
     }
     async function loadPhotoSwipeModule(){
       if(!photoswipeModulePromise){
@@ -1268,7 +1319,9 @@
       const initialSlides = getPhotoSlides();
       let slideIndex = initialSlides.findIndex(slide => slide.itemIndex === itemIndex);
       if(slideIndex < 0) return;
-      await warmNearbyPhotoSizes(slideIndex);
+      if(initialSlides[slideIndex].dimensionsUnknown){
+        await loadPhotoSize(initialSlides[slideIndex].msrc || initialSlides[slideIndex].src, initialSlides[slideIndex].src);
+      }
       const slides = getPhotoSlides();
       slideIndex = slides.findIndex(slide => slide.itemIndex === itemIndex);
       const PhotoSwipe = (await loadPhotoSwipeModule()).default;
@@ -1282,6 +1335,7 @@
         wheelToZoom: true,
         pinchToClose: true,
         closeOnVerticalDrag: true,
+        preload: [1, 2],
         paddingFn: () => ({ top: 10, bottom: 62, left: 0, right: 0 })
       });
       activePhotoSwipe.on("uiRegister", () => {
@@ -1302,6 +1356,7 @@
       });
       activePhotoSwipe.on("destroy", () => { activePhotoSwipe = null; });
       activePhotoSwipe.init();
+      warmNearbyPhotoSizes(slideIndex).catch(() => {});
     }
 function formatBytes(bytes){
       if(!Number.isFinite(bytes) || bytes <= 0) return "0 MB";
@@ -1337,21 +1392,36 @@ function formatBytes(bytes){
       ctx.fillRect(0, 0, width, height);
       ctx.drawImage(img, 0, 0, width, height);
       const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", IMAGE_QUALITY));
+      canvas.width = 1;
+      canvas.height = 1;
       if(!blob) throw new Error("Ein Bild konnte nicht komprimiert werden.");
       const compressedName = fileBaseName(file.name) + ".jpg";
-      return new File([blob], compressedName, { type: "image/jpeg", lastModified: file.lastModified || Date.now() });
+      return {
+        file: new File([blob], compressedName, { type: "image/jpeg", lastModified: file.lastModified || Date.now() }),
+        width,
+        height
+      };
     }
     async function prepareCompressedFiles(files, onProgress){
       const compressed = [];
       let totalSize = 0;
       for(let i = 0; i < files.length; i++){
-        const file = await compressImageFile(files[i], i, files.length, onProgress);
-        if(file.size > UPLOAD_MAX_FILE_SIZE) throw new Error(`${file.name} ist nach der Komprimierung noch zu gross.`);
-        totalSize += file.size;
+        const result = await compressImageFile(files[i], i, files.length, onProgress);
+        if(result.file.size > UPLOAD_MAX_FILE_SIZE) throw new Error(`${result.file.name} ist nach der Komprimierung noch zu gross.`);
+        totalSize += result.file.size;
         if(totalSize > UPLOAD_MAX_TOTAL_SIZE) throw new Error("Der Upload ist trotz Komprimierung zu gross. Bitte in zwei Teilen hochladen.");
-        compressed.push(file);
+        compressed.push(result);
+        await new Promise(resolve => window.setTimeout(resolve, 0));
       }
       return compressed;
+    }
+
+    function setUploadBusy(isBusy){
+      uploadForm?.setAttribute("aria-busy", String(isBusy));
+      if(uploadSubmitButton){
+        uploadSubmitButton.disabled = isBusy;
+        uploadSubmitButton.textContent = isBusy ? "Bitte warten..." : "Fotos hochladen";
+      }
     }
 
     uploadForm?.addEventListener("submit", async e => {
@@ -1370,18 +1440,21 @@ function formatBytes(bytes){
 
       const originalTotal = files.reduce((sum, file) => sum + (file.size || 0), 0);
       let compressedFiles = [];
+      setUploadBusy(true);
       try{
         compressedFiles = await prepareCompressedFiles(files, message => { uploadStatus.textContent = message; });
       }catch(err){
         uploadStatus.textContent = err.message || "Komprimierung fehlgeschlagen.";
+        setUploadBusy(false);
         return;
       }
-      const compressedTotal = compressedFiles.reduce((sum, file) => sum + (file.size || 0), 0);
+      const compressedTotal = compressedFiles.reduce((sum, item) => sum + (item.file.size || 0), 0);
       const formData = new FormData();
       formData.append("name", creditValue);
       formData.append("email", document.getElementById("uploadEmail")?.value || "");
       formData.append("thoughts", document.getElementById("uploadThoughts")?.value || "");
-      compressedFiles.forEach(file => formData.append("photos", file, file.name));
+      formData.append("dimensions", JSON.stringify(compressedFiles.map(item => ({ width:item.width, height:item.height }))));
+      compressedFiles.forEach(item => formData.append("photos", item.file, item.file.name));
       uploadStatus.textContent = `Upload läuft... (${formatBytes(originalTotal)} -> ${formatBytes(compressedTotal)})`;
       try{
         const res = await fetch(UPLOAD_API_BASE + "/upload", { method:"POST", body:formData });
@@ -1392,6 +1465,8 @@ function formatBytes(bytes){
         await loadGallery();
       }catch(err){
         uploadStatus.textContent = err.message || "Upload fehlgeschlagen.";
+      }finally{
+        setUploadBusy(false);
       }
     });
 
