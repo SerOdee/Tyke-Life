@@ -426,8 +426,7 @@
       gap:0;
       padding:clamp(14px, 1.8vw, 22px);
       cursor:default;
-      overflow:auto;
-      scrollbar-width:thin;
+      overflow:hidden;
     }
     .thoughtTile.wideThought{
       grid-column:span 2;
@@ -1186,10 +1185,6 @@
             const thoughtText = String(item.thought || "").trim();
         
             note.className = "photoTile thoughtTile";
-            if(thoughtText.length > 120){
-              note.classList.add("wideThought");
-            }
-        
             note.setAttribute("role", "note");
             note.setAttribute("aria-label", "Gedanken von " + group.credit);
         
@@ -1199,8 +1194,26 @@
         
             note.appendChild(text);
             gridEl.appendChild(note);
+        
+            requestAnimationFrame(() => {
+              if(note.scrollHeight > note.clientHeight){
+                note.classList.add("wideThought");
+        
+                requestAnimationFrame(() => {
+                  const minFontSize = 12;
+                  let fontSize = parseFloat(getComputedStyle(text).fontSize);
+        
+                  while(note.scrollHeight > note.clientHeight && fontSize > minFontSize){
+                    fontSize -= 1;
+                    text.style.fontSize = fontSize + "px";
+                  }
+                });
+              }
+            });
+        
             return;
           }
+
 
           const button = document.createElement("button");
           button.type = "button";
