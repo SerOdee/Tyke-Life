@@ -429,6 +429,11 @@
       overflow:auto;
       scrollbar-width:thin;
     }
+    .thoughtTile.wideThought{
+      grid-column:span 2;
+      aspect-ratio:2 / 1;
+      padding:clamp(18px, 2vw, 28px);
+    }
     .thoughtTile:hover{
       transform:none;
       box-shadow:0 10px 28px rgba(74,73,74,.10);
@@ -1174,18 +1179,24 @@
 
         const gridEl = document.createElement("div");
         gridEl.className = "photoGroupGrid";
-
+        
         group.entries.forEach(({ item, idx }) => {
           if(isThoughtItem(item)){
             const note = document.createElement("div");
+            const thoughtText = String(item.thought || "").trim();
+        
             note.className = "photoTile thoughtTile";
+            if(thoughtText.length > 120){
+              note.classList.add("wideThought");
+            }
+        
             note.setAttribute("role", "note");
             note.setAttribute("aria-label", "Gedanken von " + group.credit);
-
+        
             const text = document.createElement("div");
             text.className = "thoughtTileText";
-            text.textContent = "«" + item.thought + "»";
-
+            text.textContent = "«" + thoughtText + "»";
+        
             note.appendChild(text);
             gridEl.appendChild(note);
             return;
