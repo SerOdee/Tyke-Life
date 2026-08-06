@@ -43,7 +43,7 @@
     #gate{
       position:relative; z-index:9999;
       min-height:100dvh;
-      display:flex; align-items:center; justify-content:center;
+      display:flex; align-items:center; justify-content:flex-start;
       padding:24px; background:var(--bg);
     }
     #gateBox{
@@ -435,6 +435,7 @@
       border-color:var(--stroke);
     }
     .thoughtTileText{
+      margin:auto 0;
       color:var(--text);
       font-size:clamp(15px, 1.25vw, 18px);
       font-weight:850;
